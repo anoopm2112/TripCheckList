@@ -1,18 +1,46 @@
-import React, { useRef } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import React, { useRef, useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, Text, Animated, Alert } from 'react-native';
 import { List, Button } from '@ui-kitten/components';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import RBSheet from "react-native-raw-bottom-sheet";
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from 'uuid';
+import * as Animatable from 'react-native-animatable';
 // Custom Import
 import COLORS from '../common/Colors';
-import EN_IN from '../common/languages/en_IN';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import { getAddedAmountArray } from '../common/utils/arrayObjectUtils';
+import { htmltable } from '../common/pdfView';
+import InvoiceModal from './InvoiceModal';
+import { deleteNoteList, queryGetNoteList, updateSplitWiseList } from '../database/allSchemas';
+import NoteModal from './NoteModal';
 
 export default function MainItemSplitWiseListCard(props) {
     const { item, spliupAmount, navigationToEdit, removeParticularItem } = props;
     const refRBSheet = useRef();
+    const swipeableRef = useRef(null);
+
+    const [pdfModalVisible, setPdfModalVisible] = useState(false);
+    const [generateBillLocation, setGenerateBillLocation] = useState('');
+
+    // Note Modal States
+    const [modalVisible, setModalVisible] = useState(false);
+    const [noteArray, setNoteArray] = useState([]);
+    const [noteValue, setNoteValue] = useState('');
+    const [noteType, setNoteType] = useState(false);
+
+    useEffect(() => {
+        const GetParticularSplitWiseNoteList = async () => {
+            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
+                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
+            }).catch((error) => {
+                setNoteArray([]);
+            });
+        }
+        GetParticularSplitWiseNoteList(item.id);
+    }, [modalVisible]);
 
     const styles = StyleSheet.create({
         listItemContainer: {
@@ -21,7 +49,7 @@ export default function MainItemSplitWiseListCard(props) {
             alignItems: 'center',
             height: convertHeight(50),
             borderBottomWidth: 2,
-            borderBottomColor: COLORS.primary
+            borderBottomColor: '#e5e5e5'
         },
         editBtnContainer: {
             backgroundColor: 'green',
@@ -63,7 +91,13 @@ export default function MainItemSplitWiseListCard(props) {
             fontWeight: 'bold',
             padding: convertHeight(3),
             color: COLORS.black
-        }
+        },
+        actionBox: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: 100,
+            height: convertHeight(50),
+        },
     });
 
     const renderItemSplitMembers = ({ item }) => {
@@ -97,9 +131,112 @@ export default function MainItemSplitWiseListCard(props) {
         );
     }
 
+    const createPDF = async () => {
+        const resultData = await htmltable(item?.splitWiseListItems);
+
+        let options = {
+            html: resultData,
+            fileName: 'test',
+            // directory: 'Documents',
+            base64: true
+        };
+
+        let file = await RNHTMLtoPDF.convert(options);
+        setGenerateBillLocation(file.filePath);
+        setPdfModalVisible(true);
+    }
+
+    const ButtonComponent = (props) => {
+        return (
+            <TouchableOpacity onPress={() => {
+                props.onPressHandler();
+                swipeableRef.current.close();
+            }} activeOpacity={0.6}>
+                <View style={[styles.actionBox, { backgroundColor: props.backgroundColor }]}>
+                    <MaterialIcons name={props.iconname} size={convertHeight(20)} color="white" />
+                    <Animated.Text style={{ transform: [{ scale: props.scale }] }}>
+                        {props.name}
+                    </Animated.Text>
+                </View>
+            </TouchableOpacity>
+        );
+    }
+
+    const handleNotes = () => {
+        setNoteValue('');
+        let noteClonedArray = JSON.parse(JSON.stringify(item.notes))
+        let noteData = { id: uuidv4(), note: noteValue, creationDate: new Date() }
+        noteClonedArray.push(noteData);
+        const newSplitWise = {
+            id: item.id,
+            creationDate: item.creationDate,
+            totalAmount: item.totalAmount,
+            members: item.members,
+            splitWiseListItems: item.splitWiseListItems,
+            notes: noteClonedArray
+        }
+
+        updateSplitWiseList(newSplitWise).then().catch((error) => {
+            alert(error);
+        });
+        setModalVisible(false);
+    }
+
+    const leftSwipe = (progress, dragX) => {
+        const scale = dragX.interpolate({ inputRange: [0, 50, 100, 101], outputRange: [-20, 0, 0, 1], extrapolate: 'clamp' });
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                <ButtonComponent
+                    iconname={'remove-red-eye'} onPressHandler={() => refRBSheet.current.open()}
+                    backgroundColor={COLORS.secondary} name={'View Split'} scale={scale} />
+                <ButtonComponent
+                    iconname={'notes'} onPressHandler={() => {
+                        setModalVisible(true)
+                        setNoteType(false)
+                    }}
+                    backgroundColor={COLORS.paleGreen} name={'View Note'} scale={scale} />
+            </View>
+        );
+    };
+
+    const rightSwipe = (progress, dragX) => {
+        const scale = dragX.interpolate({ inputRange: [0, 100], outputRange: [1, 0], extrapolate: 'clamp' });
+        return (
+            <View style={{ flexDirection: 'row' }}>
+                <ButtonComponent
+                    iconname={'add-box'} onPressHandler={() => navigationToEdit()}
+                    backgroundColor={COLORS.tertiary} name={'Add Split'} scale={scale} />
+                <ButtonComponent
+                    iconname={'create'} onPressHandler={() => {
+                        setModalVisible(true)
+                        setNoteType(true)
+                    }}
+                    backgroundColor={COLORS.green} name={'Add Note'} scale={scale} />
+                <ButtonComponent
+                    iconname={'delete'} onPressHandler={() => tryTodelete(item)}
+                    backgroundColor={COLORS.validation} name={'Delete'} scale={scale} />
+            </View>
+        );
+    };
+
+    const deleteNote = (id) => {
+        deleteNoteList(id).then(() => {
+            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
+                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
+            }).catch((error) => {
+                setNoteArray([]);
+            });
+        }).catch((error) => {
+            // Error Handling
+        });
+    }
+
     return (
-        <>
+        <Swipeable ref={swipeableRef} renderLeftActions={leftSwipe} renderRightActions={rightSwipe}>
             <View activeOpacity={0.3} style={[styles.listItemContainer, { flexDirection: 'row', }]}>
+                <Animatable.View animation="slideInLeft">
+                    <MaterialIcons name={'keyboard-arrow-left'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingLeft: convertWidth(5) }} />
+                </Animatable.View>
                 <View style={styles.labelContainer}>
                     <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Grand Total</Text>
                     <Text style={styles.label}>{item.totalAmount}</Text>
@@ -108,21 +245,34 @@ export default function MainItemSplitWiseListCard(props) {
                     <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Members</Text>
                     <Text style={styles.label}>{item.members.length}</Text>
                 </View>
-                <TouchableOpacity style={[styles.editBtnContainer, { backgroundColor: COLORS.tertiary }]} onPress={() => { refRBSheet.current.open() }}>
-                    <AntDesign name="eyeo" size={convertHeight(25)} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.editBtnContainer} onPress={() => navigationToEdit()}>
-                    <AntDesign name="edit" size={convertHeight(25)} color="white" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteBtnContainer} onPress={() => tryTodelete(item)}>
-                    <MaterialIcons name="delete" size={convertHeight(25)} color="white" />
-                </TouchableOpacity>
+                <View style={styles.labelContainer}>
+                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Added Notes</Text>
+                    <Text style={styles.label}>{item.notes.length}</Text>
+                </View>
+                <Animatable.View animation="slideInRight">
+                    <MaterialIcons name={'keyboard-arrow-right'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingRight: convertWidth(5) }} />
+                </Animatable.View>
             </View>
-            <RBSheet height={convertHeight(320)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
+            <RBSheet height={convertHeight(220)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
                 customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>
-                <List numColumns={2} data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
-                <Button style={{ margin: convertHeight(10) }} onPress={() => { refRBSheet.current.close() }}>{EN_IN.close}</Button>
+                <List horizontal data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
+                <Button disabled={item?.splitWiseListItems.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>Generate & View Invoice</Button>
             </RBSheet>
-        </>
+            <InvoiceModal
+                pdfModalVisible={pdfModalVisible}
+                onClose={() => setPdfModalVisible(false)}
+                generateBillLocation={generateBillLocation}
+            />
+            <NoteModal
+                visible={modalVisible}
+                onClose={() => setModalVisible(false)}
+                value={noteValue}
+                setNoteValue={(value) => setNoteValue(value)}
+                submitFun={() => handleNotes()}
+                viewType={noteType}
+                notesItem={noteArray}
+                deleteNote={(id) => deleteNote(id)}
+            />
+        </Swipeable>
     )
 }
