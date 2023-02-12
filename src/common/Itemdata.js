@@ -12,6 +12,7 @@ export const dataItem = [
 ];
 
 export const splitWiseDataItem = [
+    'Select your food category',
     'Break Fast',
     'Lunch',
     'Dinner',

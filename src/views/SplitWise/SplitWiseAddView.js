@@ -1,45 +1,55 @@
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, TouchableOpacity, Keyboard, LogBox } from 'react-native';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { IndexPath, Select, SelectItem, Button, List, Input } from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import RBSheet from "react-native-raw-bottom-sheet";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 // Other files
 import { splitWiseDataItem } from '../../common/Itemdata';
 import { ROUTE_KEYS } from '../../navigation/constants';
-import { updateSplitWiseList } from '../../database/allSchemas';
+import { deleteNoteList, queryGetNoteList, updateSplitWiseList } from '../../database/allSchemas';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
 import SubItemSplitWise from '../../components/SubItemSplitWise';
-// import { totalAmountFromArrayObj } from '../../common/utils/arrayObjectUtils';
+import NoteModal from '../../components/NoteModal';
+import { htmltable } from '../../common/pdfView';
+import InvoiceModal from '../../components/InvoiceModal';
+import { styles } from './SplitWiseStyle';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
     const { item } = props.route.params;
 
-    const refRBSheet = useRef();
-
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
     const [localArrayData, setLocalArrayData] = useState(item.members ? JSON.parse(JSON.stringify(item.members)) : []);
     const [localSplitWiseAddArrayData, setLocalSplitWiseAddArrayData] = useState(item.splitWiseListItems ? JSON.parse(JSON.stringify(item.splitWiseListItems)) : []);
+    const [noteArray, setNoteArray] = useState([]);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const [value, setValue] = useState('');
     const [amount, setAmount] = useState(0);
     const [valAmount, setValAmount] = useState(false);
+    const [valSelectFoodType, setValSelectFoodType] = useState(false);
     const [valTextInput, setValTextInput] = useState(false);
     const [whoPaid, setWhoPaid] = useState(false);
     const [valWhoPaid, setValWhoPaid] = useState(false);
 
     const [showEquallySplit, setShowEquallySplit] = useState(false);
 
+    const [modalVisible, setModalVisible] = useState(false);
+    const [noteValue, setNoteValue] = useState('');
+    const [viewType, setViewType] = useState(false);
+
+    const [generateBillLocation, setGenerateBillLocation] = useState('');
+    const [pdfModalVisible, setPdfModalVisible] = useState(false);
+
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {
+        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
         const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true) });
         const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false) });
 
@@ -48,6 +58,36 @@ export default function CheckListAddView(props) {
             keyboardDidShowListener.remove();
         };
     }, []);
+
+    useEffect(() => {
+        const GetParticularSplitWiseNoteList = async () => {
+            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
+                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
+            }).catch((error) => {
+                setNoteArray([]);
+            });
+        }
+        GetParticularSplitWiseNoteList(item.id);
+    }, [modalVisible]);
+
+    const visibleItem = showEquallySplit || false;
+    const [showView, setShowView] = useState(visibleItem);
+    const viewAnimation = useRef(null);
+
+    useEffect(() => {
+        const Animation = async () => {
+            if (visibleItem) {
+                setShowView(true);
+                if (viewAnimation.current)
+                    await viewAnimation.current.fadeInLeft(2000);
+            } else {
+                if (viewAnimation.current)
+                    await viewAnimation.current.fadeOutRight(1000);
+                setShowView(false)
+            }
+        }
+        Animation();
+    }, [visibleItem, viewAnimation]);
 
     // DropDown Options
     const renderOption = (title) => (
@@ -61,10 +101,12 @@ export default function CheckListAddView(props) {
         setWhoPaid(false);
         if (amount == '') {
             setValAmount(true)
+        } else if (displayValue === 'Select your food category') {
+            setValSelectFoodType(true)
         } else {
             // Add paid rate to array
             let newArr1;
-            if (showEquallySplit) {
+            if (!showEquallySplit) {
                 let splitAmount = amount / item.members.length;
                 for (i = 0; i < localArrayData.length; i++) {
                     if (localArrayData[i].name == name) {
@@ -82,6 +124,7 @@ export default function CheckListAddView(props) {
             let splitShareArray = [{
                 id: uuidv4(),
                 foodType: selectedIndex == 4 ? value : displayValue,
+                creationDate: new Date(),
                 data: newArr1
             }];
 
@@ -94,7 +137,8 @@ export default function CheckListAddView(props) {
                 type: selectedIndex == 4 ? value : displayValue,
                 totalAmount: amountAdded,
                 members: item.members,
-                splitWiseListItems: localSplitWiseAddArrayData.concat(splitShareArray)
+                splitWiseListItems: localSplitWiseAddArrayData.concat(splitShareArray),
+                notes: item.notes
             }
 
             updateSplitWiseList(newSplitWise).then().catch((error) => {
@@ -106,32 +150,6 @@ export default function CheckListAddView(props) {
         }
     }
 
-    // Add whole data to local DB (Realm)
-    // const onRealmAdding = () => {
-    //     if (amount == '') {
-    //         setValAmount(true)
-    //     } else if (whoPaid) {
-    //         setValWhoPaid(true);
-    //     } else {
-    //         let amountAdded = amountAdded = parseInt(item.totalAmount) + parseInt(amount);
-    //         const newSplitWise = {
-    //             id: item.id,
-    //             creationDate: item.creationDate,
-    //             type: selectedIndex == 4 ? value : displayValue,
-    //             totalAmount: amountAdded,
-    //             members: item.members,
-    //             splitWiseListItems: localSplitWiseAddArrayData
-    //         }
-
-    //         updateSplitWiseList(newSplitWise).then().catch((error) => {
-    //             alert(error);
-    //         });
-    //         setLocalArrayData([]);
-
-    //         navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST);
-    //     }
-    // }
-
     const sum_values = () => {
         var sum = 0;
         for (var i = 0; i < localArrayData.length; i++) {
@@ -142,26 +160,7 @@ export default function CheckListAddView(props) {
 
     // Split Up Components
     const renderItem = ({ item, index }) => (<SubItemSplitWise item={item} index={index} onSubmitCheckList={onSubmitCheckList} />);
-    const renderItemPayed = ({ item }) => {
-        let foodCategory = item.foodType;
-        return (
-            <View>
-                <Text style={{ color: COLORS.black, textAlign: 'center' }}>{foodCategory}</Text>
-                <List data={item.data.filter(obj => obj.type != '')} renderItem={renderParticularSpendItem} style={{ backgroundColor: COLORS.primary }} />
-            </View>
-        )
-    }
-    const renderParticularSpendItem = ({ item }) => {
-        return (
-            <TouchableOpacity activeOpacity={10} style={styles.particularRBSheetItem}>
-                <View style={{ flexDirection: 'row' }}>
-                    <Text style={{ color: COLORS.tertiary }}>{item.name} </Text>
-                    {item.paid != 0 && <Text style={{ color: COLORS.tertiary }}>Paid {item.paid}</Text>}
-                </View>
-                <Text style={{ color: COLORS.secondary }}>Expense {item.expense}</Text>
-            </TouchableOpacity>
-        )
-    }
+
     const renderItemNotEquallySplit = ({ item, index }) => (
         <View style={styles.txtInputContainer}>
             <Text style={styles.txtNameContainer}>{item.name}</Text>
@@ -169,7 +168,7 @@ export default function CheckListAddView(props) {
             <Input
                 style={{ flex: 1.5, borderColor: COLORS.secondary }}
                 key={index}
-                placeholder={'Split Amount '}
+                placeholder={'Split Amount'}
                 value={localArrayData[index].expense}
                 keyboardType='number-pad'
                 onChangeText={val => {
@@ -185,67 +184,56 @@ export default function CheckListAddView(props) {
         </View>
     );
 
-    const styles = StyleSheet.create({
-        mainContainer: {
-            flex: 1,
-            padding: convertHeight(8),
-            backgroundColor: COLORS.primary
-        },
-        counterContainer: {
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingVertical: convertHeight(12)
-        },
-        addTask: {
-            backgroundColor: 'green',
-            borderColor: 'green',
-            width: '48%'
-        },
-        listItemContainer: {
-            elevation: 5,
-            backgroundColor: COLORS.primary,
-            borderRadius: 5,
-            justifyContent: 'center',
-            alignItems: 'center',
-            paddingHorizontal: convertWidth(10),
-            height: convertHeight(32),
-            flexDirection: 'row'
-        },
-        paidByYou: {
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            alignItems: 'center',
-            padding: convertHeight(10)
-        },
-        errortxt: {
-            color: COLORS.validation,
-            fontStyle: 'italic',
-            textAlign: 'center',
-            paddingVertical: convertHeight(3)
-        },
-        txtInputContainer: {
-            paddingVertical: 5, flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between'
-        },
-        txtNameContainer: {
-            color: COLORS.black,
-            flex: 0.5,
-            textAlign: 'center'
-        },
-        paidByTitle: {
-            color: COLORS.black, padding: convertHeight(7), textAlign: 'center',
-            fontWeight: 'bold', fontSize: convertHeight(16), color: COLORS.secondary,
-            textDecorationLine: 'underline'
-        },
-        particularRBSheetItem: {
-            padding: convertHeight(5),
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderColor: COLORS.black,
-            borderWidth: 1
+    const deleteNote = (id) => {
+        deleteNoteList(id).then(() => {
+            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
+                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
+            }).catch((error) => {
+                setNoteArray([]);
+            });
+        }).catch((error) => {
+            // Error Handling
+        });
+    }
+
+    const handleNotes = () => {
+        setNoteValue('');
+        let noteClonedArray = JSON.parse(JSON.stringify(item.notes))
+        let noteData = { id: uuidv4(), note: noteValue, creationDate: new Date() }
+        noteClonedArray.push(noteData);
+        const newSplitWise = {
+            id: item.id,
+            creationDate: item.creationDate,
+            totalAmount: item.totalAmount,
+            members: item.members,
+            splitWiseListItems: item.splitWiseListItems,
+            notes: noteClonedArray
         }
-    });
+
+        updateSplitWiseList(newSplitWise).then().catch((error) => {
+            alert(error);
+        });
+
+        forceUpdate();
+        setModalVisible(false);
+    }
+
+    const createPDF = async () => {
+        const resultData = await htmltable(item.splitWiseListItems);
+
+        let options = {
+            html: resultData,
+            fileName: 'test',
+            // directory: 'Documents',
+            base64: true
+        };
+
+        let file = await RNHTMLtoPDF.convert(options);
+        setGenerateBillLocation(file.filePath);
+        setPdfModalVisible(true);
+    }
+
+
 
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: COLORS.primary }}>
@@ -255,26 +243,30 @@ export default function CheckListAddView(props) {
                     placeholder='Default'
                     value={displayValue}
                     selectedIndex={selectedIndex}
-                    onSelect={index => setSelectedIndex(index)}>
+                    onSelect={index => {
+                        setSelectedIndex(index)
+                        setValSelectFoodType('')
+                    }}>
                     {splitWiseDataItem.map(renderOption)}
                 </Select>
                 {selectedIndex == 4 && <View style={{ paddingTop: convertHeight(5) }}>
                     <Input placeholder='Other Item' value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false) }} />
                 </View>}
+                {valSelectFoodType && <Animatable.Text animation={'fadeInLeft'} style={styles.errortxt}>{'Please select your food category'}</Animatable.Text>}
 
                 <View>
                     <View style={styles.paidByYou}>
                         <Text style={{ color: COLORS.black }}>Equally, Split the Amount?</Text>
-                        <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: !showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
+                        <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
                             onPress={() => { setShowEquallySplit(!showEquallySplit) }}>
-                            <Text style={{ color: COLORS.primary }}>{!showEquallySplit ? 'Yes' : 'No'}</Text>
+                            <Text style={{ color: COLORS.primary }}>{showEquallySplit ? 'Yes' : 'No'}</Text>
                         </TouchableOpacity>
                     </View>
-                    {!showEquallySplit &&
-                        <Animatable.View animation={'fadeInLeft'}>
-                            <List data={localArrayData} style={{ backgroundColor: COLORS.primary }} renderItem={renderItemNotEquallySplit} />
-                        </Animatable.View>
-                    }
+                    <Animatable.View ref={viewAnimation} animation={'fadeInLeft'}>
+                        {showView &&
+                            localArrayData?.map((item, index) => { return renderItemNotEquallySplit({item, index}) })
+                        }
+                    </Animatable.View>
                 </View>
 
                 <View style={styles.txtInputContainer}>
@@ -296,30 +288,54 @@ export default function CheckListAddView(props) {
                     </View>
                 </View>
 
-
                 <View>
                     <Text style={styles.paidByTitle}>PAID BY</Text>
                     <List style={{ backgroundColor: COLORS.primary }} numColumns={2} data={localArrayData} renderItem={renderItem} />
                     {valWhoPaid && <Text style={styles.errortxt}>{'Please select person who paid the amount'}</Text>}
                 </View>
 
-
                 {!isKeyboardVisible &&
                     <>
-                        <View style={{ backgroundColor: COLORS.primary }}>
-                            <RBSheet height={convertHeight(320)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
-                                customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>
-                                <List horizontal data={JSON.parse(JSON.stringify(item.splitWiseListItems))} renderItem={renderItemPayed} style={{ backgroundColor: COLORS.primary, margin: 10 }} />
-                                <Button style={{ margin: convertHeight(10) }} onPress={() => { refRBSheet.current.close() }}>{EN_IN.close}</Button>
-                            </RBSheet>
-                        </View>
-
                         {item.splitWiseListItems.length > 1 &&
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <Button style={{ backgroundColor: COLORS.tertiary, borderColor: COLORS.tertiary, marginVertical: convertHeight(12), width: convertWidth(160) }} onPress={() => { refRBSheet.current.open() }}>{'VIEW EXPENSE'}</Button>
-                                {/* <Button style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary, marginVertical: convertHeight(12), width: convertWidth(160) }} onPress={() => onRealmAdding()}>{EN_IN.submit}</Button> */}
-                            </View>}
+                                <TouchableOpacity style={[styles.addNoteBtn, { width: convertWidth(190), backgroundColor: COLORS.tertiary }]}
+                                    onPress={() => { createPDF() }}>
+                                    <Text style={{ color: COLORS.primary }}>{'Generate & View Invoice'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        }
+
+                        <View style={{ flexDirection: 'row', justifyContent: item?.notes?.length > 0 ? 'space-between' : 'center' }}>
+                            <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.tertiary }]}
+                                onPress={() => { setViewType(true), setModalVisible(true) }}>
+                                <Text style={{ color: COLORS.primary }}>{'Add Notes'}</Text>
+                            </TouchableOpacity>
+
+                            {item?.notes?.length > 0 &&
+                                <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.secondary }]}
+                                    onPress={() => { setViewType(false), setModalVisible(true) }}>
+                                    <Text style={{ color: COLORS.primary }}>{'VIEW NOTES'}</Text>
+                                </TouchableOpacity>
+                            }
+                        </View>
                     </>}
+
+                <NoteModal
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    value={noteValue}
+                    setNoteValue={(value) => setNoteValue(value)}
+                    submitFun={() => handleNotes()}
+                    viewType={viewType}
+                    notesItem={noteArray}
+                    deleteNote={(id) => deleteNote(id)}
+                />
+
+                <InvoiceModal
+                    pdfModalVisible={pdfModalVisible}
+                    onClose={() => setPdfModalVisible(false)}
+                    generateBillLocation={generateBillLocation}
+                />
             </View>
         </KeyboardAwareScrollView>
     )

@@ -5,6 +5,7 @@ export const TRIP_SPLITWISE_SCHEMA = "TripSplitWise";
 export const SPLITWISE_SCHEMA = "SplitWise";
 export const MEMBERS = "Members";
 export const SPLITWISEMETA = "SplitWiseMeta";
+export const NOTES = "Notes";
 
 export const CheckListSchema = {
     name: CHECKLIST_SCHEMA,
@@ -56,12 +57,23 @@ const MembersSchema = {
     }
 };
 
+const NotesSchema = {
+    name: NOTES,
+    primaryKey: 'id',
+    properties: {
+        id: 'string',
+        note: 'string',
+        creationDate: 'date'
+    }
+}
+
 const SplitWiseMetaSchema = {
     name: SPLITWISEMETA,
     primaryKey: 'id',
     properties: {
         id: 'string',
         foodType: 'string',
+        creationDate: 'date',
         data: { type: 'list', objectType: SPLITWISE_SCHEMA }
     }
 };
@@ -74,15 +86,16 @@ export const TripSplitWiseSchema = {
         creationDate: 'date',
         totalAmount: 'int',
         members: { type: 'list', objectType: MEMBERS },
-        splitWiseListItems: { type: 'list', objectType: SPLITWISEMETA }
+        splitWiseListItems: { type: 'list', objectType: SPLITWISEMETA },
+        notes: { type: 'list', objectType: NOTES }
     }
 }
 
 const databaseOptions = {
     path: 'tripCheckListApp.realm',
     schema: [
-        CheckListSchema, TripCheckListSchema, 
-        SplitWiseSchema, TripSplitWiseSchema, MembersSchema,
+        CheckListSchema, TripCheckListSchema,
+        SplitWiseSchema, TripSplitWiseSchema, MembersSchema, NotesSchema,
         SplitWiseMetaSchema
     ],
     schemaVersion: 1
@@ -177,6 +190,7 @@ export const updateSplitWiseList = tripCheckList => new Promise((resolve, reject
             let updatingCheckList = realm.objectForPrimaryKey(TRIP_SPLITWISE_SCHEMA, tripCheckList.id);
             updatingCheckList.totalAmount = tripCheckList.totalAmount;
             updatingCheckList.splitWiseListItems = tripCheckList.splitWiseListItems;
+            updatingCheckList.notes = tripCheckList.notes
             resolve();
         });
     }).catch((error) => reject(error));
@@ -201,6 +215,25 @@ export const deleteSplitWiseList = tripSplitWiseListId => new Promise((resolve, 
             realm.delete(deletingSplitWiseList);
             resolve();
         });
+    }).catch((error) => reject(error));
+});
+
+// Delete Note
+export const deleteNoteList = noteId => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then(realm => {
+        realm.write(() => {
+            let deletingNote = realm.objectForPrimaryKey(NOTES, noteId);
+            realm.delete(deletingNote);
+            resolve();
+        });
+    }).catch((error) => reject(error));
+});
+
+// Query Note List
+export const queryGetNoteList = tripSplitWiseListId => new Promise((resolve, reject) => {
+    Realm.open(databaseOptions).then(realm => {
+        const getParticularSplitWiseList = realm.objectForPrimaryKey(TRIP_SPLITWISE_SCHEMA, tripSplitWiseListId);
+        resolve(getParticularSplitWiseList?.notes);
     }).catch((error) => reject(error));
 });
 

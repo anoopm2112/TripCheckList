@@ -92,6 +92,7 @@ export default function FriendsAddView(props) {
       let splitShareArray = [{
         id: uuidv4(),
         foodType: "",
+        creationDate: new Date(),
         data: localSplitWiseItemsArrayData
       }]
       const newSplitWise = {
@@ -99,7 +100,8 @@ export default function FriendsAddView(props) {
         creationDate: new Date(),
         members: localArrayData,
         totalAmount: 0,
-        splitWiseListItems: splitShareArray
+        splitWiseListItems: splitShareArray,
+        notes: []
       }
       insertNewSplitWise(newSplitWise).then().catch((error) => {
         alert(error);

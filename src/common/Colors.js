@@ -4,5 +4,7 @@ export default COLORS = {
     black: '#000000',
     info: '#C4C4C4',
     tertiary: '#33ACFF',
-    validation: 'red'
+    validation: 'red',
+    paleGreen: '#83E14A',
+    green: 'green'
 };
