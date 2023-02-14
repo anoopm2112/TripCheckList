@@ -6,26 +6,31 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 // Other files
-import { splitWiseDataItem } from '../../common/Itemdata';
-import { ROUTE_KEYS } from '../../navigation/constants';
-import { deleteNoteList, queryGetNoteList, updateSplitWiseList } from '../../database/allSchemas';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import COLORS from '../../common/Colors';
-import SubItemSplitWise from '../../components/SubItemSplitWise';
-import NoteModal from '../../components/NoteModal';
-import { htmltable } from '../../common/pdfView';
-import InvoiceModal from '../../components/InvoiceModal';
-import { styles } from './SplitWiseStyle';
+import { splitWiseDataItem } from '../../../common/Itemdata';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { deleteNoteById, fetchNotes, updateSplitwise } from '../../../views/SplitWise/api/SplitWiseApi';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import COLORS from '../../../common/Colors';
+import SubItemSplitWise from '../../../components/SubItemSplitWise';
+import NoteModal from '../../../components/NoteModal';
+import { htmltable } from '../../../common/pdfView';
+import InvoiceModal from '../../../components/InvoiceModal';
+import { styles } from '../splitwiseStyles';
+import { selectAllSplitwises } from '../splitwiseSlice';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
     const { item } = props.route.params;
+    const { notes, status, error } = useSelector(selectAllSplitwises);
+    const isFocuesd = useIsFocused();
+    const dispatch = useDispatch();
 
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
     const [localArrayData, setLocalArrayData] = useState(item.members ? JSON.parse(JSON.stringify(item.members)) : []);
     const [localSplitWiseAddArrayData, setLocalSplitWiseAddArrayData] = useState(item.splitWiseListItems ? JSON.parse(JSON.stringify(item.splitWiseListItems)) : []);
-    const [noteArray, setNoteArray] = useState([]);
     const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
     const [value, setValue] = useState('');
@@ -61,14 +66,10 @@ export default function CheckListAddView(props) {
 
     useEffect(() => {
         const GetParticularSplitWiseNoteList = async () => {
-            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
-                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
-            }).catch((error) => {
-                setNoteArray([]);
-            });
+            dispatch(fetchNotes({ id: item.id }));
         }
         GetParticularSplitWiseNoteList(item.id);
-    }, [modalVisible]);
+    }, [isFocuesd, modalVisible, dispatch]);
 
     const visibleItem = showEquallySplit || false;
     const [showView, setShowView] = useState(visibleItem);
@@ -141,9 +142,7 @@ export default function CheckListAddView(props) {
                 notes: item.notes
             }
 
-            updateSplitWiseList(newSplitWise).then().catch((error) => {
-                alert(error);
-            });
+            dispatch(updateSplitwise(newSplitWise));
             setLocalArrayData([]);
 
             navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST);
@@ -185,15 +184,7 @@ export default function CheckListAddView(props) {
     );
 
     const deleteNote = (id) => {
-        deleteNoteList(id).then(() => {
-            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
-                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
-            }).catch((error) => {
-                setNoteArray([]);
-            });
-        }).catch((error) => {
-            // Error Handling
-        });
+        dispatch(deleteNoteById({ id: id }));
     }
 
     const handleNotes = () => {
@@ -210,9 +201,7 @@ export default function CheckListAddView(props) {
             notes: noteClonedArray
         }
 
-        updateSplitWiseList(newSplitWise).then().catch((error) => {
-            alert(error);
-        });
+        dispatch(updateSplitwise(newSplitWise));
 
         forceUpdate();
         setModalVisible(false);
@@ -327,7 +316,7 @@ export default function CheckListAddView(props) {
                     setNoteValue={(value) => setNoteValue(value)}
                     submitFun={() => handleNotes()}
                     viewType={viewType}
-                    notesItem={noteArray}
+                    notesItem={notes}
                     deleteNote={(id) => deleteNote(id)}
                 />
 

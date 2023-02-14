@@ -5,16 +5,18 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { ROUTE_KEYS } from './constants';
 import { 
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen, 
-  CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView
+  CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, 
+  PostList
 } from '../views';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
+import AssetIconsPack from '../assets/IconProvide';
 
 const { Navigator, Screen } = createStackNavigator();
 
 export default function rootNavigation(props) {
 
   const rightLogoImage = () => (
-    <Image style={{ height: convertHeight(30), width: convertWidth(35), marginRight: convertHeight(8) }} source={require('../assets/side_logo.jpg')} />
+    <Image style={{ height: convertHeight(30), width: convertWidth(35), marginRight: convertHeight(8) }} source={AssetIconsPack.icons.app_logo_side_image} />
   )
 
   return (
@@ -30,6 +32,7 @@ export default function rootNavigation(props) {
       <Screen options={{ title: 'ADD FRIENDS', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.FRIENDS_ADD} component={FriendsAddView} />
       <Screen options={{ title: 'ADD SPLITWISE', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.SPLIT_WISE_ADD} component={SplitWiseAddView} />
       <Screen options={{ title: 'SPLITWISE', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.SPLIT_WISE_LIST} component={SplitWiseListView} />
+      <Screen options={{ title: 'POST', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.FETCH_POST} component={PostList} />
     </Navigator>
   );
 }

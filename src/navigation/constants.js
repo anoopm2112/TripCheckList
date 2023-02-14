@@ -7,5 +7,7 @@ export const ROUTE_KEYS = {
     CHECK_ITEM_HISTORY_LIST: 'CheckItemListHistoryView',
     FRIENDS_ADD: 'FriendsAddView',
     SPLIT_WISE_ADD: 'SpltWiseAddView',
-    SPLIT_WISE_LIST: 'SplitWiseListView'
+    SPLIT_WISE_LIST: 'SplitWiseListView',
+
+    FETCH_POST: 'fetchPost'
 };

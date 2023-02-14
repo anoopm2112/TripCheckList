@@ -7,6 +7,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import COLORS from '../common/Colors';
 import { localTimeConvertion } from '../common/utils/timeDateUtils';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
+import AssetIconsPack from '../assets/IconProvide';
 
 export default function MainItemListCardView(props) {
     const { item, removeParticularItem, navigationToNext, navigationToEdit, history } = props;
@@ -15,9 +16,9 @@ export default function MainItemListCardView(props) {
 
     const renderImage = () => {
         const myImages = [
-            { image: require('../assets/clothes.png') },
-            { image: require('../assets/clothes_two.png') },
-            { image: require('../assets/clothes_three.png') },
+            { image: AssetIconsPack.icons.checklist_clothes_image },
+            { image: AssetIconsPack.icons.checklist_clothes_two_image },
+            { image: AssetIconsPack.icons.checklist_item_no_image },
         ];
         const randomImageIndex = Math.floor(Math.random() * Math.floor(3));
         return myImages[randomImageIndex].image;

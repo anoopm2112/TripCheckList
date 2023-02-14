@@ -20,6 +20,13 @@ export const splitWiseDataItem = [
 ];
 
 export const FLOATING_ACTION = [
+    // {
+    //     text: "Post",
+    //     icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,
+    //     name: ROUTE_KEYS.FETCH_POST,
+    //     color: COLORS.secondary,
+    //     position: 4
+    // },
     {
         text: "Add Checklist",
         icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,

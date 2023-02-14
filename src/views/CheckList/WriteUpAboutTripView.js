@@ -13,6 +13,7 @@ import COLORS from '../../common/Colors';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import { localTimeConvertion } from '../../common/utils/timeDateUtils';
 import EN_IN from '../../common/languages/en_IN';
+import AssetIconsPack from '../../assets/IconProvide';
 
 export default function WriteUpAboutTripView(props) {
     const { navigation } = props;
@@ -104,7 +105,7 @@ export default function WriteUpAboutTripView(props) {
         <View style={styles.mainContainer}>
             <View style={styles.subContainer}>
                 <Text style={styles.txtStyle}>{EN_IN.pack_your_bag}</Text>
-                <Lottie source={require('../../assets/95434-history.json')} autoPlay loop
+                <Lottie source={AssetIconsPack.icons.write_up_icon} autoPlay loop
                     style={{ height: convertHeight(170), width: convertWidth(170) }} />
                 {showTime &&
                     <>

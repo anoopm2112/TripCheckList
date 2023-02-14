@@ -6,9 +6,11 @@ import WriteUpAboutTripView from './CheckList/WriteUpAboutTripView';
 import ListParticularCheckItem from './CheckList/ListParticularCheckItem';
 
 import CheckItemHistoryView from './CheckList/CheckItemHistoryView';
-import FriendsAddView from './SplitWise/FriendsAddView';
-import SplitWiseAddView from './SplitWise/SplitWiseAddView';
-import SplitWiseListView from './SplitWise/SplitWiseListView';
+import FriendsAddView from './SplitWise/views/FriendsAddView';
+import SplitWiseAddView from './SplitWise/views/SplitWiseAddView';
+import SplitWiseListView from './SplitWise/views/SplitWiseListView';
+
+import PostList from './post/views/postList';
 
 export {
     CheckItemListView,
@@ -19,5 +21,7 @@ export {
     CheckItemHistoryView,
     FriendsAddView,
     SplitWiseAddView,
-    SplitWiseListView
+    SplitWiseListView,
+
+    PostList
 };

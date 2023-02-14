@@ -191,7 +191,7 @@ export const updateSplitWiseList = tripCheckList => new Promise((resolve, reject
             updatingCheckList.totalAmount = tripCheckList.totalAmount;
             updatingCheckList.splitWiseListItems = tripCheckList.splitWiseListItems;
             updatingCheckList.notes = tripCheckList.notes
-            resolve();
+            resolve(updatingCheckList);
         });
     }).catch((error) => reject(error));
 });

@@ -10,6 +10,7 @@ import MainItemListCardView from '../../components/MainItemListCardView';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
+import AssetIconsPack from '../../assets/IconProvide';
 
 export default function CheckItemHistoryView(props) {
 
@@ -71,7 +72,7 @@ export default function CheckItemHistoryView(props) {
                 <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
                 {checkListTrip.length === 0 ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                        <Lottie source={require('../../assets/114398-no-transaction-history.json')} autoPlay loop style={{ height: convertHeight(120) }} />
+                        <Lottie source={AssetIconsPack.icons.checklist_history_icon} autoPlay loop style={{ height: convertHeight(120) }} />
                         <Text style={styles.infoTxt}>{EN_IN.no_checklist}</Text>
                     </View>
                     :

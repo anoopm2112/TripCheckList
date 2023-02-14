@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import COLORS from '../common/Colors';
+import AssetIconsPack from '../assets/IconProvide';
 
 export default function SubItemListCardView(props) {
     const { item, index, checkItem, onModalOpenFun, renderItemAccessory } = props;
@@ -33,7 +34,7 @@ export default function SubItemListCardView(props) {
         <TouchableOpacity style={Styles.mainContainer} onPress={() => { onModalOpenFun && onModalOpenFun(item.image) }}>
 
             {!item.image ?
-                <Image style={Styles.thumbnail} source={require('../assets/clothes_three.png')} />
+                <Image style={Styles.thumbnail} source={AssetIconsPack.icons.checklist_item_no_image} />
                 :
                 <Image style={Styles.thumbnail} source={{ uri: item.image }} />
             }

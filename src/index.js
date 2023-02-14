@@ -7,6 +7,8 @@ import RootNavigation from './navigation/rootNavigation';
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider } from '@ui-kitten/components';
 import SplashScreen from 'react-native-splash-screen';
+import { store } from './redux/store';
+import { Provider } from 'react-redux';
 
 export default function App() {
 
@@ -24,12 +26,14 @@ export default function App() {
     }, [])
 
     return (
-        <ApplicationProvider {...eva} theme={eva.light}>
-            <SafeAreaProvider>
-                <NavigationContainer>
-                    <RootNavigation props={auth}/>
-                </NavigationContainer>
-            </SafeAreaProvider>
-        </ApplicationProvider>
+        <Provider store={store}>
+            <ApplicationProvider {...eva} theme={eva.light}>
+                <SafeAreaProvider>
+                    <NavigationContainer>
+                        <RootNavigation props={auth} />
+                    </NavigationContainer>
+                </SafeAreaProvider>
+            </ApplicationProvider>
+        </Provider>
     );
 }

@@ -1,21 +1,24 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { Input, Button, List } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch } from 'react-redux';
 // Custom Imports
-import { ROUTE_KEYS } from '../../navigation/constants';
-import COLORS from '../../common/Colors';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import EN_IN from '../../common/languages/en_IN';
-import { insertNewSplitWise } from '../../database/allSchemas';
-import SubItemSplitWise from '../../components/SubItemSplitWise';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import COLORS from '../../../common/Colors';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import EN_IN from '../../../common/languages/en_IN';
+import { addNewSplitwises } from '../api/SplitWiseApi';
+import SubItemSplitWise from '../../../components/SubItemSplitWise';
+import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function FriendsAddView(props) {
   const { navigation } = props;
   const textInputRef = useRef();
+  const dispatch = useDispatch();
 
   const youObj = {
     id: uuidv4(),
@@ -103,9 +106,7 @@ export default function FriendsAddView(props) {
         splitWiseListItems: splitShareArray,
         notes: []
       }
-      insertNewSplitWise(newSplitWise).then().catch((error) => {
-        alert(error);
-      });
+      dispatch(addNewSplitwises(newSplitWise));
       setLocalArrayData([]);
       navigation.navigate(ROUTE_KEYS.SPLIT_WISE_ADD, { item: newSplitWise });
     }
@@ -138,7 +139,7 @@ export default function FriendsAddView(props) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.subContainer}>
-        <Lottie source={require('../../assets/126331-add-friend.json')} autoPlay loop
+        <Lottie source={AssetIconsPack.icons.add_friends_icon} autoPlay loop
           style={{ height: convertHeight(170), width: convertWidth(170) }} />
       </View>
 

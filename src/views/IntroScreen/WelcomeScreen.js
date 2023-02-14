@@ -7,6 +7,7 @@ import { ROUTE_KEYS } from '../../navigation/constants';
 import COLORS from '../../common/Colors';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
+import AssetIconsPack from '../../assets/IconProvide';
 
 const WelcomeScreen = ({ navigation }) => {
 
@@ -47,7 +48,7 @@ const WelcomeScreen = ({ navigation }) => {
     return (
         <View style={{ flex: 1 }}>
             <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
-            <ImageBackground style={{ flex: 1 }} resizeMode={'cover'} source={require('../../assets/onboardImage.jpeg')}>
+            <ImageBackground style={{ flex: 1 }} resizeMode={'cover'} source={AssetIconsPack.icons.on_board_image}>
                 <View style={Styles.details}>
                     <Text style={Styles.txtStyle}>{EN_IN.trip}</Text>
                     <Text style={Styles.txtStyle}>{EN_IN.checkList}</Text>

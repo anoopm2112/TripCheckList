@@ -8,39 +8,42 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
 import * as Animatable from 'react-native-animatable';
+import { useDispatch, useSelector } from 'react-redux';
+import { useIsFocused } from '@react-navigation/native';
 // Custom Import
 import COLORS from '../common/Colors';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import { getAddedAmountArray } from '../common/utils/arrayObjectUtils';
 import { htmltable } from '../common/pdfView';
 import InvoiceModal from './InvoiceModal';
-import { deleteNoteList, queryGetNoteList, updateSplitWiseList } from '../database/allSchemas';
+import { deleteNoteById, fetchNotes, updateSplitwise } from '../views/SplitWise/api/SplitWiseApi';
 import NoteModal from './NoteModal';
+import { selectAllSplitwises } from '../views/SplitWise/splitwiseSlice';
+import CustomPopup from './CustomPopup';
 
 export default function MainItemSplitWiseListCard(props) {
     const { item, spliupAmount, navigationToEdit, removeParticularItem } = props;
+    const { notes, status, error } = useSelector(selectAllSplitwises);
     const refRBSheet = useRef();
     const swipeableRef = useRef(null);
+    const isFocuesd = useIsFocused();
+    const dispatch = useDispatch();
 
     const [pdfModalVisible, setPdfModalVisible] = useState(false);
     const [generateBillLocation, setGenerateBillLocation] = useState('');
+    const [alertVisible, setAlertVisible] = useState(false)
 
     // Note Modal States
     const [modalVisible, setModalVisible] = useState(false);
-    const [noteArray, setNoteArray] = useState([]);
     const [noteValue, setNoteValue] = useState('');
     const [noteType, setNoteType] = useState(false);
 
     useEffect(() => {
         const GetParticularSplitWiseNoteList = async () => {
-            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
-                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
-            }).catch((error) => {
-                setNoteArray([]);
-            });
+            dispatch(fetchNotes({ id: item.id }));
         }
         GetParticularSplitWiseNoteList(item.id);
-    }, [modalVisible]);
+    }, [isFocuesd, modalVisible, dispatch]);
 
     const styles = StyleSheet.create({
         listItemContainer: {
@@ -117,18 +120,7 @@ export default function MainItemSplitWiseListCard(props) {
     };
 
     const tryTodelete = (item) => {
-        Alert.alert(
-            "Do you want to delete this item?",
-            "Please confirm",
-            [
-                {
-                    text: "Cancel",
-                    onPress: () => console.log("Cancel Pressed"),
-                    style: "cancel"
-                },
-                { text: "OK", onPress: () => removeParticularItem(item.id) }
-            ]
-        );
+        setAlertVisible(true);
     }
 
     const createPDF = async () => {
@@ -176,9 +168,7 @@ export default function MainItemSplitWiseListCard(props) {
             notes: noteClonedArray
         }
 
-        updateSplitWiseList(newSplitWise).then().catch((error) => {
-            alert(error);
-        });
+        dispatch(updateSplitwise(newSplitWise));
         setModalVisible(false);
     }
 
@@ -215,20 +205,16 @@ export default function MainItemSplitWiseListCard(props) {
                 <ButtonComponent
                     iconname={'delete'} onPressHandler={() => tryTodelete(item)}
                     backgroundColor={COLORS.validation} name={'Delete'} scale={scale} />
+                <CustomPopup
+                    title={`Are you sure you want to remove this item with a grand total of ${item.totalAmount} rs ?`} message={'Please Confirm'}
+                    visible={alertVisible} onClose={() => setAlertVisible(false)}
+                    onConfirm={() => removeParticularItem(item.id)} />
             </View>
         );
     };
 
     const deleteNote = (id) => {
-        deleteNoteList(id).then(() => {
-            queryGetNoteList(item.id).then((SplitWiseNoteList) => {
-                setNoteArray(JSON.parse(JSON.stringify(SplitWiseNoteList)));
-            }).catch((error) => {
-                setNoteArray([]);
-            });
-        }).catch((error) => {
-            // Error Handling
-        });
+        dispatch(deleteNoteById({ id: id }));
     }
 
     return (
@@ -270,7 +256,7 @@ export default function MainItemSplitWiseListCard(props) {
                 setNoteValue={(value) => setNoteValue(value)}
                 submitFun={() => handleNotes()}
                 viewType={noteType}
-                notesItem={noteArray}
+                notesItem={notes}
                 deleteNote={(id) => deleteNote(id)}
             />
         </Swipeable>

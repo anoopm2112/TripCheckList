@@ -12,6 +12,8 @@ import MainItemListCardView from '../../components/MainItemListCardView';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
+import AssetIconsPack from '../../assets/IconProvide';
+import EmptyList from '../../components/EmptyList';
 
 export default function CheckItemListView(props) {
     const { navigation } = props;
@@ -101,11 +103,7 @@ export default function CheckItemListView(props) {
             <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
                 <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
                 {checkListTrip.length === 0 ?
-                    <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
-                        <Lottie source={require('../../assets/57997-travelers-find-location.json')} autoPlay loop
-                            style={{ height: convertHeight(120) }} />
-                        <Text style={styles.infoTxt}>{EN_IN.no_checklist}</Text>
-                    </View>
+                    <EmptyList lottieSrc={AssetIconsPack.icons.checklist_empty_icon} shownText={EN_IN.no_checklist} />
                     :
                     <List style={{ backgroundColor: COLORS.primary }} data={checkListTrip} renderItem={renderItem} />}
             </View>

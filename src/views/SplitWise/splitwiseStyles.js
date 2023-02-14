@@ -75,32 +75,3 @@ export const styles = StyleSheet.create({
         marginVertical: convertHeight(12)
     }
 });
-
-
-// OTHER FUNCTION IN SPLITWISE
-
-// Add whole data to local DB (Realm)
-// const onRealmAdding = () => {
-//     if (amount == '') {
-//         setValAmount(true)
-//     } else if (whoPaid) {
-//         setValWhoPaid(true);
-//     } else {
-//         let amountAdded = amountAdded = parseInt(item.totalAmount) + parseInt(amount);
-//         const newSplitWise = {
-//             id: item.id,
-//             creationDate: item.creationDate,
-//             type: selectedIndex == 4 ? value : displayValue,
-//             totalAmount: amountAdded,
-//             members: item.members,
-//             splitWiseListItems: localSplitWiseAddArrayData
-//         }
-
-//         updateSplitWiseList(newSplitWise).then().catch((error) => {
-//             alert(error);
-//         });
-//         setLocalArrayData([]);
-
-//         navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST);
-//     }
-// }
