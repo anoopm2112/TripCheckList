@@ -1,6 +1,5 @@
 import { View, Text, TouchableOpacity, Keyboard, LogBox } from 'react-native';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { IndexPath, Select, SelectItem, Button, List, Input } from '@ui-kitten/components';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import "react-native-get-random-values";
@@ -14,12 +13,13 @@ import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteNoteById, fetchNotes, updateSplitwise } from '../../../views/SplitWise/api/SplitWiseApi';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
-import SubItemSplitWise from '../../../components/SubItemSplitWise';
-import NoteModal from '../../../components/NoteModal';
-import { htmltable } from '../../../common/pdfView';
-import InvoiceModal from '../../../components/InvoiceModal';
+import { htmltable, onHandleCreatePdf } from '../../../common/pdfView';
 import { styles } from '../splitwiseStyles';
 import { selectAllSplitwises } from '../splitwiseSlice';
+import {
+    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input
+} from '../../../components';
+import { calculateTotalAmount } from '../../../common/utils/arrayObjectUtils';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
@@ -149,12 +149,9 @@ export default function CheckListAddView(props) {
         }
     }
 
-    const sum_values = () => {
-        var sum = 0;
-        for (var i = 0; i < localArrayData.length; i++) {
-            sum += parseInt(localArrayData[i].expense, 10);
-        }
-        setAmount(sum)
+    const sum_values = async () => {
+        const totalAmount = await calculateTotalAmount(localArrayData);
+        setAmount(totalAmount)
     }
 
     // Split Up Components
@@ -209,20 +206,10 @@ export default function CheckListAddView(props) {
 
     const createPDF = async () => {
         const resultData = await htmltable(item.splitWiseListItems);
-
-        let options = {
-            html: resultData,
-            fileName: 'test',
-            // directory: 'Documents',
-            base64: true
-        };
-
-        let file = await RNHTMLtoPDF.convert(options);
+        const file = await onHandleCreatePdf(resultData);
         setGenerateBillLocation(file.filePath);
         setPdfModalVisible(true);
     }
-
-
 
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: COLORS.primary }}>

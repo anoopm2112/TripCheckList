@@ -39,12 +39,12 @@ export const getAddedAmountArray = item => {
     // return obj2;
 }
 
-export const totalAmountFromArrayObj = item => {
-    let sum = 0;
+export const calculateTotalAmount = item => {
+    var sum = 0;
 
-    for (let i = 0; i < item.length; i += 1) {
-        sum += item[i].expense;
+    for (var i = 0; i < item.length; i++) {
+        sum += parseInt(item[i].expense, 10);
     }
 
-    return sum
+    return sum;
 }

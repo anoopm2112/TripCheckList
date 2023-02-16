@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
-import { Input, Button, List } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import "react-native-get-random-values";
@@ -12,8 +11,8 @@ import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import EN_IN from '../../../common/languages/en_IN';
 import { addNewSplitwises } from '../api/SplitWiseApi';
-import SubItemSplitWise from '../../../components/SubItemSplitWise';
 import AssetIconsPack from '../../../assets/IconProvide';
+import { SubItemSplitWise, List, Input, Button } from '../../../components';
 
 export default function FriendsAddView(props) {
   const { navigation } = props;

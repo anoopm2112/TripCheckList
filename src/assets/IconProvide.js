@@ -12,7 +12,8 @@ const AssetIconsPack = {
         'checklist_empty_icon': require('../assets/57997-travelers-find-location.json'),
         'add_friends_icon': require('../assets/126331-add-friend.json'),
         'write_up_icon': require('../assets/95434-history.json'),
-        'checklist_history_icon': require('../assets/114398-no-transaction-history.json')
+        'checklist_history_icon': require('../assets/114398-no-transaction-history.json'),
+        'no_image_icon': require('../assets/122840-image.json')
     },
 };
 

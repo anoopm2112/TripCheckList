@@ -7,7 +7,9 @@ import _ from 'lodash';
 import COLORS from '../../../common/Colors';
 import EN_IN from '../../../common/languages/en_IN';
 import AssetIconsPack from '../../../assets/IconProvide';
-import { AppLoader, CustomPopup, EmptyList, MainItemSplitWiseListCard, List } from '../../../components';
+import { 
+  AppLoader, CustomPopup, EmptyList, MainItemSplitWiseListCard, List, AnimatedText
+} from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteAllSplitWise, deleteSplitWiseById, fetchSplitwises } from '../api/SplitWiseApi';
@@ -93,7 +95,7 @@ export default function SplitWiseListView(props) {
           <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={EN_IN.no_splitWise} />
           :
           <>
-            <Text style={[styles.infoTxt, { fontSize: convertHeight(10), paddingVertical: convertHeight(7), fontWeight: 'bold' }]}>To access more actions, swipe the card in either direction.</Text>
+            <AnimatedText label={'To access more actions, swipe the card in either direction.'}/>
             <List data={splitwises} renderItem={renderItem} />
           </>
         }

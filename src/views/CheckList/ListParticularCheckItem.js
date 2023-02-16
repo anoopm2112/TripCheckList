@@ -28,7 +28,7 @@ export default function ListParticularCheckItem(props) {
 
     const renderItem = ({ item, index }) => {
         return (
-            <>
+            <View style={{ paddingRight: index === checklistItemData.length - 1 ? convertWidth(25) : 0 }}>
                 {!history ? <SubItemListCardView
                     item={item}
                     index={index}
@@ -40,7 +40,7 @@ export default function ListParticularCheckItem(props) {
                         index={index}
                         onModalOpenFun={onModalOpenFun}
                     />}
-            </>
+            </View>
         )
     };
 

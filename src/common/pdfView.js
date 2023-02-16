@@ -1,5 +1,6 @@
 import moment from "moment";
 import { getAddedAmountArray } from "./utils/arrayObjectUtils";
+import RNHTMLtoPDF from 'react-native-html-to-pdf';
 
 export const htmltable = (sourceItem) => {
     const addedAmountValue = getAddedAmountArray(sourceItem);
@@ -88,7 +89,7 @@ export const htmltable = (sourceItem) => {
         <table>${r}</table>
         <div class="watermark">
             <center>
-                <img src="file:///android_asset/images/side_logo.jpg" alt="App logo" style="width:400px">
+                <img src="file:///android_asset/images/side_logo.jpg" alt="App logo" style="width:300px">
             </center>
         </div>
         <center><h3>Total Splitwise</h3></center>
@@ -97,25 +98,13 @@ export const htmltable = (sourceItem) => {
     </html>`
 }
 
-// let r =
-//     `<tr>
-//         <th><strong>Name</strong></th>
-//         <th><strong>Expense</strong></th>
-//         <th><strong>Paid</strong></th>
-//         <th><strong>type</strong></th>
-//     </tr>`;
-
-// for (let i in sourceItem) {
-//     const sourceItemDataList = sourceItem[i].data.filter(obj => obj.type != '');
-//     for (let j in sourceItemDataList) {
-//         const sourceItemData = sourceItemDataList[j];
-//         r = r +
-//             `</tr>
-//                 <td>${sourceItemData.name}</td>
-//                 <td>${sourceItemData.expense}</td>
-//                 <td>${sourceItemData.paid}</td>
-//                 <td>${sourceItemData.type}</td>
-//             </tr>`
-//     }
-// }
+export const onHandleCreatePdf = async (resultData) => {
+        let options = {
+            html: resultData,
+            fileName: 'test',
+            base64: true
+        }; // directory: 'Documents',
+        let file = await RNHTMLtoPDF.convert(options);
+        return file;
+}
 
