@@ -14,6 +14,7 @@ import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
 import AssetIconsPack from '../../assets/IconProvide';
 import EmptyList from '../../components/EmptyList';
+import CustomPopup from '../../components/CustomPopup';
 
 export default function CheckItemListView(props) {
     const { navigation } = props;
@@ -21,6 +22,7 @@ export default function CheckItemListView(props) {
 
     // State
     const [checkListTrip, setCheckListTrip] = useState([]);
+    const [alertVisible, setAlertVisible] = useState(false)
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -87,7 +89,7 @@ export default function CheckItemListView(props) {
             position: 'absolute',
             bottom: convertHeight(30),
             left: convertWidth(20),
-            backgroundColor: COLORS.tertiary,
+            backgroundColor: COLORS.validation,
             borderRadius: 5,
         },
         infoTxt: {
@@ -113,18 +115,13 @@ export default function CheckItemListView(props) {
                 actions={FLOATING_ACTION}
                 onPressItem={name => { navigation.navigate(name) }} />
 
-            {checkListTrip.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => {
-                Alert.alert(
-                    "Do you want to delete this item?",
-                    "Please confirm",
-                    [
-                        { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                        { text: "OK", onPress: () => clearAllData() }
-                    ]
-                );
+            <CustomPopup
+                title={`Do you want to delete this item?`} message={'Please Confirm'}
+                visible={alertVisible} onClose={() => setAlertVisible(false)}
+                onConfirm={() => clearAllData()} />
 
-            }}>
-                <Text style={{ color: "white" }}>{EN_IN.remove_all_data}</Text>
+            {checkListTrip.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
+                <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{EN_IN.remove_all_data}</Text>
             </TouchableOpacity>}
         </>
     )

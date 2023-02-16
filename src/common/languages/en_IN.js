@@ -7,7 +7,7 @@ export default {
 
     // List View Main Screen
     no_checklist: 'Gather all necessary materials and supplies. Review and revise the checklist as needed to ensure accuracy and efficiency. Enjoy your journey!!!',
-    remove_all_data: 'Remove all Data',
+    remove_all_data: 'REMOVE ALL',
 
     // WriteUp Screen
     pack_your_bag: 'Hello There, Pack your bag !!!',
@@ -27,7 +27,7 @@ export default {
 
     // SpltWise Screen
     no_splitWise: 'Splitwise is a tool that helps you track expenses and debts with friends and roommates.',
-    add_split_up: 'Add Split Up',
+    add_split_up: 'ADD NEW SPLIT',
     remove_all_split_up: 'Remove All Split Up'
 
 }

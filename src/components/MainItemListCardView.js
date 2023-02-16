@@ -8,11 +8,13 @@ import COLORS from '../common/Colors';
 import { localTimeConvertion } from '../common/utils/timeDateUtils';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
+import CustomPopup from './CustomPopup';
 
 export default function MainItemListCardView(props) {
     const { item, removeParticularItem, navigationToNext, navigationToEdit, history } = props;
 
     const [randomImage, setRandomImage] = useState('');
+    const [alertVisible, setAlertVisible] = useState(false)
 
     const renderImage = () => {
         const myImages = [
@@ -30,7 +32,8 @@ export default function MainItemListCardView(props) {
 
     const Styles = StyleSheet.create({
         mainContainer: {
-            margin: convertHeight(10),
+            marginHorizontal: convertHeight(10),
+            marginVertical: convertHeight(5),
             elevation: 5,
             backgroundColor: COLORS.primary,
             borderRadius: 3
@@ -67,24 +70,18 @@ export default function MainItemListCardView(props) {
         }
     });
 
-    const deleteItem = (item) => {
-        Alert.alert(
-            `Do you want to delete item ${item.title}?`,
-            "Please confirm",
-            [
-                { text: "Cancel", onPress: () => console.log("Cancel Pressed"), style: "cancel" },
-                { text: "OK", onPress: () => removeParticularItem && removeParticularItem(item.id) }
-            ]
-        );
+    const deleteItem = () => {
+        setAlertVisible(true)
     }
 
     return (
+        <>
         <TouchableOpacity style={Styles.mainContainer} onPress={() => navigationToNext()}>
             <ImageBackground imageStyle={{ opacity: 0.2 }} source={renderImage()}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={Styles.titleTxt}>{item.title}</Text>
                     <View style={Styles.itemsContainer}>
-                        <Text style={{ color: COLORS.black, fontSize: convertHeight(8) }}>Items</Text>
+                        <Text style={{ color: COLORS.black, fontSize: convertHeight(8) }}>ITEMS</Text>
                         <Text style={{ color: COLORS.black, fontWeight: 'bold', fontSize: convertHeight(20) }}>{item.checkListItems.length}</Text>
                     </View>
                 </View>
@@ -107,5 +104,10 @@ export default function MainItemListCardView(props) {
                 }
             </ImageBackground>
         </TouchableOpacity>
+            <CustomPopup
+                title={`Do you want to delete item ${item.title}?`} message={'Please Confirm'}
+                visible={alertVisible} onClose={() => setAlertVisible(false)}
+                onConfirm={() => removeParticularItem(item.id)} />
+        </>
     )
 }
