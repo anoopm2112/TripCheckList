@@ -5,14 +5,14 @@ import PushNotification from "react-native-push-notification";
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
 // Other files
-import { dataItem } from '../../common/Itemdata';
-import { ROUTE_KEYS } from '../../navigation/constants';
-import { addNewChecklists, updateChecklist } from './api/ChecklistApi';
+import { dataItem } from '../../../common/Itemdata';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { addNewChecklists, updateChecklist } from '../api/ChecklistApi';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../components';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import EN_IN from '../../common/languages/en_IN';
-import COLORS from '../../common/Colors';
+import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../../components';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import EN_IN from '../../../common/languages/en_IN';
+import COLORS from '../../../common/Colors';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;

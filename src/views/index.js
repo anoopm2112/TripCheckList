@@ -1,11 +1,12 @@
 import WelcomeScreen from './IntroScreen/WelcomeScreen';
 
-import CheckItemListView from './CheckList/CheckItemListView';
-import CheckListAddView from './CheckList/CheckListAddView';
-import WriteUpAboutTripView from './CheckList/WriteUpAboutTripView';
-import ListParticularCheckItem from './CheckList/ListParticularCheckItem';
+import CheckItemListView from './CheckList/views/CheckItemListView';
+import CheckListAddView from './CheckList/views/CheckListAddView';
+import WriteUpAboutTripView from './CheckList/views/WriteUpAboutTripView';
+import ListParticularCheckItem from './CheckList/views/ListParticularCheckItem';
 
-import CheckItemHistoryView from './CheckList/CheckItemHistoryView';
+import CheckItemHistoryView from './CheckList/views/CheckItemHistoryView';
+
 import FriendsAddView from './SplitWise/views/FriendsAddView';
 import SplitWiseAddView from './SplitWise/views/SplitWiseAddView';
 import SplitWiseListView from './SplitWise/views/SplitWiseListView';

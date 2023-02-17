@@ -5,12 +5,12 @@ import Lottie from 'lottie-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 // Custom Imports
-import { ROUTE_KEYS } from '../../navigation/constants';
-import COLORS from '../../common/Colors';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import { localTimeConvertion } from '../../common/utils/timeDateUtils';
-import EN_IN from '../../common/languages/en_IN';
-import AssetIconsPack from '../../assets/IconProvide';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import COLORS from '../../../common/Colors';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import { localTimeConvertion } from '../../../common/utils/timeDateUtils';
+import EN_IN from '../../../common/languages/en_IN';
+import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function WriteUpAboutTripView(props) {
     const { navigation } = props;

@@ -4,13 +4,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { List } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 // Custom Imports
-import { ROUTE_KEYS } from '../../navigation/constants';
-import { queryHistoryCompletedCheckList } from '../../database/allSchemas';
-import MainItemListCardView from '../../components/MainItemListCardView';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import EN_IN from '../../common/languages/en_IN';
-import COLORS from '../../common/Colors';
-import AssetIconsPack from '../../assets/IconProvide';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { queryHistoryCompletedCheckList } from '../../../database/allSchemas';
+import MainItemListCardView from '../../../components/MainItemListCardView';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import EN_IN from '../../../common/languages/en_IN';
+import COLORS from '../../../common/Colors';
+import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function CheckItemHistoryView(props) {
 

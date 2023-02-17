@@ -4,12 +4,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useDispatch } from 'react-redux';
 // Custom Imports
-import { updateChecklist } from './api/ChecklistApi';
-import { ROUTE_KEYS } from '../../navigation/constants';
-import { SubItemListCardView, List, CheckBox, Button } from '../../components';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import EN_IN from '../../common/languages/en_IN';
-import COLORS from '../../common/Colors';
+import { updateChecklist } from '../api/ChecklistApi';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { SubItemListCardView, List, CheckBox, Button } from '../../../components';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import EN_IN from '../../../common/languages/en_IN';
+import COLORS from '../../../common/Colors';
 
 export default function ListParticularCheckItem(props) {
     const { navigation } = props;
