@@ -1,13 +1,12 @@
 import { View, StyleSheet, TouchableOpacity, Text, Modal, Image } from 'react-native';
 import React, { useState, useRef } from 'react';
-import { List, CheckBox, Button } from '@ui-kitten/components';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
+import { useDispatch } from 'react-redux';
 // Custom Imports
-import { updateCheckList } from '../../database/allSchemas';
+import { updateChecklist } from './api/ChecklistApi';
 import { ROUTE_KEYS } from '../../navigation/constants';
-import SubItemListCardView from '../../components/SubItemListCardView';
+import { SubItemListCardView, List, CheckBox, Button } from '../../components';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
@@ -17,6 +16,7 @@ export default function ListParticularCheckItem(props) {
     const { item, history } = props.route.params;
 
     const refRBSheet = useRef();
+    const dispatch = useDispatch();
 
     // State
     const [checklistItemData, setChecklistItemData] = useState(item.checkListItems);
@@ -93,10 +93,7 @@ export default function ListParticularCheckItem(props) {
                 checkListItems: checklistItemData
             }
 
-            updateCheckList(newCheckList).then(() => {
-                // Update Operation
-            }).catch((error) => {
-            });
+            dispatch(updateChecklist(newCheckList))
             navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST);
         }
     }

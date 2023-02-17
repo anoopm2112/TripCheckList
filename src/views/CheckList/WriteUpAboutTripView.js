@@ -4,9 +4,6 @@ import { Input, Button } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import moment from 'moment';
 // Custom Imports
 import { ROUTE_KEYS } from '../../navigation/constants';
 import COLORS from '../../common/Colors';

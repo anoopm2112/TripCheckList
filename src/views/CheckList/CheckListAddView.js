@@ -1,15 +1,15 @@
 import { View, Text, StyleSheet, PermissionsAndroid, TouchableOpacity } from 'react-native';
 import React, { useState, useCallback } from 'react';
-import { IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '@ui-kitten/components';
 import { launchCamera } from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
 import moment from 'moment';
+import { useDispatch } from 'react-redux';
 // Other files
 import { dataItem } from '../../common/Itemdata';
 import { ROUTE_KEYS } from '../../navigation/constants';
-import { insertNewChecList, updateCheckList } from '../../database/allSchemas';
+import { addNewChecklists, updateChecklist } from './api/ChecklistApi';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import SubItemListCardView from '../../components/SubItemListCardView';
+import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../components';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
 import COLORS from '../../common/Colors';
@@ -17,6 +17,8 @@ import COLORS from '../../common/Colors';
 export default function CheckListAddView(props) {
     const { navigation } = props;
     const { textData, ReminderTime, editMode, item } = props.route.params;
+
+    const dispatch = useDispatch();
 
     // State
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
@@ -65,10 +67,7 @@ export default function CheckListAddView(props) {
                 ReminderTime: item.ReminderTime,
                 checkListItems: localArrayData
             }
-            updateCheckList(newCheckList).then(() => {
-                // Update Operation
-            }).catch((error) => {
-            });
+            dispatch(updateChecklist(newCheckList));
         } else {
             const newCheckList = {
                 id: Math.floor(Date.now() / 1000),
@@ -78,9 +77,7 @@ export default function CheckListAddView(props) {
                 ReminderTime: ReminderTime,
                 checkListItems: localArrayData
             }
-            insertNewChecList(newCheckList).then().catch((error) => {
-                alert(error);
-            });
+            dispatch(addNewChecklists(newCheckList));
             setLocalArrayData([]);
 
             // Push Notification Scheduling

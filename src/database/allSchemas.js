@@ -119,7 +119,7 @@ export const updateCheckList = tripCheckList => new Promise((resolve, reject) =>
             updatingCheckList.title = tripCheckList.title;
             updatingCheckList.checkListItems = tripCheckList.checkListItems;
             updatingCheckList.isCompleted = tripCheckList.isCompleted;
-            resolve();
+            resolve(updatingCheckList);
         });
     }).catch((error) => reject(error));
 });
