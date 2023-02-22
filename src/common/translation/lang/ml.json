@@ -1,0 +1,39 @@
+{
+    "Dashboard": {
+        "title": "ഹലോ സ്വാഗതം!",
+        "subtitle": "ഇന്ന് നിങ്ങൾ എന്താണ് ചെയ്യാൻ ആഗ്രഹിക്കുന്നത്?",
+        "actions": {
+            "checklist": "ചെക്ക്‌ലിസ്റ്റ്",
+            "money_splitter": "മണി സ്പ്ലിറ്റർ",
+            "history": "ചരിത്രം",
+            "settings": "ക്രമീകരണങ്ങൾ"
+        }
+    },
+    "Splitwise": {
+        "add_new_split": "പുതിയ വിഭജനം ചേർക്കുക",
+        "remove_all_data": "എല്ലാം നീക്കം ചെയ്യുക",
+        "splitlist_info": "കൂടുതൽ പ്രവർത്തനങ്ങൾ ആക്സസ് ചെയ്യാൻ, കാർഡ് രണ്ട് ദിശകളിലേക്കും സ്വൈപ്പ് ചെയ്യുക",
+        "grand_total": "മൊത്തം തുക",
+        "members": "അംഗങ്ങൾ",
+        "added_notes": "കുറിപ്പുകൾ",
+        "view_split": "വിഭജനം കാണുക",
+        "add_split": "സ്പ്ലിറ്റ് ചേർക്കുക",
+        "view_notes": "കുറിപ്പുകൾ കാണുക",
+        "add_notes": "കുറിപ്പുകൾ ചേർക്കുക"
+    },
+    "History": {
+        "history": "ചരിത്രം"
+    },
+    "Settings": {
+        "setting": "ക്രമീകരണങ്ങൾ",
+        "changelanguage": "ഭാഷ മാറ്റുക"
+    },
+    "Languages": {
+        "Tamil": "தமிழ்",
+        "Malayalam": "മലയാളം",
+        "Hindi": "हिंदी"
+    },
+    "Common": {
+        "delete": "ഇല്ലാതാക്കുക"
+    }
+}

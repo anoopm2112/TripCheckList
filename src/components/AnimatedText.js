@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react';
 import { View, Animated, StyleSheet } from 'react-native';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import COLORS from '../common/Colors';
 
 export default FloatingText = (props) => {
+    const { t } = useTranslation();
     const animatedValue = new Animated.Value(0);
 
     useEffect(() => {
@@ -34,7 +36,7 @@ export default FloatingText = (props) => {
         <View style={{ alignItems: 'center' }}>
             <Animated.Text
                 style={[styles.infoText, { transform: [{ translateY }] }]}>
-                {props.label}
+                {t(props.label)}
             </Animated.Text>
         </View>
     );

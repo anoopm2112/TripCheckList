@@ -1,0 +1,24 @@
+{
+    "Dashboard": {
+        "title": "வணக்கம் வருக!",
+        "subtitle": "இன்று நீங்கள் என்ன செய்ய விரும்புகிறீர்கள்?",
+        "actions": {
+            "checklist": "சரிபார்ப்பு பட்டியல்",
+            "money_splitter": "பணம் பிரிப்பான்",
+            "history": "வரலாறு",
+            "settings": "அமைப்புகள்"
+        }
+    },
+    "History": {
+        "history": "வரலாறு"
+    },
+    "Settings": {
+        "setting": "அமைப்புகள்",
+        "changelanguage": "மொழியை மாற்றவும்"
+    },
+    "Languages": {
+        "Tamil": "தமிழ்",
+        "Malayalam": "മലയാളം",
+        "Hindi": "हिंदी"
+    }
+}

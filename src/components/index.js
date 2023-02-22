@@ -1,5 +1,5 @@
 import { 
-    List, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
+    List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 } from '@ui-kitten/components';
 
 import AppLoader from './AppLoader';
@@ -20,5 +20,5 @@ export {
     MainItemSplitWiseListCard, NoteModal, SubItemListCardView, SubItemSplitWise,
     AnimatedText, CustomFlipView, 
     // UI KITTEN COMPONENTS
-    List, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
+    List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 };

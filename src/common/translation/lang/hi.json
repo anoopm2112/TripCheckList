@@ -1,0 +1,24 @@
+{
+    "Dashboard": {
+        "title": "नमस्ते, स्वागत है!",
+        "subtitle": "आप आज क्या करना चाहते हैं?",
+        "actions": {
+            "checklist": "जांच सूची",
+            "money_splitter": "मनी स्प्लिटर",
+            "history": "इतिहास",
+            "settings": "समायोजन"
+        }
+    },
+    "History": {
+        "history": "इतिहास"
+    },
+    "Settings": {
+        "setting": "समायोजन",
+        "changelanguage": "भाषा बदलें"
+    },
+    "Languages": {
+        "Tamil": "தமிழ்",
+        "Malayalam": "മലയാളം",
+        "Hindi": "हिंदी"
+    }
+}

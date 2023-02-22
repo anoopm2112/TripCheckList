@@ -3,6 +3,7 @@ import { View, StyleSheet, TouchableOpacity, Text, StatusBar, Modal } from 'reac
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
+import { useTranslation } from "react-i18next";
 // Custom Import
 import COLORS from '../../../common/Colors';
 import EN_IN from '../../../common/languages/en_IN';
@@ -20,6 +21,7 @@ export default function SplitWiseListView(props) {
 
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const { splitwises, status, error } = useSelector(selectAllSplitwises);
 
@@ -59,7 +61,8 @@ export default function SplitWiseListView(props) {
       position: 'absolute',
       bottom: convertHeight(30),
       borderRadius: 5,
-      elevation: 4
+      elevation: 4,
+      width: convertWidth(150)
     },
     infoTxt: {
       color: COLORS.info,
@@ -92,21 +95,21 @@ export default function SplitWiseListView(props) {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
         {splitwises?.length === 0 ?
-          <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={EN_IN.no_splitWise} />
+          <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={'Splitwise:add_new_split'} />
           :
           <>
-            <AnimatedText label={'To access more actions, swipe the card in either direction.'}/>
+            <AnimatedText label={'Splitwise:splitlist_info'}/>
             <List data={splitwises} renderItem={renderItem} />
           </>
         }
       </View>
 
       <TouchableOpacity style={[styles.floatingBtn, { right: convertWidth(20), backgroundColor: COLORS.tertiary }]} onPress={() => { navigation.navigate(ROUTE_KEYS.FRIENDS_ADD) }}>
-        <Text style={{ color: "white", fontWeight: 'bold' }}>{EN_IN.add_split_up}</Text>
+        <Text style={{ color: "white", fontWeight: 'bold' }}>{t('Splitwise:add_new_split')}</Text>
       </TouchableOpacity>
       {splitwises?.length > 1 &&
         <TouchableOpacity style={[styles.floatingBtn, { left: convertWidth(20), backgroundColor: COLORS.validation }]} onPress={() => deleteAllSplitWiseItems()}>
-          <Text style={{ color: "white", fontWeight: 'bold' }}>{EN_IN.remove_all_split_up}</Text>
+          <Text style={{ color: "white", fontWeight: 'bold' }}>{t('Splitwise:remove_all_data')}</Text>
         </TouchableOpacity>
       }
       <CustomPopup

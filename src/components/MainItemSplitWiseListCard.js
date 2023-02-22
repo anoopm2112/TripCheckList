@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from 'uuid';
 import * as Animatable from 'react-native-animatable';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
 // Custom Import
 import COLORS from '../common/Colors';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
@@ -28,6 +29,7 @@ export default function MainItemSplitWiseListCard(props) {
     const swipeableRef = useRef(null);
     const isFocuesd = useIsFocused();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const [pdfModalVisible, setPdfModalVisible] = useState(false);
     const [generateBillLocation, setGenerateBillLocation] = useState('');
@@ -146,8 +148,8 @@ export default function MainItemSplitWiseListCard(props) {
             }} activeOpacity={0.6}>
                 <View style={[styles.actionBox, { backgroundColor: props.backgroundColor }]}>
                     <MaterialIcons name={props.iconname} size={convertHeight(20)} color="white" />
-                    <Animated.Text style={{ transform: [{ scale: props.scale }] }}>
-                        {props.name}
+                    <Animated.Text style={{ textAlign: 'center', transform: [{ scale: props.scale }] }}>
+                        {t(props.name)}
                     </Animated.Text>
                 </View>
             </TouchableOpacity>
@@ -178,13 +180,13 @@ export default function MainItemSplitWiseListCard(props) {
             <View style={{ flexDirection: 'row' }}>
                 <ButtonComponent
                     iconname={'remove-red-eye'} onPressHandler={() => refRBSheet.current.open()}
-                    backgroundColor={COLORS.secondary} name={'View Split'} scale={scale} />
+                    backgroundColor={COLORS.secondary} name={'Splitwise:view_split'} scale={scale} />
                 <ButtonComponent
                     iconname={'notes'} onPressHandler={() => {
                         setModalVisible(true)
                         setNoteType(false)
                     }}
-                    backgroundColor={COLORS.paleGreen} name={'View Note'} scale={scale} />
+                    backgroundColor={COLORS.paleGreen} name={'Splitwise:view_notes'} scale={scale} />
             </View>
         );
     };
@@ -195,18 +197,18 @@ export default function MainItemSplitWiseListCard(props) {
             <View style={{ flexDirection: 'row' }}>
                 <ButtonComponent
                     iconname={'add-box'} onPressHandler={() => navigationToEdit()}
-                    backgroundColor={COLORS.tertiary} name={'Add Split'} scale={scale} />
+                    backgroundColor={COLORS.tertiary} name={'Splitwise:add_split'} scale={scale} />
                 <ButtonComponent
                     iconname={'create'} onPressHandler={() => {
                         setModalVisible(true)
                         setNoteType(true)
                     }}
-                    backgroundColor={COLORS.green} name={'Add Note'} scale={scale} />
+                    backgroundColor={COLORS.green} name={'Splitwise:add_notes'} scale={scale} />
                 <ButtonComponent
                     iconname={'delete'} onPressHandler={() => tryTodelete(item)}
-                    backgroundColor={COLORS.validation} name={'Delete'} scale={scale} />
+                    backgroundColor={COLORS.validation} name={'Common:delete'} scale={scale} />
                 <CustomPopup
-                    title={`Are you sure you want to remove this item with a grand total of ${item.totalAmount} rs ?`} message={'Please Confirm'}
+                    title={`Are you sure you want to remove this item?`} message={'Please Confirm'}
                     visible={alertVisible} onClose={() => setAlertVisible(false)}
                     onConfirm={() => removeParticularItem(item.id)} />
             </View>
@@ -224,15 +226,15 @@ export default function MainItemSplitWiseListCard(props) {
                     <MaterialIcons name={'keyboard-arrow-left'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingLeft: convertWidth(5) }} />
                 </Animatable.View>
                 <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Grand Total</Text>
+                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:grand_total')}</Text>
                     <Text style={styles.label}>{item.totalAmount}</Text>
                 </View>
                 <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Members</Text>
+                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:members')}</Text>
                     <Text style={styles.label}>{item.members.length}</Text>
                 </View>
                 <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>Added Notes</Text>
+                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black, textAlign: 'center' }}>{t('Splitwise:added_notes')}</Text>
                     <Text style={styles.label}>{item.notes.length}</Text>
                 </View>
                 <Animatable.View animation="slideInRight">

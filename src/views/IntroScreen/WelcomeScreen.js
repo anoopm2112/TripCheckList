@@ -18,7 +18,7 @@ const WelcomeScreen = ({ navigation }) => {
         });
         PushNotification.cancelAllLocalNotifications();
         AsyncStorage.setItem('userAuth', JSON.stringify(true));
-        navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST);
+        navigation.navigate(ROUTE_KEYS.DASHBOARD_SCREEN);
     }
 
     const Styles = StyleSheet.create({

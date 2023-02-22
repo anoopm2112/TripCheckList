@@ -9,6 +9,7 @@ import { ApplicationProvider } from '@ui-kitten/components';
 import SplashScreen from 'react-native-splash-screen';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
+import './common/translation/LangTranslationManager'
 
 export default function App() {
 

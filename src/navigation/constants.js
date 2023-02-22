@@ -8,6 +8,8 @@ export const ROUTE_KEYS = {
     FRIENDS_ADD: 'FriendsAddView',
     SPLIT_WISE_ADD: 'SpltWiseAddView',
     SPLIT_WISE_LIST: 'SplitWiseListView',
+    DASHBOARD_SCREEN: 'DashboardScreen',
 
-    FETCH_POST: 'fetchPost'
+    FETCH_POST: 'fetchPost',
+    SETTINGS: 'SettingScreen',
 };

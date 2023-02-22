@@ -1,0 +1,36 @@
+{
+    "Dashboard": {
+        "title": "Hello Welcome!",
+        "subtitle": "What do you want to do today?",
+        "actions": {
+            "checklist": "CHECKLIST",
+            "money_splitter": "MONEY SPLITTER",
+            "history": "HISTORY",
+            "settings": "SETTINGS"
+        }
+    },
+    "Splitwise": {
+        "add_new_split": "ADD NEW SPLIT",
+        "remove_all_data": "REMOVE ALL",
+        "splitlist_info": "To access more actions, swipe the card in either direction.",
+        "grand_total": "Grand Total",
+        "members": "Members",
+        "added_notes": "Added Notes",
+        "view_split": "View Split",
+        "add_split": "Add Split",
+        "view_notes": "View Notes",
+        "add_notes": "Add Notes"
+    },
+    "History": {
+        "history": "HISTORY"
+    },
+    "Settings": {
+        "setting": "SETTINGS",
+        "changelanguage": "CHANGE LANGUAGE"
+    },
+    "Languages": {
+        "Tamil": "தமிழ்",
+        "Malayalam": "മലയാളം",
+        "Hindi": "हिंदी"
+    }
+}

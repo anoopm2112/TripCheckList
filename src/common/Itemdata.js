@@ -34,13 +34,13 @@ export const FLOATING_ACTION = [
         color: COLORS.secondary,
         position: 3
     },
-    {
-        text: "SplitWise",
-        icon: <MaterialIcons name="call-split" size={convertHeight(16)} color={COLORS.primary} />,
-        color: COLORS.secondary,
-        name: ROUTE_KEYS.SPLIT_WISE_LIST,
-        position: 2
-    },
+    // {
+    //     text: "SplitWise",
+    //     icon: <MaterialIcons name="call-split" size={convertHeight(16)} color={COLORS.primary} />,
+    //     color: COLORS.secondary,
+    //     name: ROUTE_KEYS.SPLIT_WISE_LIST,
+    //     position: 2
+    // },
     {
         text: "History",
         icon: <MaterialIcons name="history" size={convertHeight(16)} color={COLORS.primary} />,

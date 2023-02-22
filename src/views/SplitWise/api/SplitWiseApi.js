@@ -10,11 +10,7 @@ import {
 
 export const fetchSplitwises = createAsyncThunk(FETCH_SPLITWISE_LIST, async () => {
     const response = await queryAllSplitWiseList()
-    return new Promise(resolve => {
-        setTimeout(() => {
-            resolve(JSON.parse(JSON.stringify(response)));
-        }, 1500);
-    });
+    return JSON.parse(JSON.stringify(response));
 });
 
 export const addNewSplitwises = createAsyncThunk(ADD_NEW_SPLITWISE_LIST, async (newSplitWise) => {
@@ -50,4 +46,12 @@ export const deleteNoteById = createAsyncThunk(DELETE_NOTE_BY_ID, async (initial
     await deleteNoteList(id)
     return id;
 });
+
+// ----------Delay Time--------------------------
+// const response = await queryAllSplitWiseList()
+// return new Promise(resolve => {
+//     setTimeout(() => {
+//         resolve(JSON.parse(JSON.stringify(response)));
+//     }, 1500);
+// });
 
