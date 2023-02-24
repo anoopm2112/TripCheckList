@@ -7,6 +7,7 @@ import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import * as Animatable from 'react-native-animatable';
+import { useTranslation } from "react-i18next";
 
 export default function NoteModal(props) {
     const { visible, onClose, value, setNoteValue, submitFun, viewType, notesItem, deleteNote } = props;
@@ -14,6 +15,7 @@ export default function NoteModal(props) {
     const visibleItem = visible || false;
     const [showView, setShowView] = useState(visibleItem);
     const viewAnimation = useRef(null);
+    const { t } = useTranslation();
 
     useEffect(() => {
         const Animation = async () => {
@@ -103,9 +105,9 @@ export default function NoteModal(props) {
                             <Animatable.View animation={'fadeInLeftBig'} ref={viewAnimation} style={styles.modalView}>
                                 {showView &&
                                     <View>
-                                        <Text style={styles.modalText}>WRITE NOTES ABOUT YOUR TRIP..!</Text>
+                                        <Text style={styles.modalText}>{t('Splitwise:trip_writeup')}</Text>
                                         <Input
-                                            placeholder={EN_IN.input_placeholder}
+                                            placeholder={t('Splitwise:input_writeTrip')}
                                             style={{ padding: convertHeight(15) }}
                                             value={value}
                                             onChangeText={nextValue => {
@@ -115,10 +117,10 @@ export default function NoteModal(props) {
                                             textStyle={{ minHeight: convertHeight(100) }} />
                                         <View style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
                                             <TouchableOpacity style={[styles.noteSubmitBtn, { backgroundColor: COLORS.secondary }]} onPress={() => { onClose() }}>
-                                                <Text style={{ color: COLORS.primary }}>{'CANCEL'}</Text>
+                                                <Text style={{ color: COLORS.primary }}>{t('Common:cancel')}</Text>
                                             </TouchableOpacity>
                                             <TouchableOpacity style={styles.noteSubmitBtn} onPress={() => { submitFun() }}>
-                                                <Text style={{ color: COLORS.primary }}>{'SUBMIT'}</Text>
+                                                <Text style={{ color: COLORS.primary }}>{t('Common:submit')}</Text>
                                             </TouchableOpacity>
                                         </View>
                                     </View>}
@@ -129,7 +131,7 @@ export default function NoteModal(props) {
                             {notesItem.length > 0 ?
                                 <>
                                     <View style={styles.headerContainer}>
-                                        <Text style={{ textAlign: 'center', fontWeight: 'bold', color: COLORS.black }}>NOTES</Text>
+                                        <Text style={{ textAlign: 'center', fontWeight: 'bold', color: COLORS.black }}>{t('Splitwise:notes')}</Text>
                                         <TouchableOpacity onPress={() => onClose()}>
                                             <AntDesign name="closecircle" size={24} color={COLORS.black} />
                                         </TouchableOpacity>
@@ -138,7 +140,7 @@ export default function NoteModal(props) {
                                 </>
                                 :
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: COLORS.black }}>NO NOTES ADDED!</Text>
+                                    <Text style={{ textAlign: 'center', fontWeight: 'bold', color: COLORS.black }}>{t('Splitwise:no_notes')}</Text>
                                 </View>
                             }
                         </View>

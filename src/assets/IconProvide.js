@@ -2,7 +2,7 @@ const AssetIconsPack = {
     icons: {
         // Images
         'on_board_image': require('../assets/onboardImage.jpeg'),
-        'app_logo_side_image': require('../assets/side_logo.jpg'),
+        'app_logo_side_image': require('../assets/side_logo.png'),
         'checklist_item_no_image': require('../assets/clothes_three.png'),
         'checklist_clothes_image': require('../assets/clothes.png'),
         'checklist_clothes_two_image': require('../assets/clothes_two.png'),

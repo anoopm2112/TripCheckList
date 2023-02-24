@@ -1,5 +1,6 @@
 {
     "Dashboard": {
+        "app_name": "TRIP CHECKLIST",
         "title": "Hello Welcome!",
         "subtitle": "What do you want to do today?",
         "actions": {
@@ -19,18 +20,50 @@
         "view_split": "View Split",
         "add_split": "Add Split",
         "view_notes": "View Notes",
-        "add_notes": "Add Notes"
+        "add_notes": "Add Notes", 
+
+        "add_friends": "Add Friends",
+        "validation_add_friends": "Please enter a friend to add",
+
+        "generate_view_nvoice": "Generate & View Invoice",
+        "need": "Need",
+        "give_back" : "Give Back",
+        "paid_total": "paid a total of",
+        "trip_writeup": "WRITE NOTES ABOUT YOUR TRIP..",
+        "input_writeTrip": "Write something about your trip...",
+        "notes": "NOTES",
+        "no_notes": "NO NOTES ADDED!",
+        "total_amount": "Total Amount",
+        "equally_split": "Equally, Split the Amount?",
+        "total": "Total",
+        "paid_by": "PAID BY",
+        "select_person_paid": "Please select person who paid the amount",
+        "select_food_category": "Please select your food category",
+        "split_amount": "Split Amount"
+        
     },
     "History": {
         "history": "HISTORY"
     },
     "Settings": {
         "setting": "SETTINGS",
-        "changelanguage": "CHANGE LANGUAGE"
+        "changelanguage": "CHANGE LANGUAGE",
+        "theme": "THEME"
     },
     "Languages": {
         "Tamil": "தமிழ்",
         "Malayalam": "മലയാളം",
         "Hindi": "हिंदी"
+    },
+    "Common": {
+        "delete": "Delete",
+        "submit": "Submit",
+        "cancel": "Cancel",
+        "deleteItem": "Are you sure you want to remove this item?",
+        "deleteAllItem": "Do you want to delete all item?",
+        "please_confirm": "Please Confirm",
+        "yes": "Yes",
+        "no": "No",
+        "other_item": "Other Item"
     }
 }

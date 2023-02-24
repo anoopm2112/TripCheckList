@@ -2,26 +2,28 @@ import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { convertHeight } from '../common/utils/dimentionUtils';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from "react-i18next";
 
 const CustomPopup = ({ title, message, visible, onClose, onConfirm }) => {
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
+    const { t } = useTranslation();
     return (
         <Modal animationType="fade" transparent={true} visible={visible}>
             <View style={styles.container}>
                 <View style={styles.popupBox}>
-                    <Text style={styles.title}>{title}</Text>
-                    <Text style={styles.message}>{message}</Text>
+                    <Text style={styles.title}>{t(title)}</Text>
+                    <Text style={styles.message}>{t(message)}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
                         <TouchableOpacity style={[styles.closeButton, { backgroundColor: 'green' }]}
                             onPress={() => {
                                 dispatch(onConfirm)
                                 onClose()
                             }}>
-                            <Text style={styles.closeText}>Yes</Text>
+                            <Text style={styles.closeText}>{t('Common:yes')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity style={[styles.closeButton, { backgroundColor: 'red' }]}
                             onPress={onClose}>
-                            <Text style={styles.closeText}>No</Text>
+                            <Text style={styles.closeText}>{t('Common:no')}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

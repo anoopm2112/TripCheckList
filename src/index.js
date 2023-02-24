@@ -5,11 +5,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootNavigation from './navigation/rootNavigation';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider } from '@ui-kitten/components';
+import { ApplicationProvider, ThemeProvider } from '@ui-kitten/components';
 import SplashScreen from 'react-native-splash-screen';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import './common/translation/LangTranslationManager'
+import { mappingTheme } from './common/styles/theme';
 
 export default function App() {
 

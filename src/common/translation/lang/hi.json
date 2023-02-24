@@ -14,7 +14,8 @@
     },
     "Settings": {
         "setting": "समायोजन",
-        "changelanguage": "भाषा बदलें"
+        "changelanguage": "भाषा बदलें",
+        "theme": "थीम"
     },
     "Languages": {
         "Tamil": "தமிழ்",

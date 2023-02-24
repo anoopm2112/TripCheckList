@@ -19,6 +19,14 @@ export const splitWiseDataItem = [
     'Other'
 ];
 
+export const splitWiseDataItemMal = [
+    'നിങ്ങളുടെ ഭക്ഷണ വിഭാഗം തിരഞ്ഞെടുക്കുക',
+    'ബ്രേക്ക് ഫാസ്റ്റ്',
+    'ഉച്ചഭക്ഷണം',
+    'അത്താഴം',
+    'മറ്റുള്ളവ'
+];
+
 export const FLOATING_ACTION = [
     // {
     //     text: "Post",

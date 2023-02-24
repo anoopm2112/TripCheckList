@@ -110,12 +110,12 @@ export default function MainItemSplitWiseListCard(props) {
 
         return (
             <TouchableOpacity activeOpacity={10} style={styles.subItemContainer}>
-                <Text style={styles.bottomScroll}>{item.name} paid a total of</Text>
+                <Text style={styles.bottomScroll}>{item.name} {t('Splitwise:paid_total')}</Text>
                 <Text style={[styles.bottomScroll, { color: COLORS.black, fontSize: convertHeight(15) }]}>{item.paid} RS</Text>
                 <Text style={{
                     fontSize: convertHeight(12), fontWeight: 'bold', padding: convertHeight(3),
                     color: Math.sign(balance) == 1 ? '#3CE911' : Math.sign(balance) == 0 ? COLORS.tertiary : COLORS.validation
-                }}>{`${Math.sign(balance) == 1 ? 'Need' : 'Give Back'}`}</Text>
+                }}>{`${Math.sign(balance) == 1 ? t('Splitwise:need') : t('Splitwise:give_back')}`}</Text>
                 <Text style={[styles.bottomScroll, { color: Math.sign(balance) == 1 ? '#3CE911' : Math.sign(balance) == 0 ? COLORS.tertiary : COLORS.validation, fontSize: convertHeight(18) }]}>{`${Math.abs(balance.toFixed())} rs`}</Text>
             </TouchableOpacity>
         )
@@ -208,7 +208,7 @@ export default function MainItemSplitWiseListCard(props) {
                     iconname={'delete'} onPressHandler={() => tryTodelete(item)}
                     backgroundColor={COLORS.validation} name={'Common:delete'} scale={scale} />
                 <CustomPopup
-                    title={`Are you sure you want to remove this item?`} message={'Please Confirm'}
+                    title={'Common:deleteItem'} message={'Common:please_confirm'}
                     visible={alertVisible} onClose={() => setAlertVisible(false)}
                     onConfirm={() => removeParticularItem(item.id)} />
             </View>
@@ -244,7 +244,7 @@ export default function MainItemSplitWiseListCard(props) {
             <RBSheet height={convertHeight(220)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
                 customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>
                 <List horizontal data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
-                <Button disabled={item?.splitWiseListItems.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>Generate & View Invoice</Button>
+                <Button disabled={item?.splitWiseListItems.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>{t('Splitwise:generate_view_nvoice')}</Button>
             </RBSheet>
             <InvoiceModal
                 pdfModalVisible={pdfModalVisible}

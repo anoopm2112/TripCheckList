@@ -7,8 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
+import { useTranslation } from "react-i18next";
 // Other files
-import { splitWiseDataItem } from '../../../common/Itemdata';
+import { splitWiseDataItem, splitWiseDataItemMal } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteNoteById, fetchNotes, updateSplitwise } from '../../../views/SplitWise/api/SplitWiseApi';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -27,6 +28,7 @@ export default function CheckListAddView(props) {
     const { notes, status, error } = useSelector(selectAllSplitwises);
     const isFocuesd = useIsFocused();
     const dispatch = useDispatch();
+    const { t, i18n } = useTranslation();
 
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
     const [localArrayData, setLocalArrayData] = useState(item.members ? JSON.parse(JSON.stringify(item.members)) : []);
@@ -95,7 +97,10 @@ export default function CheckListAddView(props) {
         <SelectItem title={title} />
     );
 
-    const displayValue = splitWiseDataItem[selectedIndex.row];
+    const displayValue = i18n.language === 'en' ? 
+        splitWiseDataItem[selectedIndex.row]
+        :
+        splitWiseDataItemMal[selectedIndex.row]
 
     // PaidBy handle Functions
     onSubmitCheckList = async (name, index) => {
@@ -164,7 +169,7 @@ export default function CheckListAddView(props) {
             <Input
                 style={{ flex: 1.5, borderColor: COLORS.secondary }}
                 key={index}
-                placeholder={'Split Amount'}
+                placeholder={t('Splitwise:split_amount')}
                 value={localArrayData[index].expense}
                 keyboardType='number-pad'
                 onChangeText={val => {
@@ -223,19 +228,21 @@ export default function CheckListAddView(props) {
                         setSelectedIndex(index)
                         setValSelectFoodType('')
                     }}>
-                    {splitWiseDataItem.map(renderOption)}
+                    {i18n.language === 'en' ?
+                        splitWiseDataItem.map(renderOption) : splitWiseDataItemMal.map(renderOption)
+                    }
                 </Select>
-                {selectedIndex == 4 && <View style={{ paddingTop: convertHeight(5) }}>
-                    <Input placeholder='Other Item' value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false) }} />
+                {selectedIndex == 5 && <View style={{ paddingTop: convertHeight(5) }}>
+                    <Input placeholder={t('Common:other_item')} value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false) }} />
                 </View>}
-                {valSelectFoodType && <Animatable.Text animation={'fadeInLeft'} style={styles.errortxt}>{'Please select your food category'}</Animatable.Text>}
+                {valSelectFoodType && <Animatable.Text animation={'fadeInLeft'} style={styles.errortxt}>{t('Splitwise:select_food_category')}</Animatable.Text>}
 
                 <View>
                     <View style={styles.paidByYou}>
-                        <Text style={{ color: COLORS.black }}>Equally, Split the Amount?</Text>
+                        <Text style={{ color: COLORS.black }}>{t('Splitwise:equally_split')}</Text>
                         <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
                             onPress={() => { setShowEquallySplit(!showEquallySplit) }}>
-                            <Text style={{ color: COLORS.primary }}>{showEquallySplit ? 'Yes' : 'No'}</Text>
+                            <Text style={{ color: COLORS.primary }}>{showEquallySplit ? t('Common:yes') : t('Common:no')}</Text>
                         </TouchableOpacity>
                     </View>
                     <Animatable.View ref={viewAnimation} animation={'fadeInLeft'}>
@@ -246,13 +253,13 @@ export default function CheckListAddView(props) {
                 </View>
 
                 <View style={styles.txtInputContainer}>
-                    <Text style={[styles.txtNameContainer, { fontWeight: 'bold' }]}>TOTAL</Text>
+                    <Text style={[styles.txtNameContainer, { fontWeight: 'bold' }]}>{t('Splitwise:total')}</Text>
                     <Text style={{ color: COLORS.black, paddingHorizontal: convertWidth(5), flex: 0.2 }}>:</Text>
                     <View style={{ flex: 1.5, borderColor: COLORS.tertiary }}>
                         <Input
                             style={{ flex: 1.5, borderColor: COLORS.tertiary }}
                             value={amount ? amount.toString() : ''}
-                            placeholder={'Total Amount'}
+                            placeholder={t('Splitwise:total_amount')}
                             keyboardType='number-pad'
                             onChangeText={nextValue => {
                                 setAmount(nextValue)
@@ -265,9 +272,9 @@ export default function CheckListAddView(props) {
                 </View>
 
                 <View>
-                    <Text style={styles.paidByTitle}>PAID BY</Text>
+                    <Text style={styles.paidByTitle}>{t('Splitwise:paid_by')}</Text>
                     <List style={{ backgroundColor: COLORS.primary }} numColumns={2} data={localArrayData} renderItem={renderItem} />
-                    {valWhoPaid && <Text style={styles.errortxt}>{'Please select person who paid the amount'}</Text>}
+                    {valWhoPaid && <Text style={styles.errortxt}>{t('Splitwise:select_person_paid')}</Text>}
                 </View>
 
                 {!isKeyboardVisible &&
@@ -276,7 +283,7 @@ export default function CheckListAddView(props) {
                             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                                 <TouchableOpacity style={[styles.addNoteBtn, { width: convertWidth(190), backgroundColor: COLORS.tertiary }]}
                                     onPress={() => { createPDF() }}>
-                                    <Text style={{ color: COLORS.primary }}>{'Generate & View Invoice'}</Text>
+                                    <Text style={{ color: COLORS.primary }}>{t('Splitwise:generate_view_nvoice')}</Text>
                                 </TouchableOpacity>
                             </View>
                         }
@@ -284,13 +291,13 @@ export default function CheckListAddView(props) {
                         <View style={{ flexDirection: 'row', justifyContent: item?.notes?.length > 0 ? 'space-between' : 'center' }}>
                             <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.tertiary }]}
                                 onPress={() => { setViewType(true), setModalVisible(true) }}>
-                                <Text style={{ color: COLORS.primary }}>{'Add Notes'}</Text>
+                                <Text style={{ color: COLORS.primary }}>{t('Splitwise:add_notes')}</Text>
                             </TouchableOpacity>
 
                             {item?.notes?.length > 0 &&
                                 <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.secondary }]}
                                     onPress={() => { setViewType(false), setModalVisible(true) }}>
-                                    <Text style={{ color: COLORS.primary }}>{'VIEW NOTES'}</Text>
+                                    <Text style={{ color: COLORS.primary }}>{t('Splitwise:view_notes')}</Text>
                                 </TouchableOpacity>
                             }
                         </View>

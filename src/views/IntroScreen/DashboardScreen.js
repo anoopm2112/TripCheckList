@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, StyleSheet, Platform, View, Image, StatusBar, I
 import Lottie from 'lottie-react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 // Custom Icons
 import AssetIconsPack from '../../assets/IconProvide';
 import Colors from '../../common/Colors';
@@ -14,6 +15,10 @@ export default function DashboardScreen(props) {
     const isFocused = useIsFocused();
     const { t } = useTranslation();
     const [lottieAnimation, setLottieAnimation] = useState(true);
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+
+    const backgroundColor = isDarkMode ? Colors.black : Colors.primary;
+    const textColor = isDarkMode ? Colors.primary : Colors.black;
 
     useEffect(() => {
         if (isFocused) {
@@ -23,7 +28,7 @@ export default function DashboardScreen(props) {
 
     const styles = StyleSheet.create({
         button: {
-            backgroundColor: Colors.primary, padding: 20, height: 160, width: 160,
+            backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary, padding: 20, height: 160, width: 160,
             justifyContent: 'center', alignItems: 'center',
             ...Platform.select({
                 ios: {
@@ -31,7 +36,7 @@ export default function DashboardScreen(props) {
                     shadowOpacity: 0.5, shadowRadius: 5,
                 },
                 android: {
-                    elevation: 5, shadowColor: Colors.secondary, shadowOffset: { width: 0, height: 2 },
+                    elevation: 5, shadowColor: textColor, shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.2, shadowRadius: 2,
                 },
             }),
@@ -45,8 +50,8 @@ export default function DashboardScreen(props) {
         },
         topCard: {
             width: '100%',
-            height: '50%',
-            backgroundColor: Colors.secondary,
+            height: '40%',
+            backgroundColor: isDarkMode ? '#000' : Colors.tertiary,
             position: 'absolute'
         },
         topCardSubContainer: {
@@ -70,18 +75,19 @@ export default function DashboardScreen(props) {
         return (
             <TouchableOpacity activeOpacity={0.9} style={[styles.button]} onPress={props.onPress}>
                 <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={{ height: convertHeight(70) }} />
-                <Text style={[styles.textLabel, { color: Colors.black }]}>{props.cardName}</Text>
+                <Text style={[styles.textLabel, { color: isDarkMode ? Colors.primary : Colors.black }]}>{props.cardName}</Text>
             </TouchableOpacity>
         )
     }
 
     return (
-        <View>
-            <StatusBar backgroundColor={Colors.secondary} barStyle='light-content' />
+        <View style={{ backgroundColor: isDarkMode ? '#2c2c2e' : '#e5e5e5', flex: 1 }}>
+            <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.tertiary} barStyle='light-content' />
             <View style={styles.topCard}>
-                <ImageBackground imageStyle={{ opacity: 0.1, height: '100%' }} source={AssetIconsPack.icons.checklist_clothes_image}>
+                <ImageBackground imageStyle={{ opacity: 0.1, height: '100%' }} 
+                    source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
-                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(20) }} />
+                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(20), backgroundColor: backgroundColor }} />
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(18), fontSize: convertHeight(16) }]}>{t('Dashboard:title')}</Text>
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text>
                 </View>

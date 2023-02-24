@@ -113,7 +113,7 @@ export default function SplitWiseListView(props) {
         </TouchableOpacity>
       }
       <CustomPopup
-        title={'Do you want to delete all item?'} message={'Please Confirm'}
+        title={'Common:deleteAllItem'} message={'Common:please_confirm'}
         visible={alertVisible} onClose={() => setAlertVisible(false)}
         onConfirm={() => removeAllItem()} />
     </>

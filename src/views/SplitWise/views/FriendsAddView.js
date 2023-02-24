@@ -5,6 +5,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
@@ -18,6 +19,7 @@ export default function FriendsAddView(props) {
   const { navigation } = props;
   const textInputRef = useRef();
   const dispatch = useDispatch();
+  const { t } = useTranslation();
 
   const youObj = {
     id: uuidv4(),
@@ -145,7 +147,7 @@ export default function FriendsAddView(props) {
       <View style={styles.addFrendsContainer}>
         <Input
           ref={textInputRef}
-          placeholder={'Add Friends'}
+          placeholder={t('Splitwise:add_friends')}
           textStyle={{ height: convertHeight(35) }}
           onChangeText={nextValue => {
             setValue(nextValue);
@@ -155,11 +157,11 @@ export default function FriendsAddView(props) {
             <AntDesign name="plussquare" size={convertHeight(20)} color={COLORS.tertiary} />
           </TouchableOpacity>} />
       </View>
-      {valTextInput && <Text style={styles.errortxt}>{'Please enter a friend to add'}</Text>}
+      {valTextInput && <Text style={styles.errortxt}>{t('Splitwise:validation_add_friends')}</Text>}
 
       <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(10), backgroundColor: COLORS.primary }} />
 
-      {!isKeyboardVisible && <Button onPress={() => { onSubmitAddFriends() }} style={styles.submitBtn}>{EN_IN.submit}</Button>}
+      {!isKeyboardVisible && <Button onPress={() => { onSubmitAddFriends() }} style={styles.submitBtn}>{t('Common:submit')}</Button>}
     </View>
   )
 }
