@@ -3,11 +3,11 @@ import { View, StyleSheet, TouchableOpacity, Text, StatusBar, Modal } from 'reac
 import { useIsFocused } from '@react-navigation/native';
 import { FloatingAction } from "react-native-floating-action";
 import { useDispatch, useSelector } from 'react-redux';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { FLOATING_ACTION } from '../../../common/Itemdata';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import COLORS from '../../../common/Colors';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { deleteAllChecklist, deleteChecklistById, fetchChecklists } from '../api/ChecklistApi';
@@ -18,6 +18,7 @@ export default function CheckItemListView(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const { checklists, status, error } = useSelector(selectAllChecklists);
 
@@ -96,7 +97,7 @@ export default function CheckItemListView(props) {
             <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
                 <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
                 {checklists.length === 0 ?
-                    <EmptyList lottieSrc={AssetIconsPack.icons.checklist_empty_icon} shownText={EN_IN.no_checklist} />
+                    <EmptyList lottieSrc={AssetIconsPack.icons.checklist_empty_icon} shownText={'checklist:info'} />
                     :
                     <List style={{ backgroundColor: COLORS.primary }} data={checklists} renderItem={renderItem} />}
             </View>
@@ -107,12 +108,12 @@ export default function CheckItemListView(props) {
                 onPressItem={name => { navigation.navigate(name) }} />
 
             <CustomPopup
-                title={`Do you want to delete this item?`} message={'Please Confirm'}
+                title={'Common:deleteAllItem'} message={'Common:please_confirm'}
                 visible={alertVisible} onClose={() => setAlertVisible(false)}
                 onConfirm={() => removeAllItem()} />
 
             {checklists.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
-                <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{EN_IN.remove_all_data}</Text>
+                <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{t('Splitwise:remove_all_data')}</Text>
             </TouchableOpacity>}
         </>
     )

@@ -10,7 +10,6 @@ import { useTranslation } from "react-i18next";
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import { addNewSplitwises } from '../api/SplitWiseApi';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { SubItemSplitWise, List, Input, Button } from '../../../components';

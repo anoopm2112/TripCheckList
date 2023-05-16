@@ -84,7 +84,7 @@ export default function DashboardScreen(props) {
         <View style={{ backgroundColor: isDarkMode ? '#2c2c2e' : '#e5e5e5', flex: 1 }}>
             <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.tertiary} barStyle='light-content' />
             <View style={styles.topCard}>
-                <ImageBackground imageStyle={{ opacity: 0.1, height: '100%' }} 
+                <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }} 
                     source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
                     <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(20), backgroundColor: backgroundColor }} />

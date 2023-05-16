@@ -4,16 +4,17 @@ import { Input, Button } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { localTimeConvertion } from '../../../common/utils/timeDateUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function WriteUpAboutTripView(props) {
     const { navigation } = props;
+    const { t } = useTranslation();
 
     // Input State
     const [value, setValue] = useState('');
@@ -101,7 +102,7 @@ export default function WriteUpAboutTripView(props) {
     return (
         <View style={styles.mainContainer}>
             <View style={styles.subContainer}>
-                <Text style={styles.txtStyle}>{EN_IN.pack_your_bag}</Text>
+                <Text style={styles.txtStyle}>{t('checklist:pack_your_bag')}</Text>
                 <Lottie source={AssetIconsPack.icons.write_up_icon} autoPlay loop
                     style={{ height: convertHeight(170), width: convertWidth(170) }} />
                 {showTime &&
@@ -114,7 +115,7 @@ export default function WriteUpAboutTripView(props) {
 
             <View style={{ flex: 1, paddingHorizontal: convertWidth(18), justifyContent: 'center' }}>
                 <Input
-                    placeholder={EN_IN.input_placeholder}
+                    placeholder={t('checklist:input_placeholder')}
                     value={value}
                     onChangeText={nextValue => {
                         setValue(nextValue)
@@ -128,12 +129,12 @@ export default function WriteUpAboutTripView(props) {
                         </TouchableOpacity>
                     }
                 />
-                {valTextInput && <Text style={styles.errortxt}>{EN_IN.input_val}</Text>}
-                {valDateTime && <Text style={styles.errortxt}>{EN_IN.return_val}</Text>}
+                {valTextInput && <Text style={styles.errortxt}>{t('checklist:input_val')}</Text>}
+                {valDateTime && <Text style={styles.errortxt}>{t('checklist:return_val')}</Text>}
 
                 <Button onPress={() => { onWriteUpSubmit() }} style={[styles.reminderBtn, {
                     backgroundColor: COLORS.secondary, borderColor: COLORS.secondary
-                }]}>{EN_IN.submit}</Button>
+                }]}>{t('Common:submit')}</Button>
 
                 {show && (
                     <DateTimePicker

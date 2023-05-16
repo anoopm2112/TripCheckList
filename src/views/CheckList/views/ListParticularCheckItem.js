@@ -3,12 +3,12 @@ import React, { useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useDispatch } from 'react-redux';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { updateChecklist } from '../api/ChecklistApi';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { SubItemListCardView, List, CheckBox, Button } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import COLORS from '../../../common/Colors';
 
 export default function ListParticularCheckItem(props) {
@@ -17,6 +17,7 @@ export default function ListParticularCheckItem(props) {
 
     const refRBSheet = useRef();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     // State
     const [checklistItemData, setChecklistItemData] = useState(item.checkListItems);
@@ -126,7 +127,7 @@ export default function ListParticularCheckItem(props) {
         <>
             <View style={{ flex: 1, margin: convertHeight(8) }}>
                 <List numColumns={2} data={checklistItemData} renderItem={renderItem} />
-                {!history && <Button style={{ margin: convertHeight(10) }} onPress={() => onFinalSubmit()}>{EN_IN.submit}</Button>}
+                {!history && <Button style={{ margin: convertHeight(10) }} onPress={() => onFinalSubmit()}>{t('Common:submit')}</Button>}
             </View>
 
             <Modal
@@ -153,7 +154,7 @@ export default function ListParticularCheckItem(props) {
 
                 {checklistItemData.filter(x => x.checked === false).length > 0 &&
                     <View style={styles.drawerItemContainer}>
-                        <Text style={styles.drawerItemTxt}>{checklistItemData.filter(x => x.checked === false).length} {EN_IN.item_missing}</Text>
+                        <Text style={styles.drawerItemTxt}>{checklistItemData.filter(x => x.checked === false).length} {t('checklist:item_missing')}</Text>
                         <CheckBox
                             style={{ paddingLeft: convertWidth(10) }}
                             checked={check} onChange={() => setCheck(!check)}>
@@ -165,7 +166,7 @@ export default function ListParticularCheckItem(props) {
                     onPress={() => {
                         setBottomDrawer(false);
                         refRBSheet.current.close()
-                    }}>{EN_IN.close}</Button>
+                    }}>{t('Common:close')}</Button>
             </RBSheet>
         </>
     )

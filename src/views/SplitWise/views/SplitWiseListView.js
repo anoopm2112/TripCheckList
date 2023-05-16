@@ -6,7 +6,6 @@ import _ from 'lodash';
 import { useTranslation } from "react-i18next";
 // Custom Import
 import COLORS from '../../../common/Colors';
-import EN_IN from '../../../common/languages/en_IN';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { 
   AppLoader, CustomPopup, EmptyList, MainItemSplitWiseListCard, List, AnimatedText

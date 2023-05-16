@@ -4,6 +4,7 @@ import { launchCamera } from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
 import moment from 'moment';
 import { useDispatch } from 'react-redux';
+import { useTranslation } from "react-i18next";
 // Other files
 import { dataItem } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -11,7 +12,6 @@ import { addNewChecklists, updateChecklist } from '../api/ChecklistApi';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import COLORS from '../../../common/Colors';
 
 export default function CheckListAddView(props) {
@@ -19,6 +19,7 @@ export default function CheckListAddView(props) {
     const { textData, ReminderTime, editMode, item } = props.route.params;
 
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     // State
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
@@ -145,7 +146,7 @@ export default function CheckListAddView(props) {
             onPress={() => {
                 setToolTipVisible(false)
                 onSubmitCheckList()
-            }}>Add Item To List</Button>
+            }}>{t('checklist:add_item_to_list')}</Button>
     );
 
     const styles = StyleSheet.create({
@@ -162,7 +163,8 @@ export default function CheckListAddView(props) {
         addTask: {
             backgroundColor: 'green',
             borderColor: 'green',
-            width: '48%'
+            width: '48%',
+            height: '80%'
         }
     });
 
@@ -200,15 +202,15 @@ export default function CheckListAddView(props) {
                         appearance='outline'
                         onPress={() => setCounter(counter + 1)}>
                     </Button>
-                    <Button appearance='outline' onPress={() => setCounter(0)}>{EN_IN.reset}</Button>
+                    <Button appearance='outline' onPress={() => setCounter(0)}>{t('Common:reset')}</Button>
                 </View>
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Button
                         accessoryRight={<MaterialIcons name="photo-camera" size={convertHeight(16)} color={COLORS.primary} />}
-                        style={{ backgroundColor: 'orange', borderColor: 'orange', width: '48%' }}
+                        style={{ backgroundColor: 'orange', borderColor: 'orange', width: '48%', height: '80%' }}
                         onPress={() => openCamera()}>
-                        {EN_IN.take_picture}
+                        {t('checklist:take_picture')}
                     </Button>
                     {/* <Button accessoryRight={<MaterialIcons name="add-task" size={22} color="white" />} style={{ backgroundColor: 'green', borderColor: 'green', width: '48%' }} onPress={() => onSubmitCheckList()}>Add Item To List</Button> */}
                     <Tooltip
@@ -216,13 +218,13 @@ export default function CheckListAddView(props) {
                         visible={toolTipVisible}
                         placement={'top'}
                         onBackdropPress={() => setToolTipVisible(false)}>
-                        {EN_IN.add_item_to_list}
+                        {t('checklist:add_item_to_list')}
                     </Tooltip>
                 </View>
             </View>
             <List numColumns={2} data={localArrayData} renderItem={renderItem} />
 
-            <Button disabled={localArrayData.length === 0} style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary }} onPress={() => onRealmAdding()}>{EN_IN.submit}</Button>
+            <Button disabled={localArrayData.length === 0} style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary }} onPress={() => onRealmAdding()}>{t('Common:submit')}</Button>
         </View>
     )
 }

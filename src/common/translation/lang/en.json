@@ -40,7 +40,6 @@
         "select_person_paid": "Please select person who paid the amount",
         "select_food_category": "Please select your food category",
         "split_amount": "Split Amount"
-        
     },
     "History": {
         "history": "HISTORY"
@@ -64,6 +63,26 @@
         "please_confirm": "Please Confirm",
         "yes": "Yes",
         "no": "No",
-        "other_item": "Other Item"
+        "other_item": "Other Item",
+        "add_checklist": "Add Checklist",
+        "history": "History",
+        "close": "Close",
+        "reset": "Reset",
+        "remove_all_data": "REMOVE ALL",
+        "items": "ITEMS"
+    },
+    "checklist": {
+        "info": "Gather all necessary materials and supplies. Review and revise the checklist as needed to ensure accuracy and efficiency. Enjoy your journey!!!",
+        "pack_your_bag": "Hello There, Pack your bag !!!",
+        "input_val": "Please enter something about your trip.",
+        "return_val": "Please set reminder for your return.",
+        "input_placeholder": "Write something about your trip...",
+        "item_missing": "Item Missing, To continue with missing item, Please click on check box",
+        "take_picture": "Take Item Picture",
+        "add_item_to_list": "Please add item to your list",
+        "header": {
+            "Add_Checklist": "ADD CHECKLIST",
+            "Add_Checklist_Items": "ADD CHECKLIST ITEMS"
+        }
     }
 }

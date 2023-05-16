@@ -3,12 +3,12 @@ import { View, StyleSheet, Text, StatusBar } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { List } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { queryHistoryCompletedCheckList } from '../../../database/allSchemas';
 import MainItemListCardView from '../../../components/MainItemListCardView';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import EN_IN from '../../../common/languages/en_IN';
 import COLORS from '../../../common/Colors';
 import AssetIconsPack from '../../../assets/IconProvide';
 
@@ -16,6 +16,7 @@ export default function CheckItemHistoryView(props) {
 
     const { navigation } = props;
     const isFocused = useIsFocused();
+    const { t } = useTranslation();
 
     // State
     const [checkListTrip, setCheckListTrip] = useState([]);
@@ -73,7 +74,7 @@ export default function CheckItemHistoryView(props) {
                 {checkListTrip.length === 0 ?
                     <View style={{ justifyContent: 'center', alignItems: 'center', flex: 1 }}>
                         <Lottie source={AssetIconsPack.icons.checklist_history_icon} autoPlay loop style={{ height: convertHeight(120) }} />
-                        <Text style={styles.infoTxt}>{EN_IN.no_checklist}</Text>
+                        <Text style={styles.infoTxt}>{t('checklist:info')}</Text>
                     </View>
                     :
                     <List style={{ backgroundColor: COLORS.primary }} data={checkListTrip} renderItem={renderItem} />}

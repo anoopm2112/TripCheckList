@@ -3,6 +3,7 @@ import Octicons from 'react-native-vector-icons/Octicons';
 import { ROUTE_KEYS } from '../navigation/constants';
 import COLORS from '../common/Colors';
 import { convertHeight } from '../common/utils/dimentionUtils';
+import i18n from 'i18next';
 
 export const dataItem = [
     'Shirt',
@@ -36,7 +37,7 @@ export const FLOATING_ACTION = [
     //     position: 4
     // },
     {
-        text: "Add Checklist",
+        text: i18n.t("Common:add_checklist"),
         icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,
         name: ROUTE_KEYS.WRITEUP_ABOUT_TRIP,
         color: COLORS.secondary,
@@ -50,7 +51,7 @@ export const FLOATING_ACTION = [
     //     position: 2
     // },
     {
-        text: "History",
+        text: i18n.t("Common:history"),
         icon: <MaterialIcons name="history" size={convertHeight(16)} color={COLORS.primary} />,
         color: COLORS.secondary,
         name: ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST,

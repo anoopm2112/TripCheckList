@@ -32,8 +32,8 @@ export default function rootNavigation(props) {
       <Screen options={{ headerShown: false }} name={ROUTE_KEYS.WELCOME_SCREEN} component={WelcomeScreen} />
       <Screen options={{ headerShown: false }} name={ROUTE_KEYS.DASHBOARD_SCREEN} component={DashboardScreen} />
       <Screen options={{ title: t('Dashboard:app_name'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_LIST} component={CheckItemListView} />
-      <Screen options={{ title: 'ADD CHECKLIST ITEMS', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_ADD} component={CheckListAddView} />
-      <Screen options={{ title: 'ADD CHECKLIST', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.WRITEUP_ABOUT_TRIP} component={WriteUpAboutTripView} />
+      <Screen options={{ title: t('checklist:header:Add_Checklist_Items'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_ADD} component={CheckListAddView} />
+      <Screen options={{ title: t('checklist:header:Add_Checklist'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.WRITEUP_ABOUT_TRIP} component={WriteUpAboutTripView} />
       <Screen options={{ title: t('Dashboard:app_name'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.LIST_PARTICULAR_CHECK_ITEM} component={ListParticularCheckItem} />
       <Screen options={{ title: t('History:history'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST} component={CheckItemHistoryView} />
       <Screen options={{ title: t('Splitwise:add_friends'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.FRIENDS_ADD} component={FriendsAddView} />

@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Alert } from
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { useTranslation } from "react-i18next";
 // Custom Imports
 import COLORS from '../common/Colors';
 import { localTimeConvertion } from '../common/utils/timeDateUtils';
@@ -14,7 +15,8 @@ export default function MainItemListCardView(props) {
     const { item, removeParticularItem, navigationToNext, navigationToEdit, history } = props;
 
     const [randomImage, setRandomImage] = useState('');
-    const [alertVisible, setAlertVisible] = useState(false)
+    const [alertVisible, setAlertVisible] = useState(false);
+    const { t } = useTranslation();
 
     const renderImage = () => {
         const myImages = [
@@ -81,7 +83,7 @@ export default function MainItemListCardView(props) {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={Styles.titleTxt}>{item.title}</Text>
                     <View style={Styles.itemsContainer}>
-                        <Text style={{ color: COLORS.black, fontSize: convertHeight(8) }}>ITEMS</Text>
+                        <Text style={{ color: COLORS.black, fontSize: convertHeight(8) }}>{t('Common:items')}</Text>
                         <Text style={{ color: COLORS.black, fontWeight: 'bold', fontSize: convertHeight(20) }}>{item.checkListItems.length}</Text>
                     </View>
                 </View>
@@ -105,7 +107,7 @@ export default function MainItemListCardView(props) {
             </ImageBackground>
         </TouchableOpacity>
             <CustomPopup
-                title={`Do you want to delete item ${item.title}?`} message={'Please Confirm'}
+                title={'Common:deleteItem'} message={'Common:please_confirm'}
                 visible={alertVisible} onClose={() => setAlertVisible(false)}
                 onConfirm={() => removeParticularItem(item.id)} />
         </>

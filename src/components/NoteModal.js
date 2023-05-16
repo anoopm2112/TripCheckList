@@ -1,7 +1,6 @@
 import { View, Text, Modal, StyleSheet, TouchableOpacity } from 'react-native'
 import React, { useState, useRef, useEffect } from 'react'
 import { Input, List } from '@ui-kitten/components';
-import EN_IN from '../common/languages/en_IN';
 import COLORS from '../common/Colors';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import Ionicons from 'react-native-vector-icons/Ionicons';
