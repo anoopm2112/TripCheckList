@@ -7,7 +7,8 @@
             "checklist": "CHECKLIST",
             "money_splitter": "MONEY SPLITTER",
             "history": "HISTORY",
-            "settings": "SETTINGS"
+            "settings": "SETTINGS",
+            "tourist_places": "TOURIST PLACES"
         }
     },
     "Splitwise": {
@@ -84,5 +85,31 @@
             "Add_Checklist": "ADD CHECKLIST",
             "Add_Checklist_Items": "ADD CHECKLIST ITEMS"
         }
+    },
+    "Touristplace": {
+        "district": "DISTRICT",
+        "state": "STATE",
+        "district_info": "To view information on any district, please click on it.",
+        "kerala": "KERALA"
+    },
+    "Districts": {
+        "Kasaragod": "Kasaragod",
+        "Kannur": "Kannur",
+        "Kozhikode": "Kozhikode",
+        "Wayanad": "Wayanad",
+        "Malappuram": "Malappuram",
+        "Palakkad": "Palakkad",
+        "Thrissur": "Thrissur",
+        "Ernakulam": "Ernakulam",
+        "Idukki": "Idukki",
+        "Kottayam": "Kottayam",
+        "Alappuzha": "Alappuzha",
+        "Pathanamthitta": "Pathanamthitta",
+        "Kollam": "Kollam",
+        "Thiruvananthapuram": "Thiruvananthapuram"
+    },
+    "PaidBy": {
+        "payer": "Choose the payer...",
+        "paidBy": "Paid By!"
     }
 }

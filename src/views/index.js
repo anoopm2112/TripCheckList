@@ -15,6 +15,9 @@ import SplitWiseListView from './SplitWise/views/SplitWiseListView';
 import PostList from './post/views/postList';
 
 import SettingsView from './Settings/views/SettingsView';
+import TouristPlaceList from './TouristPlaces/views/TouristPlaceList';
+import TouristDistrict from './TouristPlaces/views/TouristDistrict';
+import TouristStateList from './TouristPlaces/views/TouristStateList';
 
 export {
     CheckItemListView,
@@ -29,5 +32,8 @@ export {
     DashboardScreen,
 
     PostList,
-    SettingsView
+    SettingsView,
+    TouristPlaceList,
+    TouristDistrict,
+    TouristStateList
 };

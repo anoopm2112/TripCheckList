@@ -73,5 +73,29 @@ export const styles = StyleSheet.create({
         backgroundColor: COLORS.tertiary,
         borderColor: COLORS.tertiary,
         marginVertical: convertHeight(12)
+    },
+    buttonRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: 10,
+        marginTop: 20,
+    },
+    button: {
+        borderRadius: 50,
+        width: 70,
+        height: 70,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    buttonText: {
+        color: 'white',
+        fontSize: 12,
+        fontWeight: 'bold',
+        marginTop: 5,
+    },
+    animated_container: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        flex: 1,
     }
 });

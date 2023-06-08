@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Keyboard, LogBox } from 'react-native';
+import { View, Text, TouchableOpacity, Keyboard, LogBox, Animated, Image } from 'react-native';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -8,8 +8,10 @@ import RNHTMLtoPDF from 'react-native-html-to-pdf';
 import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 // Other files
-import { splitWiseDataItem, splitWiseDataItemMal } from '../../../common/Itemdata';
+import { splitWiseDataItem, splitWiseDataItemMal, splitWiseDataItemTamil, splitWiseDataItemHindi } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteNoteById, fetchNotes, updateSplitwise } from '../../../views/SplitWise/api/SplitWiseApi';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -18,11 +20,14 @@ import { htmltable, onHandleCreatePdf } from '../../../common/pdfView';
 import { styles } from '../splitwiseStyles';
 import { selectAllSplitwises } from '../splitwiseSlice';
 import {
-    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input
+    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal
 } from '../../../components';
 import { calculateTotalAmount } from '../../../common/utils/arrayObjectUtils';
+import Colors from '../../../common/Colors';
+import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function CheckListAddView(props) {
+    const [animation] = useState(new Animated.Value(1));
     const { navigation } = props;
     const { item } = props.route.params;
     const { notes, status, error } = useSelector(selectAllSplitwises);
@@ -46,6 +51,7 @@ export default function CheckListAddView(props) {
     const [showEquallySplit, setShowEquallySplit] = useState(false);
 
     const [modalVisible, setModalVisible] = useState(false);
+    const [paidByModalVisible, setPaidByModalVisible] = useState(false);
     const [noteValue, setNoteValue] = useState('');
     const [viewType, setViewType] = useState(false);
 
@@ -56,9 +62,9 @@ export default function CheckListAddView(props) {
     const forceUpdate = useCallback(() => updateState({}), []);
 
     useEffect(() => {
-        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
-        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true) });
-        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false) });
+        LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+        const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true); });
+        const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => { setKeyboardVisible(false); });
 
         return () => {
             keyboardDidHideListener.remove();
@@ -69,7 +75,7 @@ export default function CheckListAddView(props) {
     useEffect(() => {
         const GetParticularSplitWiseNoteList = async () => {
             dispatch(fetchNotes({ id: item.id }));
-        }
+        };
         GetParticularSplitWiseNoteList(item.id);
     }, [isFocuesd, modalVisible, dispatch]);
 
@@ -86,9 +92,9 @@ export default function CheckListAddView(props) {
             } else {
                 if (viewAnimation.current)
                     await viewAnimation.current.fadeOutRight(1000);
-                setShowView(false)
+                setShowView(false);
             }
-        }
+        };
         Animation();
     }, [visibleItem, viewAnimation]);
 
@@ -97,18 +103,18 @@ export default function CheckListAddView(props) {
         <SelectItem title={title} />
     );
 
-    const displayValue = i18n.language === 'en' ? 
-        splitWiseDataItem[selectedIndex.row]
-        :
-        splitWiseDataItemMal[selectedIndex.row]
+    const displayValue =
+        i18n.language === 'en' ? splitWiseDataItem[selectedIndex.row] :
+            i18n.language === 'ml' ? splitWiseDataItemMal[selectedIndex.row] :
+                i18n.language === 'hi' ? splitWiseDataItemHindi[selectedIndex.row] : splitWiseDataItemTamil[selectedIndex.row];
 
     // PaidBy handle Functions
     onSubmitCheckList = async (name, index) => {
         setWhoPaid(false);
         if (amount == '') {
-            setValAmount(true)
+            setValAmount(true);
         } else if (displayValue === 'Select your food category') {
-            setValSelectFoodType(true)
+            setValSelectFoodType(true);
         } else {
             // Add paid rate to array
             let newArr1;
@@ -118,9 +124,9 @@ export default function CheckListAddView(props) {
                     if (localArrayData[i].name == name) {
                         localArrayData[i].paid = parseInt(amount);
                     }
-                    localArrayData[i].expense = parseInt(splitAmount)
+                    localArrayData[i].expense = parseInt(splitAmount);
                     localArrayData[i].id = uuidv4() + i;
-                    localArrayData[i].type = selectedIndex == 4 ? value : displayValue
+                    localArrayData[i].type = selectedIndex == 4 ? value : displayValue;
                 }
                 newArr1 = localArrayData;
             } else {
@@ -145,19 +151,19 @@ export default function CheckListAddView(props) {
                 members: item.members,
                 splitWiseListItems: localSplitWiseAddArrayData.concat(splitShareArray),
                 notes: item.notes
-            }
+            };
 
             dispatch(updateSplitwise(newSplitWise));
             setLocalArrayData([]);
 
             navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST);
         }
-    }
+    };
 
     const sum_values = async () => {
         const totalAmount = await calculateTotalAmount(localArrayData);
-        setAmount(totalAmount)
-    }
+        setAmount(totalAmount);
+    };
 
     // Split Up Components
     const renderItem = ({ item, index }) => (<SubItemSplitWise item={item} index={index} onSubmitCheckList={onSubmitCheckList} />);
@@ -174,12 +180,12 @@ export default function CheckListAddView(props) {
                 keyboardType='number-pad'
                 onChangeText={val => {
                     let newArray = [...localArrayData];
-                    newArray[index].id = uuidv4()
-                    newArray[index].expense = parseInt(val)
-                    newArray[index].type = selectedIndex == 4 ? value : displayValue
+                    newArray[index].id = uuidv4();
+                    newArray[index].expense = parseInt(val);
+                    newArray[index].type = selectedIndex == 4 ? value : displayValue;
                     setLocalArrayData(newArray);
-                    sum_values()
-                    setValAmount(false)
+                    sum_values();
+                    setValAmount(false);
                 }}
             />
         </View>
@@ -187,12 +193,12 @@ export default function CheckListAddView(props) {
 
     const deleteNote = (id) => {
         dispatch(deleteNoteById({ id: id }));
-    }
+    };
 
     const handleNotes = () => {
         setNoteValue('');
-        let noteClonedArray = JSON.parse(JSON.stringify(item.notes))
-        let noteData = { id: uuidv4(), note: noteValue, creationDate: new Date() }
+        let noteClonedArray = JSON.parse(JSON.stringify(item.notes));
+        let noteData = { id: uuidv4(), note: noteValue, creationDate: new Date() };
         noteClonedArray.push(noteData);
         const newSplitWise = {
             id: item.id,
@@ -201,20 +207,20 @@ export default function CheckListAddView(props) {
             members: item.members,
             splitWiseListItems: item.splitWiseListItems,
             notes: noteClonedArray
-        }
+        };
 
         dispatch(updateSplitwise(newSplitWise));
 
         forceUpdate();
         setModalVisible(false);
-    }
+    };
 
     const createPDF = async () => {
         const resultData = await htmltable(item.splitWiseListItems);
         const file = await onHandleCreatePdf(resultData);
         setGenerateBillLocation(file.filePath);
         setPdfModalVisible(true);
-    }
+    };
 
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: COLORS.primary }}>
@@ -225,15 +231,18 @@ export default function CheckListAddView(props) {
                     value={displayValue}
                     selectedIndex={selectedIndex}
                     onSelect={index => {
-                        setSelectedIndex(index)
-                        setValSelectFoodType('')
+                        setSelectedIndex(index);
+                        setValSelectFoodType('');
                     }}>
-                    {i18n.language === 'en' ?
-                        splitWiseDataItem.map(renderOption) : splitWiseDataItemMal.map(renderOption)
+                    {
+                        // i18n.language === 'en' ? splitWiseDataItem.map(renderOption) : splitWiseDataItemMal.map(renderOption)
+                        i18n.language === 'en' ? splitWiseDataItem.map(renderOption) :
+                            i18n.language === 'ml' ? splitWiseDataItemMal.map(renderOption) :
+                                i18n.language === 'hi' ? splitWiseDataItemHindi.map(renderOption) : splitWiseDataItemTamil.map(renderOption)
                     }
                 </Select>
                 {selectedIndex == 5 && <View style={{ paddingTop: convertHeight(5) }}>
-                    <Input placeholder={t('Common:other_item')} value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false) }} />
+                    <Input placeholder={t('Common:other_item')} value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false); }} />
                 </View>}
                 {valSelectFoodType && <Animatable.Text animation={'fadeInLeft'} style={styles.errortxt}>{t('Splitwise:select_food_category')}</Animatable.Text>}
 
@@ -241,13 +250,13 @@ export default function CheckListAddView(props) {
                     <View style={styles.paidByYou}>
                         <Text style={{ color: COLORS.black }}>{t('Splitwise:equally_split')}</Text>
                         <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
-                            onPress={() => { setShowEquallySplit(!showEquallySplit) }}>
+                            onPress={() => { setShowEquallySplit(!showEquallySplit); }}>
                             <Text style={{ color: COLORS.primary }}>{showEquallySplit ? t('Common:yes') : t('Common:no')}</Text>
                         </TouchableOpacity>
                     </View>
                     <Animatable.View ref={viewAnimation} animation={'fadeInLeft'}>
                         {showView &&
-                            localArrayData?.map((item, index) => { return renderItemNotEquallySplit({item, index}) })
+                            localArrayData?.map((item, index) => { return renderItemNotEquallySplit({ item, index }); })
                         }
                     </Animatable.View>
                 </View>
@@ -262,8 +271,8 @@ export default function CheckListAddView(props) {
                             placeholder={t('Splitwise:total_amount')}
                             keyboardType='number-pad'
                             onChangeText={nextValue => {
-                                setAmount(nextValue)
-                                setValAmount(false)
+                                setAmount(nextValue);
+                                setValAmount(false);
                                 setWhoPaid(true);
                             }}
                         />
@@ -271,37 +280,41 @@ export default function CheckListAddView(props) {
                     </View>
                 </View>
 
-                <View>
-                    <Text style={styles.paidByTitle}>{t('Splitwise:paid_by')}</Text>
-                    <List style={{ backgroundColor: COLORS.primary }} numColumns={2} data={localArrayData} renderItem={renderItem} />
-                    {valWhoPaid && <Text style={styles.errortxt}>{t('Splitwise:select_person_paid')}</Text>}
-                </View>
-
-                {!isKeyboardVisible &&
-                    <>
-                        {item.splitWiseListItems.length > 1 &&
-                            <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                                <TouchableOpacity style={[styles.addNoteBtn, { width: convertWidth(190), backgroundColor: COLORS.tertiary }]}
-                                    onPress={() => { createPDF() }}>
-                                    <Text style={{ color: COLORS.primary }}>{t('Splitwise:generate_view_nvoice')}</Text>
-                                </TouchableOpacity>
-                            </View>
+                <View style={styles.buttonRow}>
+                    <TouchableOpacity onPress={() => {
+                        if (displayValue === 'Select your food category') {
+                            setValSelectFoodType(true);
+                        } else {
+                            setPaidByModalVisible(true);
                         }
+                    }} style={[styles.button, { backgroundColor: '#65a9d7' }]}>
+                        <Image source={AssetIconsPack.icons.payment_icon} style={styles.button} />
+                    </TouchableOpacity>
 
-                        <View style={{ flexDirection: 'row', justifyContent: item?.notes?.length > 0 ? 'space-between' : 'center' }}>
-                            <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.tertiary }]}
-                                onPress={() => { setViewType(true), setModalVisible(true) }}>
-                                <Text style={{ color: COLORS.primary }}>{t('Splitwise:add_notes')}</Text>
-                            </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => { setViewType(true), setModalVisible(true); }}
+                        style={[styles.button, { backgroundColor: '#fba16f' }]}>
+                        <Image source={AssetIconsPack.icons.notepad_icon} style={styles.button} />
+                    </TouchableOpacity>
 
-                            {item?.notes?.length > 0 &&
-                                <TouchableOpacity style={[styles.addNoteBtn, { backgroundColor: COLORS.secondary }]}
-                                    onPress={() => { setViewType(false), setModalVisible(true) }}>
-                                    <Text style={{ color: COLORS.primary }}>{t('Splitwise:view_notes')}</Text>
-                                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (item?.notes?.length > 0) {
+                                setViewType(false), setModalVisible(true);
                             }
-                        </View>
-                    </>}
+                        }} style={[styles.button, { backgroundColor: '#b933fe' }]}>
+                        <Image source={AssetIconsPack.icons.notebook_icon} style={styles.button} />
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        onPress={() => {
+                            if (item.splitWiseListItems.length > 1) {
+                                createPDF();
+                            }
+                        }} style={[styles.button, { backgroundColor: '#fe5c7d' }]}>
+                        <Image source={AssetIconsPack.icons.report_icon} style={styles.button} />
+                    </TouchableOpacity>
+                </View>
 
                 <NoteModal
                     visible={modalVisible}
@@ -314,6 +327,13 @@ export default function CheckListAddView(props) {
                     deleteNote={(id) => deleteNote(id)}
                 />
 
+                <PaidByModal
+                    visible={paidByModalVisible}
+                    onClose={() => setPaidByModalVisible(false)}
+                    value={localArrayData}
+                    onSubmitCheckList={(name, index) => onSubmitCheckList(name, index)}
+                />
+
                 <InvoiceModal
                     pdfModalVisible={pdfModalVisible}
                     onClose={() => setPdfModalVisible(false)}
@@ -321,5 +341,5 @@ export default function CheckListAddView(props) {
                 />
             </View>
         </KeyboardAwareScrollView>
-    )
+    );
 }

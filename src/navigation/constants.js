@@ -12,4 +12,7 @@ export const ROUTE_KEYS = {
 
     FETCH_POST: 'fetchPost',
     SETTINGS: 'SettingScreen',
+    TOURIST_PLACE: 'TouristPlaceScreen',
+    TOURIST_DISTRICT: 'TouristDistrictScreen',
+    TOURIST_STATES: 'TouristStateScreen',
 };

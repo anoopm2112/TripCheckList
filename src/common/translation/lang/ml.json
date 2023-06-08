@@ -7,7 +7,8 @@
             "checklist": "ചെക്ക്‌ലിസ്റ്റ്",
             "money_splitter": "മണി സ്പ്ലിറ്റർ",
             "history": "ചരിത്രം",
-            "settings": "ക്രമീകരണങ്ങൾ"
+            "settings": "ക്രമീകരണങ്ങൾ",
+            "tourist_places": "ടൂറിസ്റ്റ് സ്ഥലങ്ങൾ"
         }
     },
     "Splitwise": {
@@ -84,5 +85,31 @@
             "Add_Checklist": "ചെക്ക്‌ലിസ്റ്റ് ചേർക്കുക",
             "Add_Checklist_Items": "ചെക്ക്‌ലിസ്റ്റ് ഇനങ്ങൾ ചേർക്കുക"
         }
+    },
+    "Touristplace": {
+        "district": "ജില്ല",
+        "state": "സംസ്ഥാനം",
+        "district_info": "ഏത് ജില്ലയിലെയും വിവരങ്ങൾ കാണുന്നതിന്, ദയവായി അതിൽ ക്ലിക്ക് ചെയ്യുക.",
+        "kerala": "കേരളം"
+    },
+    "Districts": {
+        "Kasaragod": "കാസർഗോഡ്",
+        "Kannur": "കണ്ണൂർ",
+        "Kozhikode": "കോഴിക്കോട്",
+        "Wayanad": "വയനാട്",
+        "Malappuram": "മലപ്പുറം",
+        "Palakkad": "പാലക്കാട്",
+        "Thrissur": "തൃശ്ശൂർ",
+        "Ernakulam": "എറണാകുളം",
+        "Idukki": "ഇടുക്കി",
+        "Kottayam": "കോട്ടയം",
+        "Alappuzha": "ആലപ്പുഴ",
+        "Pathanamthitta": "പത്തനംതിട്ട",
+        "Kollam": "കൊല്ലം",
+        "Thiruvananthapuram": "തിരുവനന്തപുരം"
+    },
+    "PaidBy": {
+        "payer": "പണം നൽകുന്നയാളെ തിരഞ്ഞെടുക്കുക...",
+        "paidBy": "പണം നൽകിയത്!"
     }
 }

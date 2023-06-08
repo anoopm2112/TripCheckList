@@ -14,11 +14,12 @@ import SubItemListCardView from './SubItemListCardView';
 import SubItemSplitWise from './SubItemSplitWise';
 import AnimatedText from './AnimatedText';
 import CustomFlipView from './CustomFlipView';
+import PaidByModal from './PaidByModal';
 
 export {
     AppLoader, CustomPopup, EmptyList, Header, InvoiceModal, MainItemListCardView,
     MainItemSplitWiseListCard, NoteModal, SubItemListCardView, SubItemSplitWise,
-    AnimatedText, CustomFlipView, 
+    AnimatedText, CustomFlipView, PaidByModal,
     // UI KITTEN COMPONENTS
     List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 };

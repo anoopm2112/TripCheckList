@@ -7,7 +7,8 @@
             "checklist": "சரிபார்ப்பு பட்டியல்",
             "money_splitter": "பணம் பிரிப்பான்",
             "history": "வரலாறு",
-            "settings": "அமைப்புகள்"
+            "settings": "அமைப்புகள்",
+            "tourist_places": "சுற்றுலா இடங்கள்"
         }
     },
     "Splitwise": {
@@ -84,5 +85,31 @@
             "Add_Checklist": "சரிபார்ப்புப் பட்டியலைச் சேர்க்கவும்",
             "Add_Checklist_Items": "சரிபார்ப்புப் பட்டியல் உருப்படிகளைச் சேர்க்கவும்"
         }
+    },
+    "Touristplace": {
+        "district": "மாவட்டம்",
+        "state": "நிலை",
+        "district_info": "எந்த மாவட்டத்தைப் பற்றிய தகவலைப் பார்க்க, அதைக் கிளிக் செய்யவும்.",
+        "kerala": "கேரளா"
+    },
+    "Districts": {
+        "Kasaragod": "காசரகோட்",
+        "Kannur": "கண்ணூர்",
+        "Kozhikode": "கோழிக்கோடு",
+        "Wayanad": "வயநாட்",
+        "Malappuram": "மலப்புறம்",
+        "Palakkad": "பாலக்காடு",
+        "Thrissur": "திரிசூர்",
+        "Ernakulam": "எர்ணாகுளம்",
+        "Idukki": "இடுக்கி",
+        "Kottayam": "கோட்டயம்",
+        "Alappuzha": "ஆலப்புழா",
+        "Pathanamthitta": "பத்தநம்திட்டா",
+        "Kollam": "கொல்லம்",
+        "Thiruvananthapuram": "திருவனந்தபுரம்"
+    },
+    "PaidBy": {
+        "payer": "பணம் செலுத்துபவரைத் தேர்வுசெய்க...",
+        "paidBy": "செலுத்தப்பட்டது!"
     }
 }

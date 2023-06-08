@@ -12,6 +12,27 @@ export const dataItem = [
     'Other'
 ];
 
+export const dataItemML = [
+    'ഷർട്ട്',
+    'പാന്റ്',
+    'ട്രൗസർ',
+    'മറ്റുള്ളവ'
+];
+
+export const dataItemHI = [
+    'शर्ट',
+    'पंत',
+    'पतलून',
+    'अन्य'
+];
+
+export const dataItemTA = [
+    'சட்டை',
+    'பேன்ட்',
+    'ட்ரவுசர்',
+    'மற்றவை'
+];
+
 export const splitWiseDataItem = [
     'Select your food category',
     'Break Fast',
@@ -26,6 +47,22 @@ export const splitWiseDataItemMal = [
     'ഉച്ചഭക്ഷണം',
     'അത്താഴം',
     'മറ്റുള്ളവ'
+];
+
+export const splitWiseDataItemTamil = [
+    'உங்கள் உணவு வகையைத் தேர்ந்தெடுங்கள்',
+    'பிரேக் ஃபாஸ்ட்',
+    'மதிய உணவு',
+    'இரவு உணவு',
+    'மற்றவை'
+];
+
+export const splitWiseDataItemHindi = [
+    'अपनी भोजन श्रेणी चुनें',
+    'नाश्ता',
+    'दिन का खाना',
+    'रात का खाना',
+    'अन्य'
 ];
 
 export const FLOATING_ACTION = [

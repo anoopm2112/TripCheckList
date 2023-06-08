@@ -7,7 +7,8 @@
             "checklist": "चेकलिस्ट",
             "money_splitter": "मनी स्प्लिटर",
             "history": "इतिहास",
-            "settings": "सेटिंग्स"
+            "settings": "सेटिंग्स",
+            "tourist_places": "पर्यटक स्थल"
         }
     },
     "Splitwise": {
@@ -84,5 +85,31 @@
             "Add_Checklist": "चेकलिस्ट जोड़ें",
             "Add_Checklist_Items": "चेकलिस्ट आइटम जोड़ें"
         }
+    },
+    "Touristplace": {
+        "district": "ज़िला",
+        "state": "राज्य",
+        "district_info": "किसी भी जिले की जानकारी देखने के लिए कृपया उस पर क्लिक करें।",
+        "kerala": "केरल"
+    },
+    "Districts": {
+        "Kasaragod": "कासारगोड",
+        "Kannur": "कन्नूर",
+        "Kozhikode": "कोझिकोड",
+        "Wayanad": "वायनाड",
+        "Malappuram": "मलप्पुरम",
+        "Palakkad": "पलक्कड",
+        "Thrissur": "त्रिशूर",
+        "Ernakulam": "एर्नाकुलम",
+        "Idukki": "इडुक्की",
+        "Kottayam": "कोट्टायम",
+        "Alappuzha": "अलप्पुजा",
+        "Pathanamthitta": "पाठानमथिट्टा",
+        "Kollam": "कोल्लम",
+        "Thiruvananthapuram": "तिरुवनंतपुरम"
+    },
+    "PaidBy": {
+        "payer": "भुगतानकर्ता चुनें...",
+        "paidBy": "द्वारा भुगतान!"
     }
 }

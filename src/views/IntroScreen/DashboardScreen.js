@@ -60,7 +60,7 @@ export default function DashboardScreen(props) {
             marginTop: convertHeight(30)
         },
         subSection: {
-            marginTop: convertHeight(200),
+            marginTop: convertHeight(180),
             marginHorizontal: convertWidth(20),
             flexDirection: 'row',
             justifyContent: 'space-between'
@@ -87,7 +87,7 @@ export default function DashboardScreen(props) {
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }} 
                     source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
-                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(20), backgroundColor: backgroundColor }} />
+                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: backgroundColor }} />
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(18), fontSize: convertHeight(16) }]}>{t('Dashboard:title')}</Text>
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text>
                 </View>
@@ -102,6 +102,10 @@ export default function DashboardScreen(props) {
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon}
                     cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon}
+                    cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
+            </View>
+            <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon}
                     cardName={t('Dashboard:actions:settings')} onPress={() => navigation.navigate(ROUTE_KEYS.SETTINGS)} />
             </View>

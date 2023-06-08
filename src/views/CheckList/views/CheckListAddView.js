@@ -6,7 +6,7 @@ import moment from 'moment';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
 // Other files
-import { dataItem } from '../../../common/Itemdata';
+import { dataItem, dataItemML, dataItemHI, dataItemTA } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { addNewChecklists, updateChecklist } from '../api/ChecklistApi';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
@@ -19,7 +19,7 @@ export default function CheckListAddView(props) {
     const { textData, ReminderTime, editMode, item } = props.route.params;
 
     const dispatch = useDispatch();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     // State
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
@@ -38,7 +38,11 @@ export default function CheckListAddView(props) {
         <SelectItem title={title} />
     );
 
-    const displayValue = dataItem[selectedIndex.row];
+    const displayValue =
+        // dataItem[selectedIndex.row];
+        i18n.language === 'en' ? dataItem[selectedIndex.row] :
+            i18n.language === 'ml' ? dataItemML[selectedIndex.row] :
+                i18n.language === 'hi' ? dataItemHI[selectedIndex.row] : dataItemTA[selectedIndex.row];
 
     onSubmitCheckList = async () => {
         let checkListObj = {
@@ -47,13 +51,13 @@ export default function CheckListAddView(props) {
             counter: counter,
             image: itemImage,
             checked: false
-        }
+        };
         localArrayData.push(checkListObj);
         setLocalArrayData(localArrayData);
         setCounter(1);
         forceUpdate();
         setItemImage('');
-    }
+    };
 
     const onRealmAdding = () => {
         // Realm Adding
@@ -67,7 +71,7 @@ export default function CheckListAddView(props) {
                 isCompleted: false,
                 ReminderTime: item.ReminderTime,
                 checkListItems: localArrayData
-            }
+            };
             dispatch(updateChecklist(newCheckList));
         } else {
             const newCheckList = {
@@ -77,7 +81,7 @@ export default function CheckListAddView(props) {
                 isCompleted: false,
                 ReminderTime: ReminderTime,
                 checkListItems: localArrayData
-            }
+            };
             dispatch(addNewChecklists(newCheckList));
             setLocalArrayData([]);
 
@@ -92,7 +96,7 @@ export default function CheckListAddView(props) {
         }
 
         navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST);
-    }
+    };
 
     const renderItemAccessory = (id) => (
         <TouchableOpacity style={{ paddingRight: 5 }} onPress={() => deleteItem(id)}>
@@ -102,10 +106,10 @@ export default function CheckListAddView(props) {
 
     const deleteItem = (id) => {
         let delArray = localArrayData.filter(function (e) {
-            return e.id !== id
+            return e.id !== id;
         });
         setLocalArrayData(delArray);
-    }
+    };
 
     const renderItem = ({ item, index }) => {
         return (
@@ -116,13 +120,13 @@ export default function CheckListAddView(props) {
                     renderItemAccessory={renderItemAccessory}
                 />
             </View>
-        )
+        );
     };
 
     let options = {
         // saveToPhotos: true,
         mediaType: 'photo'
-    }
+    };
 
     const openCamera = async () => {
         const granted = await PermissionsAndroid.request(
@@ -139,13 +143,13 @@ export default function CheckListAddView(props) {
         if (counter > 1) {
             setCounter(counter - 1);
         }
-    }
+    };
 
     const renderToggleButton = () => (
         <Button accessoryRight={<MaterialIcons name="add-task" size={convertHeight(16)} color={COLORS.primary} />} style={styles.addTask}
             onPress={() => {
-                setToolTipVisible(false)
-                onSubmitCheckList()
+                setToolTipVisible(false);
+                onSubmitCheckList();
             }}>{t('checklist:add_item_to_list')}</Button>
     );
 
@@ -177,7 +181,12 @@ export default function CheckListAddView(props) {
                     value={displayValue}
                     selectedIndex={selectedIndex}
                     onSelect={index => setSelectedIndex(index)}>
-                    {dataItem.map(renderOption)}
+                    {/* {dataItem.map(renderOption)} */}
+                    {
+                        i18n.language === 'en' ? dataItem.map(renderOption) :
+                            i18n.language === 'ml' ? dataItemML.map(renderOption) :
+                                i18n.language === 'hi' ? dataItemHI.map(renderOption) : dataItemTA.map(renderOption)
+                    }
                 </Select>
 
                 {selectedIndex == 4 && <View style={{ margin: 2 }}>
@@ -185,7 +194,7 @@ export default function CheckListAddView(props) {
                         placeholder='Other Item'
                         value={value}
                         onChangeText={nextValue => {
-                            setValue(nextValue)
+                            setValue(nextValue);
                             setValTextInput(false);
                         }} />
                 </View>}
@@ -226,5 +235,5 @@ export default function CheckListAddView(props) {
 
             <Button disabled={localArrayData.length === 0} style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary }} onPress={() => onRealmAdding()}>{t('Common:submit')}</Button>
         </View>
-    )
+    );
 }
