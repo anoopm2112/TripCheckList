@@ -15,4 +15,5 @@ export const ROUTE_KEYS = {
     TOURIST_PLACE: 'TouristPlaceScreen',
     TOURIST_DISTRICT: 'TouristDistrictScreen',
     TOURIST_STATES: 'TouristStateScreen',
+    TOURIST_LOCATION: 'TouristLocationScreen',
 };

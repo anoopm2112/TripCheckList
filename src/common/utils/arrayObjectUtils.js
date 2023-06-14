@@ -13,9 +13,9 @@ export const getAddedAmountArray = item => {
     for (let i = 0; i < transformed.length; i++) {
         var objj = {};
         objj.name = transformed[i].name;
-        objj.totalAmount = transformed[i].paid - transformed[i].expense
-        objj.paid = transformed[i].paid
-        arr.push(objj)
+        objj.totalAmount = transformed[i].paid - transformed[i].expense;
+        objj.paid = transformed[i].paid;
+        arr.push(objj);
     }
 
     return arr;
@@ -37,7 +37,7 @@ export const getAddedAmountArray = item => {
     // }
 
     // return obj2;
-}
+};
 
 export const calculateTotalAmount = item => {
     var sum = 0;
@@ -47,4 +47,27 @@ export const calculateTotalAmount = item => {
     }
 
     return sum;
-}
+};
+
+export const getDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371; // Radius of the Earth in kilometers
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distance in kilometers
+    return Math.round(distance);
+};
+
+
+export const calculateTravelTime = (distance) => {
+    const travelTime = distance / 60; // Time in hours
+    const hours = Math.floor(travelTime); // Extract the whole number part (hours)
+    const minutes = Math.round((travelTime - hours) * 60); // Calculate the minutes
+    return { hours, minutes };
+};

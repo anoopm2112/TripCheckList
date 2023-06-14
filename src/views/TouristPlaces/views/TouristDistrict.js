@@ -1,11 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Linking } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { Transition, Transitioning } from 'react-native-reanimated';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { RESULTS } from 'react-native-permissions';
+import Geolocation from 'react-native-geolocation-service';
 // Custom Imports
 import TouristPlaces from '../../../common/data/TouristPlaces.json';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import Colors from '../../../common/Colors';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { locationPermissionCheck, locationPermissionRequest } from '../../../common/utils/permissionUtils';
+import LocationAlertModal from '../../../components/LocationAlertModal';
 
 const transition = (
     <Transition.Together>
@@ -16,32 +22,81 @@ const transition = (
 );
 
 export default function TouristDistrict(props) {
+    const { navigation } = props;
     const { districtName } = props.route.params;
 
     const [currentIndex, setCurrentIndex] = useState(null);
+    const [userLocation, setUserLocation] = useState(undefined);
+    const [accessLocation, setAccessLocation] = useState(true);
+    const [permissionStatus, setPermissionStatus] = useState('');
+    const [locationAlertVisible, setLocationAlertVisible] = useState(false);
+
     const ref = useRef();
     const { i18n, t } = useTranslation();
 
     function selectItemBgColor(index) {
         const items = [
-            { bg: '#A8DDE9', color: '#3F5B98' },
-            { bg: '#086E4B', color: '#FCBE4A' },
-            { bg: '#FECBCA', color: '#FD5963' },
-            { bg: '#193B8C', color: '#FECBCD' },
-            { bg: '#FDBD50', color: '#F5F5EB' },
-            { bg: '#A8DDE9', color: '#3F5B98' },
-            { bg: '#086E4B', color: '#FCBE4A' },
-            { bg: '#FECBCA', color: '#FD5963' },
-            { bg: '#193B8C', color: '#FECBCD' },
-            { bg: '#FA6055', color: '#F5F5EB' }
+            { bg: Colors.tertiary, color: Colors.primary },
+            { bg: Colors.primary, color: '#3F5B98' }
         ];
+        if (index % 2 == 0) { return items[0]; } else { return items[1]; }
+    };
 
-        // Check if the index is within the valid range
-        if (index >= 0 && index < items.length) {
-            return items[index];
+    const locationCheckPermission = async (location) => {
+        const checkStatus = await locationPermissionCheck();
+        if (checkStatus) {
+            setPermissionStatus('granted');
+            setAccessLocation(true);
+            getCurrentLocation(location);
         } else {
-            return null; // Return null if index is out of range
+            permissionRequest(location);
         }
+    };
+
+    const permissionRequest = async (location) => {
+        const checkStatus = await locationPermissionCheck();
+        if (checkStatus) {
+            setPermissionStatus('granted');
+            setAccessLocation(true);
+            getCurrentLocation(location);
+            return;
+        }
+
+        const requestStatus = await locationPermissionRequest();
+        if (Platform.OS === 'android') {
+            if (requestStatus === PermissionsAndroid.RESULTS.GRANTED) {
+                setPermissionStatus('granted');
+                setAccessLocation(true);
+                getCurrentLocation(location);
+            } else if (requestStatus === PermissionsAndroid.RESULTS.DENIED) {
+                setPermissionStatus('denied');
+            } else if (requestStatus === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
+                setPermissionStatus('blocked');
+                setLocationAlertVisible(true);
+            }
+        } else if (Platform.OS === 'ios') {
+            if (requestStatus === RESULTS.GRANTED) {
+                setPermissionStatus('granted');
+                setAccessLocation(true);
+                getCurrentLocation();
+            } else if (requestStatus === RESULTS.DENIED) {
+                setPermissionStatus('denied');
+            } else if (requestStatus === RESULTS.BLOCKED) {
+                setPermissionStatus('blocked');
+                setLocationAlertVisible(true);
+            }
+        }
+    };
+
+    const getCurrentLocation = (location) => {
+        Geolocation.getCurrentPosition((coords) => {
+            navigation.navigate(ROUTE_KEYS.TOURIST_LOCATION, {
+                myLocation: coords, values: '', onGetLocation: '',
+                currentPlaceLoc: location
+            });
+        }, (error) => {
+            setAccessLocation(false);
+        }, { enableHighAccuracy: true, maximumAge: 0 });
     };
 
     const styles = StyleSheet.create({
@@ -82,6 +137,18 @@ export default function TouristDistrict(props) {
             paddingBottom: convertHeight(15),
             textDecorationLine: 'underline',
             textTransform: 'uppercase'
+        },
+        locationBtn: {
+            fontSize: 15,
+            fontWeight: '900',
+            textTransform: 'uppercase',
+            letterSpacing: -1,
+            color: Colors.green
+        },
+        locationContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center'
         }
     });
 
@@ -92,7 +159,7 @@ export default function TouristDistrict(props) {
             style={styles.container}>
             <Text style={styles.districtHeader}>{t(`Districts:${districtName}`)}</Text>
 
-            {TouristPlaces[districtName].map(({ name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI }, index) => {
+            {TouristPlaces[districtName].map(({ name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI, location }, index) => {
                 return (
                     <TouchableOpacity
                         key={name}
@@ -118,12 +185,26 @@ export default function TouristDistrict(props) {
                                                     i18n.language === 'hi' ? note_HI : note_TA
                                         }
                                     </Text>
+                                    {location &&
+                                        <TouchableOpacity
+                                            onPress={() => { locationCheckPermission(location); }}
+                                            style={styles.locationContainer}>
+                                            <Ionicons name="location" size={15} color={Colors.green} style={{ paddingRight: 2 }} />
+                                            <Text style={styles.locationBtn}>{t('Touristplace:view_location')}</Text>
+                                        </TouchableOpacity>}
                                 </View>
                             )}
                         </View>
                     </TouchableOpacity>
                 );
             })}
+
+            <LocationAlertModal
+                title={'Touristplace:grant_permissions'}
+                message={'Touristplace:allow_blocked_permissions'}
+                visible={locationAlertVisible}
+                onClose={() => setLocationAlertVisible(false)}
+                onConfirm={() => Linking.openSettings()} />
         </Transitioning.View>
     );
 }

@@ -52,6 +52,7 @@ const AssetIconsPack = {
         'checklist_history_icon': require('../assets/114398-no-transaction-history.json'),
         'no_image_icon': require('../assets/122840-image.json'),
         'settings_icon': require('../assets/69362-green-setting-wheel.json'),
+        'no_internet_location_icon': require('../assets/107013-loader-for-wi-fi-connection.json'),
         'tourist_icon': require('../assets/90724-travel-world-usa'),
         'report_icon': require('../assets/report.png'),
         'payment_icon': require('../assets/payment.png'),

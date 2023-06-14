@@ -18,6 +18,7 @@ import SettingsView from './Settings/views/SettingsView';
 import TouristPlaceList from './TouristPlaces/views/TouristPlaceList';
 import TouristDistrict from './TouristPlaces/views/TouristDistrict';
 import TouristStateList from './TouristPlaces/views/TouristStateList';
+import TouristLocationMap from './TouristPlaces/views/TouristLocationMap';
 
 export {
     CheckItemListView,
@@ -35,5 +36,6 @@ export {
     SettingsView,
     TouristPlaceList,
     TouristDistrict,
-    TouristStateList
+    TouristStateList,
+    TouristLocationMap
 };
