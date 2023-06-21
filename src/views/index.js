@@ -20,6 +20,8 @@ import TouristDistrict from './TouristPlaces/views/TouristDistrict';
 import TouristStateList from './TouristPlaces/views/TouristStateList';
 import TouristLocationMap from './TouristPlaces/views/TouristLocationMap';
 
+import CostPlanner from './CostPlanner/views/CostPlanner';
+
 export {
     CheckItemListView,
     CheckListAddView,
@@ -37,5 +39,7 @@ export {
     TouristPlaceList,
     TouristDistrict,
     TouristStateList,
-    TouristLocationMap
+    TouristLocationMap,
+
+    CostPlanner
 };

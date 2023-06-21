@@ -8,7 +8,8 @@ import { ROUTE_KEYS } from './constants';
 import {
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen,
   CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, DashboardScreen,
-  PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap
+  PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
+  CostPlanner
 } from '../views';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
@@ -47,6 +48,7 @@ export default function rootNavigation(props) {
       <Screen options={{ title: t('Touristplace:district'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_DISTRICT} component={TouristDistrict} />
       <Screen options={{ title: t('Touristplace:state'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_STATES} component={TouristStateList} />
       <Screen options={{ title: t('Touristplace:map'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_LOCATION} component={TouristLocationMap} />
+      <Screen options={{ title: t('CostPlanner:costPlanner'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.COST_PLANNER} component={CostPlanner} />
     </Navigator>
   );
 }

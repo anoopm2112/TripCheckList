@@ -6,6 +6,7 @@ import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import { useIsFocused } from '@react-navigation/native';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
@@ -19,6 +20,7 @@ export default function FriendsAddView(props) {
   const textInputRef = useRef();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const isFocused = useIsFocused();
 
   const youObj = {
     id: uuidv4(),
@@ -30,12 +32,21 @@ export default function FriendsAddView(props) {
 
   const [value, setValue] = useState('');
   const [valTextInput, setValTextInput] = useState(false);
+  const [splitTitleValue, setSplitTitleValue] = useState('');
+  const [splitTitleValTextInput, setSplitTitleValTextInput] = useState(false);
   const [localArrayData, setLocalArrayData] = useState([]);
   const [localSplitWiseItemsArrayData, setlocalSplitWiseItemsArrayData] = useState([youObj]);
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const [lottieAnimation, setLottieAnimation] = useState(true);
 
   const [, updateState] = useState();
   const forceUpdate = useCallback(() => updateState({}), []);
+
+  useEffect(() => {
+    if (isFocused) {
+      setLottieAnimation(false);
+    }
+  }, [isFocused, lottieAnimation]);
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => { setKeyboardVisible(true) });
@@ -90,6 +101,8 @@ export default function FriendsAddView(props) {
   const onSubmitAddFriends = () => {
     if (localArrayData.length <= 0) {
       setValTextInput(true);
+    } else if (splitTitleValue === '') {
+      setSplitTitleValTextInput(true);
     } else {
       localArrayData.push(youObj);
       let splitShareArray = [{
@@ -101,6 +114,7 @@ export default function FriendsAddView(props) {
       const newSplitWise = {
         id: uuidv4(),
         creationDate: new Date(),
+        splitTitle: splitTitleValue,
         members: localArrayData,
         totalAmount: 0,
         splitWiseListItems: splitShareArray,
@@ -139,9 +153,22 @@ export default function FriendsAddView(props) {
   return (
     <View style={styles.mainContainer}>
       <View style={styles.subContainer}>
-        <Lottie source={AssetIconsPack.icons.add_friends_icon} autoPlay loop
+        <Lottie source={AssetIconsPack.icons.add_friends_icon} autoPlay loop={lottieAnimation}
           style={{ height: convertHeight(170), width: convertWidth(170) }} />
       </View>
+
+      <View style={styles.addFrendsContainer}>
+        <Input
+          placeholder={t('Splitwise:input_placeholder')}
+          textStyle={{ height: convertHeight(35) }}
+          onChangeText={nextValue => {
+            setSplitTitleValue(nextValue);
+            setSplitTitleValTextInput(false);
+          }} 
+          style={{ paddingBottom: splitTitleValTextInput ? convertHeight(0): convertHeight(10) }}  
+        />
+      </View>
+      {splitTitleValTextInput && <Text style={[styles.errortxt, { paddingBottom: convertHeight(10) }]}>{t('Splitwise:input_val')}</Text>}
 
       <View style={styles.addFrendsContainer}>
         <Input
@@ -158,7 +185,7 @@ export default function FriendsAddView(props) {
       </View>
       {valTextInput && <Text style={styles.errortxt}>{t('Splitwise:validation_add_friends')}</Text>}
 
-      <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(10), backgroundColor: COLORS.primary }} />
+      <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(6), backgroundColor: COLORS.primary }} />
 
       {!isKeyboardVisible && <Button onPress={() => { onSubmitAddFriends() }} style={styles.submitBtn}>{t('Common:submit')}</Button>}
     </View>

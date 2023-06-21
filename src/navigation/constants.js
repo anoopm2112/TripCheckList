@@ -16,4 +16,6 @@ export const ROUTE_KEYS = {
     TOURIST_DISTRICT: 'TouristDistrictScreen',
     TOURIST_STATES: 'TouristStateScreen',
     TOURIST_LOCATION: 'TouristLocationScreen',
+
+    COST_PLANNER: 'CostPalnnerScreen'
 };

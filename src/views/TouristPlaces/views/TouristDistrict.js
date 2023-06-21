@@ -36,7 +36,7 @@ export default function TouristDistrict(props) {
 
     function selectItemBgColor(index) {
         const items = [
-            { bg: Colors.tertiary, color: Colors.primary },
+            { bg: '#F5FFFA', color: '#3F5B98' },
             { bg: Colors.primary, color: '#3F5B98' }
         ];
         if (index % 2 == 0) { return items[0]; } else { return items[1]; }

@@ -100,12 +100,14 @@ export default function DashboardScreen(props) {
                     cardName={t('Dashboard:actions:money_splitter')} onPress={() => navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon}
-                    cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon}
                     cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon}
+                    cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon}
+                    cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon}
                     cardName={t('Dashboard:actions:settings')} onPress={() => navigation.navigate(ROUTE_KEYS.SETTINGS)} />
             </View>

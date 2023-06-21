@@ -21,6 +21,7 @@ import { deleteNoteById, fetchNotes, updateSplitwise } from '../views/SplitWise/
 import NoteModal from './NoteModal';
 import { selectAllSplitwises } from '../views/SplitWise/splitwiseSlice';
 import CustomPopup from './CustomPopup';
+import Colors from '../common/Colors';
 
 export default function MainItemSplitWiseListCard(props) {
     const { item, spliupAmount, navigationToEdit, removeParticularItem } = props;
@@ -52,7 +53,7 @@ export default function MainItemSplitWiseListCard(props) {
             elevation: 5,
             backgroundColor: COLORS.primary,
             alignItems: 'center',
-            height: convertHeight(50),
+            height: convertHeight(80),
             borderBottomWidth: 2,
             borderBottomColor: '#e5e5e5'
         },
@@ -101,8 +102,14 @@ export default function MainItemSplitWiseListCard(props) {
             justifyContent: 'center',
             alignItems: 'center',
             width: 100,
-            height: convertHeight(50),
+            height: convertHeight(80),
         },
+        splitTile: { 
+            color: Colors.black, 
+            textAlign: 'center',
+            fontWeight: '800',
+            textTransform: 'uppercase'
+        }
     });
 
     const renderItemSplitMembers = ({ item }) => {
@@ -221,25 +228,30 @@ export default function MainItemSplitWiseListCard(props) {
 
     return (
         <Swipeable ref={swipeableRef} renderLeftActions={leftSwipe} renderRightActions={rightSwipe}>
-            <View activeOpacity={0.3} style={[styles.listItemContainer, { flexDirection: 'row', }]}>
-                <Animatable.View animation="slideInLeft">
-                    <MaterialIcons name={'keyboard-arrow-left'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingLeft: convertWidth(5) }} />
-                </Animatable.View>
-                <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:grand_total')}</Text>
-                    <Text style={styles.label}>{item.totalAmount}</Text>
+            <View activeOpacity={0.3} style={[styles.listItemContainer]}>
+                <View style={{ paddingVertical: convertHeight(7) }}>
+                    <Text numberOfLines={1} style={styles.splitTile}>{item.splitTitle}</Text>
                 </View>
-                <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:members')}</Text>
-                    <Text style={styles.label}>{item.members.length}</Text>
+                <View style={{ flexDirection: 'row', }}>
+                    <Animatable.View animation="slideInLeft">
+                        <MaterialIcons name={'keyboard-arrow-left'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingLeft: convertWidth(5) }} />
+                    </Animatable.View>
+                    <View style={styles.labelContainer}>
+                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:grand_total')}</Text>
+                        <Text style={styles.label}>{item.totalAmount}</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:members')}</Text>
+                        <Text style={styles.label}>{item.members.length}</Text>
+                    </View>
+                    <View style={styles.labelContainer}>
+                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black, textAlign: 'center' }}>{t('Splitwise:added_notes')}</Text>
+                        <Text style={styles.label}>{item.notes.length}</Text>
+                    </View>
+                    <Animatable.View animation="slideInRight">
+                        <MaterialIcons name={'keyboard-arrow-right'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingRight: convertWidth(5) }} />
+                    </Animatable.View>
                 </View>
-                <View style={styles.labelContainer}>
-                    <Text style={{ fontSize: convertHeight(10), color: COLORS.black, textAlign: 'center' }}>{t('Splitwise:added_notes')}</Text>
-                    <Text style={styles.label}>{item.notes.length}</Text>
-                </View>
-                <Animatable.View animation="slideInRight">
-                    <MaterialIcons name={'keyboard-arrow-right'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingRight: convertWidth(5) }} />
-                </Animatable.View>
             </View>
             <RBSheet height={convertHeight(220)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
                 customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>

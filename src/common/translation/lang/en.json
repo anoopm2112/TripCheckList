@@ -8,10 +8,12 @@
             "money_splitter": "MONEY SPLITTER",
             "history": "HISTORY",
             "settings": "SETTINGS",
-            "tourist_places": "TOURIST PLACES"
+            "tourist_places": "TOURIST PLACES",
+            "costPlanner": "COST PLANNER"
         }
     },
     "Splitwise": {
+        "split_info": "'Add new money split' refers to the allocation of newly created money within an economy. It involves distributing the funds among different sectors or participants, guided by monetary policy objectives. The goal is to stimulate economic activity and maintain price stability.",
         "add_new_split": "ADD NEW SPLIT",
         "remove_all_data": "REMOVE ALL",
         "splitlist_info": "To access more actions, swipe the card in either direction.",
@@ -40,7 +42,9 @@
         "paid_by": "PAID BY",
         "select_person_paid": "Please select person who paid the amount",
         "select_food_category": "Please select your food category",
-        "split_amount": "Split Amount"
+        "split_amount": "Split Amount",
+        "input_val": "Please enter something about your split.",
+        "input_placeholder": "Write something about your split..."
     },
     "History": {
         "history": "HISTORY"
@@ -128,5 +132,36 @@
     "PaidBy": {
         "payer": "Choose the payer...",
         "paidBy": "Paid By!"
+    },
+    "CostPlanner": {
+        "costPlanner": "Cost Planner",
+        "total_travel_cost": "Total Travel Cost", 
+        "check_cost": "Check Cost", 
+        "fuel_price": "Fuel Price",
+        "enter_fuel_price": "Enter Fuel Price",
+        "enter_mileage": "Enter Mileage",
+        "enter_distance": "Enter Distance",
+        "enter_cost": "Enter Cost",
+        "enter_fuel_liters": "Enter Fuel In Liters",
+        "total_mileage" : "Total Mileage", 
+        "check_mileage": "Check Mileage", 
+        "L": "L", 
+        "fuel_liters" : "Fuel (In Liters)",
+        "Total_travel_distance": "Total Travel Distance", 
+        "check_distance": "Check Distance", 
+        "km": "KM",
+        "cost": "Cost",
+        "mileage": "Mileage",
+        "distance": "Distance",
+        "how_to_save_fuel" : "HOW TO SAVE FUEL",
+        "info_1": "15% savings are added by turning off the air conditioner",
+        "info_2": "20% savings are added by a non-aggressive driving style with smooth acceleration / braking, at 2000-2500 RPM",
+        "info_3": "Low-quality gasoline adds 10% savings",
+        "info_4": "5% savings add off low beam/high beam",
+        "info_5": "Do not forget to periodically check the technical condition of the car, because some kind of malfunction, for example, a clogged fuel filter or low tire pressure can increase fuel consumption at times!",
+        "fuel_price_val": "Please enter fuel price",
+        "mileage_val": "Please enter Mileage",
+        "distance_val": "Please enter Distance",
+        "cost_val": "Please enter Cost"
     }
 }

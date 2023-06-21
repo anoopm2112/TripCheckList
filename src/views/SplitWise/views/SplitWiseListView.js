@@ -94,7 +94,7 @@ export default function SplitWiseListView(props) {
       <View style={{ flex: 1 }}>
         <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
         {splitwises?.length === 0 ?
-          <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={'Splitwise:add_new_split'} />
+          <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={'Splitwise:split_info'} />
           :
           <>
             <AnimatedText label={'Splitwise:splitlist_info'}/>

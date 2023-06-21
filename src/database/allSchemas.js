@@ -84,6 +84,7 @@ export const TripSplitWiseSchema = {
     properties: {
         id: 'string',
         creationDate: 'date',
+        splitTitle: 'string',
         totalAmount: 'int',
         members: { type: 'list', objectType: MEMBERS },
         splitWiseListItems: { type: 'list', objectType: SPLITWISEMETA },
