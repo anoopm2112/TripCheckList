@@ -2,7 +2,7 @@ import { View, StyleSheet, TouchableOpacity, Text, Modal, Image } from 'react-na
 import React, { useState, useRef } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 // Custom Imports
 import { updateChecklist } from '../api/ChecklistApi';
@@ -10,6 +10,7 @@ import { ROUTE_KEYS } from '../../../navigation/constants';
 import { SubItemListCardView, List, CheckBox, Button } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function ListParticularCheckItem(props) {
     const { navigation } = props;
@@ -18,6 +19,9 @@ export default function ListParticularCheckItem(props) {
     const refRBSheet = useRef();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     // State
     const [checklistItemData, setChecklistItemData] = useState(item.checkListItems);
@@ -106,15 +110,15 @@ export default function ListParticularCheckItem(props) {
             zIndex: 1000,
             borderWidth: 2,
             borderRadius: convertHeight(30),
-            borderColor: COLORS.primary,
-            backgroundColor: COLORS.primary,
+            borderColor: backgroundColor,
+            backgroundColor: backgroundColor,
             alignContent: 'center'
         },
         drawerItemContainer: {
-            marginTop: convertHeight(10),
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary
         },
         drawerItemTxt: {
             color: COLORS.validation,
@@ -126,7 +130,7 @@ export default function ListParticularCheckItem(props) {
     return (
         <>
             <View style={{ flex: 1, margin: convertHeight(8) }}>
-                <List numColumns={2} data={checklistItemData} renderItem={renderItem} />
+                <List style={{ backgroundColor: backgroundColor }} numColumns={2} data={checklistItemData} renderItem={renderItem} />
                 {!history && <Button style={{ margin: convertHeight(10) }} onPress={() => onFinalSubmit()}>{t('Common:submit')}</Button>}
             </View>
 
@@ -148,9 +152,8 @@ export default function ListParticularCheckItem(props) {
                 height={convertHeight(320)}
                 ref={refRBSheet}
                 closeOnDragDown={true}
-                closeOnPressMask={false}
-                customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>
-                <List horizontal data={missingItem} renderItem={renderItem} style={{ padding: convertHeight(10) }} />
+                customStyles={{ draggableIcon: { backgroundColor: textColor }, container: { backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary } }}>
+                <List horizontal data={missingItem} renderItem={renderItem} style={{ padding: convertHeight(10), backgroundColor: backgroundColor }} />
 
                 {checklistItemData.filter(x => x.checked === false).length > 0 &&
                     <View style={styles.drawerItemContainer}>
@@ -162,11 +165,13 @@ export default function ListParticularCheckItem(props) {
                     </View>
                 }
 
-                <Button style={{ margin: convertHeight(10) }}
-                    onPress={() => {
-                        setBottomDrawer(false);
-                        refRBSheet.current.close()
-                    }}>{t('Common:close')}</Button>
+                <View style={{ backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary }}>
+                    <Button style={{ margin: convertHeight(10) }}
+                        onPress={() => {
+                            setBottomDrawer(false);
+                            refRBSheet.current.close()
+                        }}>{t('Common:close')}</Button>
+                </View>
             </RBSheet>
         </>
     )

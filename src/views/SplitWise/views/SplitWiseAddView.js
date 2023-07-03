@@ -20,10 +20,9 @@ import { htmltable, onHandleCreatePdf } from '../../../common/pdfView';
 import { styles } from '../splitwiseStyles';
 import { selectAllSplitwises } from '../splitwiseSlice';
 import {
-    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal
+    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal, CustomSelect
 } from '../../../components';
-import { calculateTotalAmount } from '../../../common/utils/arrayObjectUtils';
-import Colors from '../../../common/Colors';
+import { calculateTotalAmount, darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function CheckListAddView(props) {
@@ -34,6 +33,8 @@ export default function CheckListAddView(props) {
     const isFocuesd = useIsFocused();
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
     const [localArrayData, setLocalArrayData] = useState(item.members ? JSON.parse(JSON.stringify(item.members)) : []);
@@ -170,14 +171,15 @@ export default function CheckListAddView(props) {
 
     const renderItemNotEquallySplit = ({ item, index }) => (
         <View style={styles.txtInputContainer}>
-            <Text style={styles.txtNameContainer}>{item.name}</Text>
-            <Text style={{ color: COLORS.black, paddingHorizontal: convertWidth(5), flex: 0.2 }}>:</Text>
+            <Text style={[styles.txtNameContainer, { color: textColor }]}>{item.name}</Text>
+            <Text style={{ color: textColor, paddingHorizontal: convertWidth(5), flex: 0.2 }}>:</Text>
             <Input
-                style={{ flex: 1.5, borderColor: COLORS.secondary }}
+                style={{ flex: 1.5, borderColor: COLORS.secondary, backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' }}
                 key={index}
                 placeholder={t('Splitwise:split_amount')}
                 value={localArrayData[index].expense}
                 keyboardType='number-pad'
+                textStyle={{ color: textColor }}
                 onChangeText={val => {
                     let newArray = [...localArrayData];
                     newArray[index].id = uuidv4();
@@ -223,10 +225,9 @@ export default function CheckListAddView(props) {
     };
 
     return (
-        <KeyboardAwareScrollView style={{ backgroundColor: COLORS.primary }}>
-            <View style={styles.mainContainer}>
+        <KeyboardAwareScrollView style={{ backgroundColor: backgroundColor }}>
+            <View style={[styles.mainContainer, { backgroundColor: backgroundColor }]}>
                 <Select
-                    style={{ marginBottom: convertHeight(5) }}
                     placeholder='Default'
                     value={displayValue}
                     selectedIndex={selectedIndex}
@@ -248,7 +249,7 @@ export default function CheckListAddView(props) {
 
                 <View>
                     <View style={styles.paidByYou}>
-                        <Text style={{ color: COLORS.black }}>{t('Splitwise:equally_split')}</Text>
+                        <Text style={{ color: textColor }}>{t('Splitwise:equally_split')}</Text>
                         <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
                             onPress={() => { setShowEquallySplit(!showEquallySplit); }}>
                             <Text style={{ color: COLORS.primary }}>{showEquallySplit ? t('Common:yes') : t('Common:no')}</Text>
@@ -262,14 +263,15 @@ export default function CheckListAddView(props) {
                 </View>
 
                 <View style={styles.txtInputContainer}>
-                    <Text style={[styles.txtNameContainer, { fontWeight: 'bold' }]}>{t('Splitwise:total')}</Text>
-                    <Text style={{ color: COLORS.black, paddingHorizontal: convertWidth(5), flex: 0.2 }}>:</Text>
+                    <Text style={[styles.txtNameContainer, { fontWeight: 'bold', color: textColor }]}>{t('Splitwise:total')}</Text>
+                    <Text style={{ color: textColor, paddingHorizontal: convertWidth(5), flex: 0.2 }}>:</Text>
                     <View style={{ flex: 1.5, borderColor: COLORS.tertiary }}>
                         <Input
-                            style={{ flex: 1.5, borderColor: COLORS.tertiary }}
+                            style={{ flex: 1.5, borderColor: COLORS.tertiary, backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' }}
                             value={amount ? amount.toString() : ''}
                             placeholder={t('Splitwise:total_amount')}
                             keyboardType='number-pad'
+                            textStyle={{ color: textColor }}
                             onChangeText={nextValue => {
                                 setAmount(nextValue);
                                 setValAmount(false);

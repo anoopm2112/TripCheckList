@@ -1,20 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Platform, TouchableOpacity, StatusBar } from 'react-native';
 import { Input, Button } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { localTimeConvertion } from '../../../common/utils/timeDateUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function WriteUpAboutTripView(props) {
     const { navigation } = props;
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     // Input State
     const [value, setValue] = useState('');
@@ -66,7 +70,7 @@ export default function WriteUpAboutTripView(props) {
     const styles = StyleSheet.create({
         mainContainer: {
             flex: 1,
-            backgroundColor: COLORS.primary
+            backgroundColor: backgroundColor
         },
         reminderBtn: {
             width: '100%',
@@ -78,7 +82,7 @@ export default function WriteUpAboutTripView(props) {
             alignItems: 'center'
         },
         txtStyle: {
-            color: COLORS.black,
+            color: textColor,
             fontWeight: 'bold',
             fontSize: convertHeight(12)
         },
@@ -101,13 +105,14 @@ export default function WriteUpAboutTripView(props) {
 
     return (
         <View style={styles.mainContainer}>
+            <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <View style={styles.subContainer}>
                 <Text style={styles.txtStyle}>{t('checklist:pack_your_bag')}</Text>
                 <Lottie source={AssetIconsPack.icons.write_up_icon} autoPlay loop
                     style={{ height: convertHeight(170), width: convertWidth(170) }} />
                 {showTime &&
                     <>
-                        <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.black} />
+                        <Ionicons name="alarm" size={convertHeight(20)} color={textColor} />
                         <Text style={styles.txtStyle}>{showTime}</Text>
                     </>
                 }
@@ -121,8 +126,9 @@ export default function WriteUpAboutTripView(props) {
                         setValue(nextValue)
                         setValTextInput(false);
                     }}
+                    style={{ backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' }}
                     multiline={true}
-                    textStyle={{ minHeight: convertHeight(30) }}
+                    textStyle={{ minHeight: convertHeight(30), color: textColor }}
                     accessoryRight={
                         <TouchableOpacity onPress={showDatepicker}>
                             <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.tertiary} />

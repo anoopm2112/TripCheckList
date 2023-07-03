@@ -14,6 +14,7 @@ import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtil
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteAllSplitWise, deleteSplitWiseById, fetchSplitwises } from '../api/SplitWiseApi';
 import { selectAllSplitwises } from '../splitwiseSlice';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function SplitWiseListView(props) {
   const { navigation } = props;
@@ -21,6 +22,9 @@ export default function SplitWiseListView(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+
+  const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+  const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
   const { splitwises, status, error } = useSelector(selectAllSplitwises);
 
@@ -92,13 +96,13 @@ export default function SplitWiseListView(props) {
   return (
     <>
       <View style={{ flex: 1 }}>
-        <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
+        <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         {splitwises?.length === 0 ?
-          <EmptyList lottieSrc={AssetIconsPack.icons.splitwise_empty_icon} shownText={'Splitwise:split_info'} />
+          <EmptyList lottieSrc={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon} shownText={'Splitwise:split_info'} />
           :
           <>
             <AnimatedText label={'Splitwise:splitlist_info'}/>
-            <List data={splitwises} renderItem={renderItem} />
+            <List style={{ backgroundColor: backgroundColor }} data={splitwises} renderItem={renderItem} />
           </>
         }
       </View>

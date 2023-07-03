@@ -1,7 +1,6 @@
 import 'react-native-gesture-handler';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootNavigation from './navigation/rootNavigation';
 import * as eva from '@eva-design/eva';
@@ -10,7 +9,6 @@ import SplashScreen from 'react-native-splash-screen';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 import './common/translation/LangTranslationManager'
-import { mappingTheme } from './common/styles/theme';
 
 export default function App() {
 
@@ -31,9 +29,7 @@ export default function App() {
         <Provider store={store}>
             <ApplicationProvider {...eva} theme={eva.light}>
                 <SafeAreaProvider>
-                    <NavigationContainer>
-                        <RootNavigation props={auth} />
-                    </NavigationContainer>
+                    <RootNavigation props={auth} />
                 </SafeAreaProvider>
             </ApplicationProvider>
         </Provider>

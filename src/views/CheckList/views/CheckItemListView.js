@@ -4,6 +4,8 @@ import { useIsFocused } from '@react-navigation/native';
 import { FloatingAction } from "react-native-floating-action";
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { FLOATING_ACTION } from '../../../common/Itemdata';
@@ -13,12 +15,15 @@ import AssetIconsPack from '../../../assets/IconProvide';
 import { deleteAllChecklist, deleteChecklistById, fetchChecklists } from '../api/ChecklistApi';
 import { selectAllChecklists } from '../checklistSlice';
 import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List } from '../../../components';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function CheckItemListView(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const { checklists, status, error } = useSelector(selectAllChecklists);
 
@@ -94,17 +99,36 @@ export default function CheckItemListView(props) {
 
     return (
         <>
-            <View style={{ flex: 1, backgroundColor: COLORS.primary }}>
-                <StatusBar backgroundColor={COLORS.primary} barStyle='dark-content' />
+            <View style={{ flex: 1, backgroundColor: backgroundColor }}>
+                <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
                 {checklists.length === 0 ?
                     <EmptyList lottieSrc={AssetIconsPack.icons.checklist_empty_icon} shownText={'checklist:info'} />
                     :
-                    <List style={{ backgroundColor: COLORS.primary }} data={checklists} renderItem={renderItem} />}
+                    <List style={{ backgroundColor: backgroundColor }} data={checklists} renderItem={renderItem} />}
             </View>
 
             <FloatingAction
                 color='#ff7e61'
-                actions={FLOATING_ACTION}
+                actions={[
+                    {
+                        text: t("Common:add_checklist"),
+                        icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,
+                        name: ROUTE_KEYS.WRITEUP_ABOUT_TRIP,
+                        color: COLORS.secondary,
+                        position: 2,
+                        textColor: textColor,
+                        textBackground: backgroundColor
+                    },
+                    {
+                        text: t("Common:history"),
+                        icon: <MaterialIcons name="history" size={convertHeight(16)} color={COLORS.primary} />,
+                        color: COLORS.secondary,
+                        name: ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST,
+                        position: 1,
+                        textColor: textColor,
+                        textBackground: backgroundColor
+                    }
+                ]}
                 onPressItem={name => { navigation.navigate(name) }} />
 
             <CustomPopup

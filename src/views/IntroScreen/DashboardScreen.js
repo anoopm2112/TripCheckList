@@ -9,6 +9,7 @@ import AssetIconsPack from '../../assets/IconProvide';
 import Colors from '../../common/Colors';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import { ROUTE_KEYS } from '../../navigation/constants';
+import { darkModeColor } from '../../common/utils/arrayObjectUtils';
 
 export default function DashboardScreen(props) {
     const { navigation } = props;
@@ -16,9 +17,7 @@ export default function DashboardScreen(props) {
     const { t } = useTranslation();
     const [lottieAnimation, setLottieAnimation] = useState(true);
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
-
-    const backgroundColor = isDarkMode ? Colors.black : Colors.primary;
-    const textColor = isDarkMode ? Colors.primary : Colors.black;
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     useEffect(() => {
         if (isFocused) {
@@ -28,7 +27,7 @@ export default function DashboardScreen(props) {
 
     const styles = StyleSheet.create({
         button: {
-            backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary, padding: 20, height: 160, width: 160,
+            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: 20, height: 160, width: 160,
             justifyContent: 'center', alignItems: 'center',
             ...Platform.select({
                 ios: {
@@ -36,7 +35,7 @@ export default function DashboardScreen(props) {
                     shadowOpacity: 0.5, shadowRadius: 5,
                 },
                 android: {
-                    elevation: 5, shadowColor: textColor, shadowOffset: { width: 0, height: 2 },
+                    elevation: 5, shadowColor: Colors.black, shadowOffset: { width: 0, height: 2 },
                     shadowOpacity: 0.2, shadowRadius: 2,
                 },
             }),
@@ -81,7 +80,7 @@ export default function DashboardScreen(props) {
     }
 
     return (
-        <View style={{ backgroundColor: isDarkMode ? '#2c2c2e' : '#e5e5e5', flex: 1 }}>
+        <View style={{ backgroundColor: isDarkMode ? '#565051' : '#e5e5e5', flex: 1 }}>
             <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.tertiary} barStyle='light-content' />
             <View style={styles.topCard}>
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }} 
@@ -96,7 +95,7 @@ export default function DashboardScreen(props) {
             <View style={styles.subSection} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_empty_icon}
                     cardName={t('Dashboard:actions:checklist')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST)} />
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.splitwise_empty_icon}
+                <RenderCardComponent cardIcon={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon}
                     cardName={t('Dashboard:actions:money_splitter')} onPress={() => navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >

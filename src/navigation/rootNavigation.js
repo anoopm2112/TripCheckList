@@ -3,13 +3,14 @@ import { Image } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
 // Custom Imports
 import { ROUTE_KEYS } from './constants';
 import {
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen,
   CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, DashboardScreen,
   PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
-  CostPlanner
+  CostPlanner, AboutUs
 } from '../views';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
@@ -26,29 +27,39 @@ export default function rootNavigation(props) {
     <Image style={{ height: convertHeight(30), width: convertWidth(35), marginRight: convertHeight(8) }} source={AssetIconsPack.icons.app_logo_side_image} />
   )
 
+  const getScreenOptions = ({ title }) => {
+    return {
+      title: title,
+      headerRight: () => rightLogoImage(),
+      headerStyle: { backgroundColor: blackToWhite },
+      headerTitleStyle: { color: WhiteToblack },
+      headerTintColor: WhiteToblack,
+      headerShadowVisible: false
+    };
+  };
+
   return (
-    <Navigator initialRouteName={props.props == null ? ROUTE_KEYS.WELCOME_SCREEN : ROUTE_KEYS.DASHBOARD_SCREEN}
-    // screenOptions={{ headerShown: false, title: 'TRIP CHECKLIST',  }}
-    >
+    <NavigationContainer theme={{ colors: { background: isDarkMode ? Colors.black : Colors.primary }}}>
+    <Navigator initialRouteName={props.props == null ? ROUTE_KEYS.WELCOME_SCREEN : ROUTE_KEYS.DASHBOARD_SCREEN}>
       <Screen options={{ headerShown: false }} name={ROUTE_KEYS.WELCOME_SCREEN} component={WelcomeScreen} />
       <Screen options={{ headerShown: false }} name={ROUTE_KEYS.DASHBOARD_SCREEN} component={DashboardScreen} />
-      <Screen options={{ title: t('Dashboard:app_name'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_LIST} component={CheckItemListView} />
-      <Screen options={{ title: t('checklist:header:Add_Checklist_Items'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_ADD} component={CheckListAddView} />
-      <Screen options={{ title: t('checklist:header:Add_Checklist'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.WRITEUP_ABOUT_TRIP} component={WriteUpAboutTripView} />
-      <Screen options={{ title: t('Dashboard:app_name'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.LIST_PARTICULAR_CHECK_ITEM} component={ListParticularCheckItem} />
-      <Screen options={{ title: t('History:history'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST} component={CheckItemHistoryView} />
-      <Screen options={{ title: t('Splitwise:add_friends'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.FRIENDS_ADD} component={FriendsAddView} />
-      <Screen options={{ title: t('Dashboard:actions:money_splitter'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.SPLIT_WISE_ADD} component={SplitWiseAddView} />
-      <Screen options={{ title: t('Dashboard:actions:money_splitter'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.SPLIT_WISE_LIST} component={SplitWiseListView} />
-      <Screen options={{ title: 'POST', headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.FETCH_POST} component={PostList} />
-      <Screen options={{ title: t('Settings:setting'), headerRight: () => rightLogoImage(), 
-        headerStyle: { backgroundColor: blackToWhite }, headerTitleStyle: { color: WhiteToblack }, 
-        headerTintColor: WhiteToblack }} name={ROUTE_KEYS.SETTINGS} component={SettingsView} />
-      <Screen options={{ title: t('Dashboard:actions:tourist_places'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_PLACE} component={TouristPlaceList} />
-      <Screen options={{ title: t('Touristplace:district'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_DISTRICT} component={TouristDistrict} />
-      <Screen options={{ title: t('Touristplace:state'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_STATES} component={TouristStateList} />
-      <Screen options={{ title: t('Touristplace:map'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.TOURIST_LOCATION} component={TouristLocationMap} />
-      <Screen options={{ title: t('CostPlanner:costPlanner'), headerRight: () => rightLogoImage() }} name={ROUTE_KEYS.COST_PLANNER} component={CostPlanner} />
+      <Screen options={getScreenOptions({ title: t('Dashboard:app_name') })} name={ROUTE_KEYS.CHECK_ITEM_LIST} component={CheckItemListView} />
+      <Screen options={getScreenOptions({ title: t('checklist:header:Add_Checklist_Items') })} name={ROUTE_KEYS.CHECK_ITEM_ADD} component={CheckListAddView} />
+      <Screen options={getScreenOptions({ title: t('checklist:header:Add_Checklist') })} name={ROUTE_KEYS.WRITEUP_ABOUT_TRIP} component={WriteUpAboutTripView} />
+      <Screen options={getScreenOptions({ title: t('Dashboard:app_name') })} name={ROUTE_KEYS.LIST_PARTICULAR_CHECK_ITEM} component={ListParticularCheckItem} />
+      <Screen options={getScreenOptions({ title: t('History:history') })} name={ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST} component={CheckItemHistoryView} />
+      <Screen options={getScreenOptions({ title: t('Splitwise:add_friends') })} name={ROUTE_KEYS.FRIENDS_ADD} component={FriendsAddView} />
+      <Screen options={getScreenOptions({ title: t('Dashboard:actions:money_splitter') })} name={ROUTE_KEYS.SPLIT_WISE_ADD} component={SplitWiseAddView} />
+      <Screen options={getScreenOptions({ title: t('Dashboard:actions:money_splitter') })} name={ROUTE_KEYS.SPLIT_WISE_LIST} component={SplitWiseListView} />
+      <Screen options={{ title: 'POST', headerRight: () => rightLogoImage(), headerStyle: { backgroundColor: blackToWhite }, headerTitleStyle: { color: WhiteToblack }, } } name={ROUTE_KEYS.FETCH_POST} component={PostList} />
+      <Screen options={getScreenOptions({ title: t('Settings:setting') })} name={ROUTE_KEYS.SETTINGS} component={SettingsView} /> 
+      <Screen options={getScreenOptions({ title: t('Dashboard:actions:tourist_places') })} name={ROUTE_KEYS.TOURIST_PLACE} component={TouristPlaceList} />
+      <Screen options={getScreenOptions({ title: t('Touristplace:district') })} name={ROUTE_KEYS.TOURIST_DISTRICT} component={TouristDistrict} />
+      <Screen options={getScreenOptions({ title: t('Touristplace:state') })} name={ROUTE_KEYS.TOURIST_STATES} component={TouristStateList} />
+      <Screen options={getScreenOptions({ title: t('Touristplace:map') })} name={ROUTE_KEYS.TOURIST_LOCATION} component={TouristLocationMap} />
+      <Screen options={getScreenOptions({ title: t('CostPlanner:costPlanner') })} name={ROUTE_KEYS.COST_PLANNER} component={CostPlanner} />
+      <Screen options={getScreenOptions({ title: t('AboutUs:AboutUs') })} name={ROUTE_KEYS.ABOUT_US} component={AboutUs} />
     </Navigator>
+    </NavigationContainer>
   );
 }

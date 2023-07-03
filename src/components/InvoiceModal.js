@@ -1,16 +1,22 @@
 import { View, Text, StyleSheet, Modal, TouchableOpacity, Dimensions } from "react-native";
 import Pdf from "react-native-pdf";
+import { useSelector } from 'react-redux';
 import Colors from "../common/Colors";
 import { convertHeight, convertWidth } from "../common/utils/dimentionUtils";
+import { darkModeColor } from "../common/utils/arrayObjectUtils";
 
 export default function InvoiceModal(props) {
     const { pdfModalVisible, onClose, generateBillLocation } = props;
+
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor } = darkModeColor(isDarkMode);
 
     const styles = StyleSheet.create({
         pdf: {
             flex: 1,
             width: Dimensions.get('window').width,
             height: Dimensions.get('window').height,
+            backgroundColor: backgroundColor
         },
         floatingBtn: {
             alignItems: 'center',

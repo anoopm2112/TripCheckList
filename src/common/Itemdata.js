@@ -41,6 +41,15 @@ export const splitWiseDataItem = [
     'Other'
 ];
 
+// export const splitWiseDataItem = [
+//     { label: 'Break Fast', value: 'Break Fast' },
+//     { label: 'Lunch', value: 'Lunch' },
+//     { label: 'Dinner', value: 'Dinner' },
+//     { label: 'Other', value: 'Other' }
+// ];
+
+
+
 export const splitWiseDataItemMal = [
     'നിങ്ങളുടെ ഭക്ഷണ വിഭാഗം തിരഞ്ഞെടുക്കുക',
     'ബ്രേക്ക് ഫാസ്റ്റ്',

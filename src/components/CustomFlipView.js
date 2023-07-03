@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity } from 'react-native';
+import { useSelector } from 'react-redux';
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
 import Lottie from 'lottie-react-native';
+import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 export default FlipCard = (props) => {
     const { item } = props;
@@ -12,6 +14,9 @@ export default FlipCard = (props) => {
 
     const size = useRef(new Animated.Value(30)).current;
     const opacity = useRef(new Animated.Value(1)).current;
+
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundFlipColor, textFlipColor } = darkModeColor(isDarkMode);
 
     useEffect(() => {
         Animated.timing(size, {
@@ -64,6 +69,47 @@ export default FlipCard = (props) => {
         transform: [{ rotateY: backInterpolate }],
     };
 
+    
+    const Styles = StyleSheet.create({
+        thumbnail: {
+            height: convertHeight(130),
+            width: convertWidth(160),
+            borderRadius: 2
+        },
+        card: {
+            width: convertWidth(160),
+            height: convertHeight(130),
+            backgroundColor: backgroundFlipColor,
+            borderRadius: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backfaceVisibility: 'hidden',
+        },
+        cardFace: {
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            backfaceVisibility: 'hidden',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        cardBack: {
+            transform: [{ rotateY: '180deg' }],
+        },
+        circle: {
+            borderRadius: 25,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderWidth: 3,
+            borderColor: textFlipColor
+        },
+        text: {
+            color: textFlipColor,
+            fontSize: 30,
+            fontWeight: 'bold'
+        },
+    });
+
     return (
         <TouchableOpacity activeOpacity={1} onPress={() => flipCard()}>
             <View style={Styles.card}>
@@ -84,43 +130,3 @@ export default FlipCard = (props) => {
         </TouchableOpacity>
     );
 };
-
-const Styles = StyleSheet.create({
-    thumbnail: {
-        height: convertHeight(130),
-        width: convertWidth(160),
-        borderRadius: 2
-    },
-    card: {
-        width: convertWidth(160),
-        height: convertHeight(130),
-        backgroundColor: '#FFF',
-        borderRadius: 10,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backfaceVisibility: 'hidden',
-    },
-    cardFace: {
-        position: 'absolute',
-        width: '100%',
-        height: '100%',
-        backfaceVisibility: 'hidden',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    cardBack: {
-        transform: [{ rotateY: '180deg' }],
-    },
-    circle: {
-        borderRadius: 25,
-        alignItems: 'center',
-        justifyContent: 'center',
-        borderWidth: 3,
-        borderColor: '#446073'
-    },
-    text: {
-        color: '#446073',
-        fontSize: 30,
-        fontWeight: 'bold'
-    },
-});

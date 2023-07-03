@@ -1,3 +1,4 @@
+import Colors from '../Colors';
 
 export const getAddedAmountArray = item => {
     const data = JSON.parse(JSON.stringify(item));
@@ -70,4 +71,16 @@ export const calculateTravelTime = (distance) => {
     const hours = Math.floor(travelTime); // Extract the whole number part (hours)
     const minutes = Math.round((travelTime - hours) * 60); // Calculate the minutes
     return { hours, minutes };
+};
+
+export const darkModeColor = (isDarkMode) => {
+    const backgroundColor = isDarkMode ? Colors.black : Colors.primary;
+    const textColor = isDarkMode ? Colors.primary : Colors.black;
+    const textBrownColor = isDarkMode ? Colors.primary : '#515452';
+    const backgroundFlipColor = isDarkMode ? '#2E2E2E' : Colors.primary;
+    const textFlipColor = isDarkMode ? Colors.primary : '#446073';
+    const backgroundLiteColor = isDarkMode ? '#787774' : Colors.primary;
+    return { 
+        backgroundColor, textColor, textBrownColor, backgroundFlipColor, textFlipColor, backgroundLiteColor
+    }
 };

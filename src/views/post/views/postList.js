@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 // Custom Imports
 import { selectAllPosts } from "../postSlice";
 import { addNewPost, deleteSpliWiseById, fetchPosts, updatePost } from "../api/postApi";
+import ProgressBar from '../../../components/ProgressWaveBar';
 
 const PostsList = () => {
     const dispatch = useDispatch();
@@ -35,10 +36,17 @@ const PostsList = () => {
         splitWiseListItems: [],
         notes: []
     }
-
+    const progress = 0.6; // Progress value between 0 and 1
+    const progressBarWidth = 200;
+    const progressBarHeight = 20;
     return (
         <View style={{ flex: 1 }}>
-            <ScrollView>
+             <ProgressBar
+        progress={progress}
+        width={progressBarWidth}
+        height={progressBarHeight}
+      />
+            {/* <ScrollView>
                 {posts?.map((post, index) => {
                     const updateSplitWise = {
                         id: post.id,
@@ -58,7 +66,7 @@ const PostsList = () => {
                         </View>
                     )
                 })}
-            </ScrollView>
+            </ScrollView> */}
             <Button title='CREATE' onPress={() => dispatch(addNewPost(newSplitWise))} />
         </View>
     )

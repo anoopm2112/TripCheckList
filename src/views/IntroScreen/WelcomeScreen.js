@@ -52,13 +52,11 @@ const WelcomeScreen = ({ navigation }) => {
                 <View style={Styles.details}>
                     <Text style={Styles.txtStyle}>{EN_IN.trip}</Text>
                     <Text style={Styles.txtStyle}>{EN_IN.checkList}</Text>
-                    <Text style={{ color: COLORS.black, lineHeight: convertHeight(20), marginTop: convertHeight(10) }}>{EN_IN.welcomeSubTitle}</Text>
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => onhandleWelcome()}>
-                        <View style={Styles.btn}>
-                            <Text style={{ fontWeight: 'bold', color: COLORS.black }}>{EN_IN.get_tarted}</Text>
-                        </View>
+                    <Text style={{ color: COLORS.black, lineHeight: convertHeight(20), marginTop: convertHeight(10), fontStyle: 'italic', fontWeight: '500' }}>{EN_IN.welcomeSubTitle}</Text>
+                    <TouchableOpacity style={Styles.btn} activeOpacity={0.8} onPress={() => onhandleWelcome()}>
+                        <Text style={{ fontWeight: 'bold', color: COLORS.black, textTransform: 'uppercase' }}>{EN_IN.get_tarted}</Text>
                     </TouchableOpacity>
-                </View>
+                </View> 
             </ImageBackground>
         </View>
     );

@@ -1,10 +1,13 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Linking } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Linking, StatusBar } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { Transition, Transitioning } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { RESULTS } from 'react-native-permissions';
 import Geolocation from 'react-native-geolocation-service';
+import { useSelector } from 'react-redux';
+import SimpleLineIcons from 'react-native-vector-icons/MaterialIcons';
+import * as Animatable from 'react-native-animatable';
 // Custom Imports
 import TouristPlaces from '../../../common/data/TouristPlaces.json';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -12,6 +15,8 @@ import Colors from '../../../common/Colors';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { locationPermissionCheck, locationPermissionRequest } from '../../../common/utils/permissionUtils';
 import LocationAlertModal from '../../../components/LocationAlertModal';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import UpDownIconAnimation from '../../../components/UpAndDownAnimation';
 
 const transition = (
     <Transition.Together>
@@ -31,13 +36,15 @@ export default function TouristDistrict(props) {
     const [permissionStatus, setPermissionStatus] = useState('');
     const [locationAlertVisible, setLocationAlertVisible] = useState(false);
 
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     const ref = useRef();
     const { i18n, t } = useTranslation();
 
     function selectItemBgColor(index) {
         const items = [
-            { bg: '#F5FFFA', color: '#3F5B98' },
-            { bg: Colors.primary, color: '#3F5B98' }
+            { bg: isDarkMode ? '#797979' : '#F5FFFA', color: isDarkMode ? Colors.primary : '#3F5B98' },
+            { bg: backgroundColor, color: isDarkMode ? Colors.primary : '#3F5B98' }
         ];
         if (index % 2 == 0) { return items[0]; } else { return items[1]; }
     };
@@ -102,7 +109,7 @@ export default function TouristDistrict(props) {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            backgroundColor: '#fff',
+            backgroundColor: backgroundColor,
             justifyContent: 'center',
         },
         cardContainer: {
@@ -114,7 +121,7 @@ export default function TouristDistrict(props) {
             justifyContent: 'center',
         },
         heading: {
-            fontSize: 18,
+            fontSize: 17,
             fontWeight: '900',
             textTransform: 'uppercase',
             textAlign: 'center',
@@ -130,7 +137,7 @@ export default function TouristDistrict(props) {
             marginTop: 10,
         },
         districtHeader: {
-            color: Colors.black,
+            color: textColor,
             fontSize: 22,
             textAlign: 'center',
             fontWeight: 'bold',
@@ -143,7 +150,7 @@ export default function TouristDistrict(props) {
             fontWeight: '900',
             textTransform: 'uppercase',
             letterSpacing: -1,
-            color: Colors.green
+            color: '#0aabf0'
         },
         locationContainer: {
             flexDirection: 'row',
@@ -157,6 +164,7 @@ export default function TouristDistrict(props) {
             ref={ref}
             transition={transition}
             style={styles.container}>
+            <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <Text style={styles.districtHeader}>{t(`Districts:${districtName}`)}</Text>
 
             {TouristPlaces[districtName].map(({ name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI, location }, index) => {
@@ -171,11 +179,16 @@ export default function TouristDistrict(props) {
                         activeOpacity={0.9}
                     >
                         <View style={[styles.card, { backgroundColor: selectItemBgColor(index).bg }]}>
-                            <Text style={[styles.heading, { color: selectItemBgColor(index).color, textDecorationLine: index === currentIndex ? 'underline' : null }]}>{
-                                i18n.language === 'en' ? name :
-                                    i18n.language === 'ml' ? name_ML :
-                                        i18n.language === 'hi' ? name_HI : name_TA
-                            }</Text>
+                            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                <Text style={[styles.heading, { color: selectItemBgColor(index).color, textDecorationLine: index === currentIndex ? 'underline' : null }]}>{
+                                    i18n.language === 'en' ? name :
+                                        i18n.language === 'ml' ? name_ML :
+                                            i18n.language === 'hi' ? name_HI : name_TA
+                                }</Text>
+                                {index !== currentIndex && 
+                                    <UpDownIconAnimation colorValue={selectItemBgColor(index).color}/>
+                                }
+                            </View>
                             {index === currentIndex && (
                                 <View style={styles.noteList}>
                                     <Text key={note} style={[styles.body, { color: selectItemBgColor(index).color }]}>
@@ -189,7 +202,7 @@ export default function TouristDistrict(props) {
                                         <TouchableOpacity
                                             onPress={() => { locationCheckPermission(location); }}
                                             style={styles.locationContainer}>
-                                            <Ionicons name="location" size={15} color={Colors.green} style={{ paddingRight: 2 }} />
+                                            <Ionicons name="location" size={15} color={'#0aabf0'} style={{ paddingRight: 2 }} />
                                             <Text style={styles.locationBtn}>{t('Touristplace:view_location')}</Text>
                                         </TouchableOpacity>}
                                 </View>

@@ -12,6 +12,11 @@ const AssetIconsPack = {
         'Kerala_district_map_en': require('../assets/kerala-map-with-districts-removebg.png'),
         'Kerala_district_map_ta': require('../assets/kerala-map-with-districts-tamil.png'),
 
+        'Kerala_district_map_ml_dark': require('../assets/kerala-map-with-districts-malayalam_dark.png'),
+        'Kerala_district_map_hi_dark': require('../assets/kerala-map-with-districts-hindi_dark.png'),
+        'Kerala_district_map_en_dark': require('../assets/kerala-map-with-districts-dark.png'),
+        'Kerala_district_map_ta_dark': require('../assets/kerala-map-with-districts-tamil_dark.png'),
+
         'keralamap_image': require('../assets/keralamap.png'),
         'tamilnadumap_image': require('../assets/tamilnadumap.png'),
         'karnatakamap': require('../assets/karnatakamap.png'),
@@ -32,7 +37,6 @@ const AssetIconsPack = {
         'arunachalpradeshmap': require('../assets/arunachalpradeshmap.png'),
         'haryanamap': require('../assets/haryanamap.png'),
         'assammap': require('../assets/assammap.png'),
-
         'manipurmap': require('../assets/manipurmap.png'),
         'jkmap': require('../assets/jkmap.png'),
         'rajasthanmap': require('../assets/rajasthanmap.png'),
@@ -46,6 +50,7 @@ const AssetIconsPack = {
         
         // Icons
         'splitwise_empty_icon': require('../assets/92520-money-hand.json'),
+        'money_hand_dark': require('../assets/money_hand_dark.json'),
         'checklist_empty_icon': require('../assets/66350-checklist.json'),
         'add_friends_icon': require('../assets/126331-add-friend.json'),
         'write_up_icon': require('../assets/95434-history.json'),
@@ -59,6 +64,14 @@ const AssetIconsPack = {
         'payment_icon': require('../assets/payment.png'),
         'notepad_icon': require('../assets/notepad.png'),
         'notebook_icon': require('../assets/notebook.png'),
+        'clean_app_data': require('../assets/61502-clean-up-rubbish.json'),
+        'tick_complete': require('../assets/87929-tick.json'),
+        'tick_complete_blue': require('../assets/72594-tick-mark.json'),
+        'checklist_image_about': require('../assets/Checklist_image_about.png'),
+        'money_splitter_aboutus': require('../assets/money_splitter_aboutus.png'),
+        'tourist_spot_about': require('../assets/tourist_spot_about.png'),
+        'cost_planner_about': require('../assets/cost_planner_about.png'),
+        
         
     },
 };

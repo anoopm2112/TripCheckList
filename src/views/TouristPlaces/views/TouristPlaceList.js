@@ -1,16 +1,20 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet, StatusBar, Text } from 'react-native';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { AnimatedText } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
+import Colors from '../../../common/Colors';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function TouristPlaceList(props) {
     const { navigation } = props;
 
     const { t, i18n } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
 
     const handleDistrictPress = (district) => {
         navigation.navigate(ROUTE_KEYS.TOURIST_DISTRICT, { districtName: district });
@@ -23,14 +27,32 @@ export default function TouristPlaceList(props) {
         }
     });
 
+    const { backgroundColor } = darkModeColor(isDarkMode);
+
+    const renderImageKeralaMap = () => {
+        if(i18n.language === 'en' && isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_en_dark
+        } else if (i18n.language === 'en' && !isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_en
+        } else if(i18n.language === 'ml' && isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_ml_dark
+        } else if (i18n.language === 'ml' && !isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_ml
+        } else if(i18n.language === 'hi' && isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_hi_dark
+        } else if (i18n.language === 'hi' && !isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_hi
+        } else if(i18n.language === 'ta' && isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_ta_dark
+        } else if (i18n.language === 'ta' && !isDarkMode) {
+            return AssetIconsPack.icons.Kerala_district_map_ta
+        }
+    }
+
     return (
         <View>
-            <StatusBar backgroundColor={'#FFFFFF'} barStyle='dark-content' />
-            <Image resizeMode='stretch' source={
-                i18n.language === 'en' ? AssetIconsPack.icons.Kerala_district_map_en :
-                    i18n.language === 'ml' ? AssetIconsPack.icons.Kerala_district_map_ml :
-                        i18n.language === 'hi' ? AssetIconsPack.icons.Kerala_district_map_hi : AssetIconsPack.icons.Kerala_district_map_ta
-            }
+            <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+            <Image resizeMode='stretch' source={renderImageKeralaMap()}
                 style={{ width: '100%', height: '100%', backgroundColor: '#FFFFFF' }} />
 
             {/* Clickable areas for each district */}
@@ -108,7 +130,7 @@ export default function TouristPlaceList(props) {
 
             {/* OTHER ITEMS IN SCREEN */}
             <View style={{ position: 'absolute', top: 15, left: 100, width: 300, height: 75 }}>
-                <Text style={{ color: '#6e6c6a', fontSize: 32, fontWeight: 'bold', textAlign: 'center' }}>
+                <Text style={{ color: isDarkMode ? Colors.primary : '#6e6c6a', fontSize: 32, fontWeight: 'bold', textAlign: 'center' }}>
                     {t('Touristplace:kerala')}
                 </Text>
                 <AnimatedText label={'Touristplace:district_info'} />

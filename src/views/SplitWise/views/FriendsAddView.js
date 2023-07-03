@@ -4,7 +4,7 @@ import Lottie from 'lottie-react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import { useIsFocused } from '@react-navigation/native';
 // Custom Imports
@@ -14,6 +14,7 @@ import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtil
 import { addNewSplitwises } from '../api/SplitWiseApi';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { SubItemSplitWise, List, Input, Button } from '../../../components';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function FriendsAddView(props) {
   const { navigation } = props;
@@ -21,6 +22,9 @@ export default function FriendsAddView(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const isFocused = useIsFocused();
+
+  const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+  const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
   const youObj = {
     id: uuidv4(),
@@ -129,7 +133,7 @@ export default function FriendsAddView(props) {
   const styles = StyleSheet.create({
     mainContainer: {
       flex: 1,
-      backgroundColor: COLORS.primary
+      backgroundColor: backgroundColor
     },
     subContainer: {
       justifyContent: 'center',
@@ -160,12 +164,15 @@ export default function FriendsAddView(props) {
       <View style={styles.addFrendsContainer}>
         <Input
           placeholder={t('Splitwise:input_placeholder')}
-          textStyle={{ height: convertHeight(35) }}
+          textStyle={{ height: convertHeight(35), color: textColor }}
           onChangeText={nextValue => {
             setSplitTitleValue(nextValue);
             setSplitTitleValTextInput(false);
-          }} 
-          style={{ paddingBottom: splitTitleValTextInput ? convertHeight(0): convertHeight(10) }}  
+          }}
+          style={{ 
+            paddingBottom: splitTitleValTextInput ? convertHeight(0): convertHeight(10),
+            backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' 
+          }}  
         />
       </View>
       {splitTitleValTextInput && <Text style={[styles.errortxt, { paddingBottom: convertHeight(10) }]}>{t('Splitwise:input_val')}</Text>}
@@ -174,18 +181,19 @@ export default function FriendsAddView(props) {
         <Input
           ref={textInputRef}
           placeholder={t('Splitwise:add_friends')}
-          textStyle={{ height: convertHeight(35) }}
+          textStyle={{ height: convertHeight(35), color: textColor }}
           onChangeText={nextValue => {
             setValue(nextValue);
             setValTextInput(false);
           }}
+          style={{ backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' }}
           accessoryRight={<TouchableOpacity onPress={() => { onHandleAddFriends() }}>
             <AntDesign name="plussquare" size={convertHeight(20)} color={COLORS.tertiary} />
           </TouchableOpacity>} />
       </View>
       {valTextInput && <Text style={styles.errortxt}>{t('Splitwise:validation_add_friends')}</Text>}
 
-      <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(6), backgroundColor: COLORS.primary }} />
+      <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(6), backgroundColor: backgroundColor }} />
 
       {!isKeyboardVisible && <Button onPress={() => { onSubmitAddFriends() }} style={styles.submitBtn}>{t('Common:submit')}</Button>}
     </View>

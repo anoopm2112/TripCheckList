@@ -4,12 +4,14 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 // Custom Imports
 import COLORS from '../common/Colors';
 import { localTimeConvertion } from '../common/utils/timeDateUtils';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
 import CustomPopup from './CustomPopup';
+import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 export default function MainItemListCardView(props) {
     const { item, removeParticularItem, navigationToNext, navigationToEdit, history } = props;
@@ -17,6 +19,9 @@ export default function MainItemListCardView(props) {
     const [randomImage, setRandomImage] = useState('');
     const [alertVisible, setAlertVisible] = useState(false);
     const { t } = useTranslation();
+
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const renderImage = () => {
         const myImages = [
@@ -37,8 +42,10 @@ export default function MainItemListCardView(props) {
             marginHorizontal: convertHeight(10),
             marginVertical: convertHeight(5),
             elevation: 5,
-            backgroundColor: COLORS.primary,
-            borderRadius: 3
+            backgroundColor: backgroundColor,
+            borderRadius: 3,
+            borderWidth: 0.5,
+            borderColor: COLORS.primary
         },
         deleteBtnContainer: {
             backgroundColor: 'red',
@@ -59,7 +66,7 @@ export default function MainItemListCardView(props) {
             borderTopLeftRadius: 8
         },
         titleTxt: {
-            color: COLORS.black,
+            color: textColor,
             fontWeight: 'bold',
             width: convertWidth(290),
             paddingLeft: convertWidth(7)
@@ -83,8 +90,8 @@ export default function MainItemListCardView(props) {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Text style={Styles.titleTxt}>{item.title}</Text>
                     <View style={Styles.itemsContainer}>
-                        <Text style={{ color: COLORS.black, fontSize: convertHeight(8) }}>{t('Common:items')}</Text>
-                        <Text style={{ color: COLORS.black, fontWeight: 'bold', fontSize: convertHeight(20) }}>{item.checkListItems.length}</Text>
+                        <Text style={{ color: textColor, fontSize: convertHeight(8) }}>{t('Common:items')}</Text>
+                        <Text style={{ color: textColor, fontWeight: 'bold', fontSize: convertHeight(20) }}>{item.checkListItems.length}</Text>
                     </View>
                 </View>
 
@@ -95,7 +102,7 @@ export default function MainItemListCardView(props) {
                         </TouchableOpacity>
                         <View style={{ alignItems: 'center' }}>
                             <Ionicons name="alarm" size={convertHeight(15)} color={COLORS.tertiary} />
-                            <Text style={{ color: COLORS.black, fontSize: convertHeight(10), fontWeight: 'bold' }}>
+                            <Text style={{ color: textColor, fontSize: convertHeight(10), fontWeight: 'bold' }}>
                                 {localTimeConvertion(item.ReminderTime)}
                             </Text>
                         </View>

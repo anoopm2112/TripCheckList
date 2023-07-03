@@ -3,7 +3,7 @@ import React, { useState, useCallback } from 'react';
 import { launchCamera } from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
 import moment from 'moment';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 // Other files
 import { dataItem, dataItemML, dataItemHI, dataItemTA } from '../../../common/Itemdata';
@@ -13,6 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
@@ -20,6 +21,8 @@ export default function CheckListAddView(props) {
 
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     // State
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
@@ -146,7 +149,8 @@ export default function CheckListAddView(props) {
     };
 
     const renderToggleButton = () => (
-        <Button accessoryRight={<MaterialIcons name="add-task" size={convertHeight(16)} color={COLORS.primary} />} style={styles.addTask}
+        <Button accessoryRight={<MaterialIcons name="add-task" size={convertHeight(16)} color={COLORS.primary} />} 
+            style={styles.addTask}
             onPress={() => {
                 setToolTipVisible(false);
                 onSubmitCheckList();
@@ -167,8 +171,7 @@ export default function CheckListAddView(props) {
         addTask: {
             backgroundColor: 'green',
             borderColor: 'green',
-            width: '48%',
-            height: '80%'
+            width: convertWidth(150)
         }
     });
 
@@ -181,7 +184,6 @@ export default function CheckListAddView(props) {
                     value={displayValue}
                     selectedIndex={selectedIndex}
                     onSelect={index => setSelectedIndex(index)}>
-                    {/* {dataItem.map(renderOption)} */}
                     {
                         i18n.language === 'en' ? dataItem.map(renderOption) :
                             i18n.language === 'ml' ? dataItemML.map(renderOption) :
@@ -189,10 +191,15 @@ export default function CheckListAddView(props) {
                     }
                 </Select>
 
-                {selectedIndex == 4 && <View style={{ margin: 2 }}>
+                {selectedIndex == 4 && <View>
                     <Input
                         placeholder='Other Item'
                         value={value}
+                        textStyle={{ color: textColor }}
+                        style={{ 
+                            paddingTop: convertHeight(10),
+                            backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' 
+                        }}
                         onChangeText={nextValue => {
                             setValue(nextValue);
                             setValTextInput(false);
@@ -200,13 +207,13 @@ export default function CheckListAddView(props) {
                 </View>}
 
                 <View style={styles.counterContainer}>
-                    <Button style={{ backgroundColor: 'white', borderColor: COLORS.validation }}
+                    <Button style={{ backgroundColor: backgroundColor, borderColor: COLORS.validation }}
                         accessoryRight={<MaterialIcons name="remove-circle" size={20} color={COLORS.validation} />}
                         appearance='outline'
                         onPress={() => reduceCounterFun()}>
                     </Button>
-                    <Text style={{ fontWeight: 'bold', color: COLORS.black }}>{counter} {displayValue}</Text>
-                    <Button style={{ backgroundColor: 'white', borderColor: 'green' }}
+                    <Text style={{ fontWeight: 'bold', color: textColor }}>{counter} {displayValue}</Text>
+                    <Button style={{ backgroundColor: backgroundColor, borderColor: 'green' }}
                         accessoryRight={<MaterialIcons name="add-circle" size={convertHeight(16)} color="green" />}
                         appearance='outline'
                         onPress={() => setCounter(counter + 1)}>
@@ -217,7 +224,7 @@ export default function CheckListAddView(props) {
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Button
                         accessoryRight={<MaterialIcons name="photo-camera" size={convertHeight(16)} color={COLORS.primary} />}
-                        style={{ backgroundColor: 'orange', borderColor: 'orange', width: '48%', height: '80%' }}
+                        style={{ backgroundColor: 'orange', borderColor: 'orange', width: convertWidth(180) }}
                         onPress={() => openCamera()}>
                         {t('checklist:take_picture')}
                     </Button>
@@ -231,9 +238,11 @@ export default function CheckListAddView(props) {
                     </Tooltip>
                 </View>
             </View>
-            <List numColumns={2} data={localArrayData} renderItem={renderItem} />
+            <List style={{ backgroundColor: backgroundColor }} numColumns={2} data={localArrayData} renderItem={renderItem} />
 
-            <Button disabled={localArrayData.length === 0} style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary }} onPress={() => onRealmAdding()}>{t('Common:submit')}</Button>
+            <View style={{ padding: convertHeight(10) }}>
+                <Button disabled={localArrayData.length === 0} style={{ backgroundColor: COLORS.secondary, borderColor: COLORS.secondary }} onPress={() => onRealmAdding()}>{t('Common:submit')}</Button>
+            </View>
         </View>
     );
 }

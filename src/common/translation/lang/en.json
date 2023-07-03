@@ -9,11 +9,12 @@
             "history": "HISTORY",
             "settings": "SETTINGS",
             "tourist_places": "TOURIST PLACES",
-            "costPlanner": "COST PLANNER"
+            "costPlanner": "COST PLANNER",
+            "additional_info": "ADDITIONAL INFO"
         }
     },
     "Splitwise": {
-        "split_info": "'Add new money split' refers to the allocation of newly created money within an economy. It involves distributing the funds among different sectors or participants, guided by monetary policy objectives. The goal is to stimulate economic activity and maintain price stability.",
+        "split_info": "The Money split simplifies expense management and promotes financial fairness among friends.",
         "add_new_split": "ADD NEW SPLIT",
         "remove_all_data": "REMOVE ALL",
         "splitlist_info": "To access more actions, swipe the card in either direction.",
@@ -52,7 +53,12 @@
     "Settings": {
         "setting": "SETTINGS",
         "changelanguage": "CHANGE LANGUAGE",
-        "theme": "THEME"
+        "theme": "THEME",
+        "dark": "Dark",
+        "light": "Light",
+        "data_cleaning": "Data Cleaning...",
+        "clear_all_data": "CLEAR ALL DATA",
+        "clear_all_val": "Do you want to erase all data related to the app?"
     },
     "Languages": {
         "Tamil": "தமிழ்",
@@ -74,7 +80,8 @@
         "close": "Close",
         "reset": "Reset",
         "remove_all_data": "REMOVE ALL",
-        "items": "ITEMS"
+        "items": "ITEMS",
+        "done": "DONE"
     },
     "checklist": {
         "info": "Gather all necessary materials and supplies. Review and revise the checklist as needed to ensure accuracy and efficiency. Enjoy your journey!!!",
@@ -84,7 +91,7 @@
         "input_placeholder": "Write something about your trip...",
         "item_missing": "Item Missing, To continue with missing item, Please click on check box",
         "take_picture": "Take Item Picture",
-        "add_item_to_list": "Please add item to your list",
+        "add_item_to_list": "Add item to list",
         "header": {
             "Add_Checklist": "ADD CHECKLIST",
             "Add_Checklist_Items": "ADD CHECKLIST ITEMS"
@@ -163,5 +170,8 @@
         "mileage_val": "Please enter Mileage",
         "distance_val": "Please enter Distance",
         "cost_val": "Please enter Cost"
+    },
+    "AboutUs": {
+        "AboutUs": "About Us"
     }
 }

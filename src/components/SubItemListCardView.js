@@ -1,18 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useSelector } from 'react-redux';
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import COLORS from '../common/Colors';
 import CustomFlipView from './CustomFlipView';
+import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 export default function SubItemListCardView(props) {
     const { item, index, checkItem, onModalOpenFun, renderItemAccessory } = props;
 
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundFlipColor, textColor } = darkModeColor(isDarkMode);
+
     const Styles = StyleSheet.create({
         mainContainer: {
             elevation: 5,
-            backgroundColor: COLORS.primary,
+            backgroundColor: backgroundFlipColor,
             borderRadius: 5,
             margin: convertHeight(4),
             alignItems: 'center',
@@ -38,7 +43,7 @@ export default function SubItemListCardView(props) {
                 <TouchableOpacity onPress={() => { onModalOpenFun && onModalOpenFun(item.image) }}>
                     <FontAwesome name="picture-o" size={24} color={item.image ? "black" : COLORS.info} />
                 </TouchableOpacity>
-                <Text style={{ color: COLORS.black, fontWeight: 'bold', fontSize: convertHeight(12) }}>{item.item}</Text>
+                <Text style={{ color: textColor, fontWeight: 'bold', fontSize: convertHeight(12) }}>{item.item}</Text>
                 {checkItem && checkItem(item, index)}
                 {renderItemAccessory && renderItemAccessory(item.id)}
             </View>

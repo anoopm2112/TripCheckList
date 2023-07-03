@@ -3,9 +3,13 @@ import { StyleSheet, Text, View, Image, Dimensions, Animated, StatusBar, Touchab
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation, withTranslation } from "react-i18next";
+import { useSelector, connect } from 'react-redux';
 import data from '../../../common/data/MapDetails';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { ROUTE_KEYS } from '../../../navigation/constants';
+import Colors from '../../../common/Colors';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 
 const { width, height } = Dimensions.get('window');
 const LOGO_WIDTH = 220;
@@ -52,6 +56,7 @@ const Circle = ({ scrollX }) => {
 
 const Ticker = ({ scrollX }) => {
     const { i18n } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const inputRange = [-width, 0, width];
     const translateY = scrollX.interpolate({
         inputRange,
@@ -62,7 +67,10 @@ const Ticker = ({ scrollX }) => {
             <Animated.View style={{ transform: [{ translateY }] }}>
                 {data.map(({ type, type_kl, type_hi, type_ta }, index) => {
                     return (
-                        <Text key={index} style={[(i18n.language === 'en' || i18n.language === 'hi') ? styles.tickerText : styles.tickerText_ta_ml]}>
+                        <Text key={index} style={[(i18n.language === 'en' || i18n.language === 'hi') ? [
+                            styles.tickerText, { color: isDarkMode ? Colors.primary : '#444' }] :
+                            [styles.tickerText_ta_ml, { color: isDarkMode ? Colors.primary : '#444' }]
+                        ]}>
                             {
                                 i18n.language === 'en' ? type :
                                     i18n.language === 'ml' ? type_kl :
@@ -74,6 +82,12 @@ const Ticker = ({ scrollX }) => {
             </Animated.View>
         </View>
     );
+};
+
+const mapStateToProps = (state) => {
+    return {
+        isDarkModeData: state?.settings?.isDarkMode
+    };
 };
 
 class Item extends Component {
@@ -111,11 +125,13 @@ class Item extends Component {
             outputRange: [0, 1, 0],
         });
 
+        // const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+
         return (
             <View style={styles.itemStyle}>
                 <Animated.Image source={imageUri} style={[styles.imageStyle, { transform: [{ scale }] }]} />
                 <View style={styles.textContainer}>
-                    <Animated.Text style={[styles.heading, { opacity, transform: [{ translateX: translateXHeading }] }]}>
+                    <Animated.Text style={[styles.heading, { color: this.props.isDarkModeData ? Colors.primary : '#444', opacity, transform: [{ translateX: translateXHeading }] }]}>
                         {/* {heading} */}
                         {
                             i18n.language === 'en' ? heading :
@@ -200,17 +216,20 @@ export default function App(props) {
     };
 
     const ItemWithTranslation = withTranslation()(Item);
+    const ItemConnect = connect(mapStateToProps)(ItemWithTranslation);
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     return (
-        <View style={styles.container}>
-            <StatusBar backgroundColor={'#FFF'} barStyle={'dark-content'} />
+        <View style={[styles.container, { backgroundColor: isDarkMode ? Colors.black : Colors.primary }]}>
+            <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <Circle scrollX={scrollX} />
             <Animated.FlatList
                 ref={flatListRef}
                 keyExtractor={(item) => item.key}
                 data={data}
                 renderItem={({ item, index }) => (
-                    <ItemWithTranslation {...item} index={index} scrollX={scrollX} navigation={navigation} />
+                    <ItemConnect {...item} index={index} scrollX={scrollX} navigation={navigation} />
                 )}
                 pagingEnabled
                 showsHorizontalScrollIndicator={false}
@@ -224,12 +243,12 @@ export default function App(props) {
             {/* <Button title="Scroll to Last Item" onPress={scrollToLastItem} /> */}
             <Image style={styles.logo} source={AssetIconsPack.icons.app_logo_side_image} />
             <TouchableOpacity onPress={() => scrollToFirstItem()}
-                style={[styles.fastForward, { backgroundColor: 'red', left: 20, bottom: 240 }]}>
-                <MaterialCommunityIcons name="rewind-outline" size={24} color="#FFFFFF" />
+                style={[styles.fastForward, { left: 5, top: 230 }]}>
+                <MaterialCommunityIcons name="chevron-double-left" size={34} color={textColor} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => scrollToLastItem()}
-                style={[styles.fastForward, { backgroundColor: 'green', left: 80, bottom: 240 }]}>
-                <MaterialCommunityIcons name="fast-forward-outline" size={24} color="#FFFFFF" />
+                style={[styles.fastForward, { right: 5, top: 230 }]}>
+                <MaterialCommunityIcons name="chevron-double-right" size={34} color={textColor} />
             </TouchableOpacity>
             {/* <Pagination scrollX={scrollX} /> */}
             <Ticker scrollX={scrollX} />
@@ -239,8 +258,7 @@ export default function App(props) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#FFF'
+        flex: 1
     },
     itemStyle: {
         width,
@@ -260,7 +278,6 @@ const styles = StyleSheet.create({
         flex: 0.5,
     },
     heading: {
-        color: '#444',
         textTransform: 'uppercase',
         fontSize: 22,
         fontWeight: '800',
@@ -298,10 +315,10 @@ const styles = StyleSheet.create({
         opacity: 0.9,
         resizeMode: 'contain',
         position: 'absolute',
-        right: 25,
-        bottom: 295,
-        width: 50,
-        height: 50,
+        right: convertWidth(25),
+        bottom: convertHeight(65),
+        width: convertHeight(40),
+        height: convertHeight(40),
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
@@ -359,7 +376,6 @@ const styles = StyleSheet.create({
         lineHeight: TICKER_HEIGHT,
         textTransform: 'uppercase',
         fontWeight: '800',
-        color: '#444'
     },
     tickerText_ta_ml: {
         fontSize: 25,

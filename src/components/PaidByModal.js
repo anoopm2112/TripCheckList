@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 import Colors from '../common/Colors';
+import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 const ICON_SIZE = 42;
 const ITEM_HEIGHT = ICON_SIZE * 2;
@@ -30,30 +32,36 @@ const Item = React.memo(({ icon, color, name, showText }) => {
 
 const ConnectWithText = React.memo(() => {
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const textColor = isDarkMode ? Colors.primary : Colors.black;
     return (
         <View style={styles.connectionWithTextContainer}>
-            <Text style={styles.connectionWithTextStyle}>{t('PaidBy:payer')}</Text>
+            <Text style={[styles.connectionWithTextStyle, { color: textColor }]}>{t('PaidBy:payer')}</Text>
         </View>
     );
 });
 
 const ConnectButton = React.memo(({ onPress }) => {
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     return (
         <View style={{ position: 'absolute', top: height / 2 + ITEM_HEIGHT / 2, paddingHorizontal: 14 }}>
-            <View style={{ height: ITEM_HEIGHT * 2, width: 4, backgroundColor: Colors.black }} />
-            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={styles.connectBtnStyle}>
-                <Text style={{ fontSize: 32, fontWeight: '800', color: '#FFF' }}>{t('PaidBy:paidBy')}</Text>
+            <View style={{ height: ITEM_HEIGHT * 2, width: 4, backgroundColor: textColor }} />
+            <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[styles.connectBtnStyle, { backgroundColor: textColor }]}>
+                <Text style={{ fontSize: 32, fontWeight: '800', color: backgroundColor }}>{t('PaidBy:paidBy')}</Text>
             </TouchableOpacity>
         </View>
     );
 });
 
 const ConnectCloseButton = React.memo(({ onPress }) => {
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const textColor = isDarkMode ? Colors.primary : Colors.black;
     return (
         <View style={{ position: 'absolute', top: 20, left: 20 }}>
             <TouchableOpacity onPress={onPress}>
-                <MaterialCommunityIcons name="close-circle-outline" size={34} color="black" />
+                <MaterialCommunityIcons name="close-circle-outline" size={34} color={textColor} />
             </TouchableOpacity>
         </View>
     );
@@ -102,6 +110,9 @@ const List = React.memo(
 
 export default function NoteModal(props) {
     const { visible, onClose, value, onSubmitCheckList } = props;
+
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const newData = value.map((obj) => {
         return {
@@ -165,12 +176,12 @@ export default function NoteModal(props) {
                 visible={showView}
                 onRequestClose={() => { onClose(); }}>
                 <>
-                    <View style={styles.container}>
+                    <View style={[styles.container, { backgroundColor: backgroundColor }]}>
 
                         <ConnectWithText />
                         <List
                             ref={yellowRef}
-                            color={Colors.black}
+                            color={textColor}
                             style={StyleSheet.absoluteFillObject}
                             onScroll={onScroll}
                             onItemIndexChange={onItemIndexChange}
@@ -179,9 +190,9 @@ export default function NoteModal(props) {
                         <List
                             ref={darkRef}
                             valueData={newData}
-                            color={'#FFF'}
+                            color={backgroundColor}
                             showText
-                            style={styles.connectionListStyle}
+                            style={[styles.connectionListStyle, { backgroundColor: textColor }]}
                         />
                         <ConnectButton onPress={onConnectPress} />
                         <ConnectCloseButton onPress={() => { onClose(); }} />
@@ -198,7 +209,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         paddingTop: StatusBar.currentHeight,
-        backgroundColor: '#FFF',
     },
     paragraph: {
         margin: 24,
@@ -224,20 +234,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: 14
     },
     connectionWithTextStyle: {
-        color: Colors.black,
         fontSize: 20,
         fontWeight: '700'
     },
     connectBtnStyle: {
         paddingVertical: 10,
         paddingHorizontal: 12,
-        backgroundColor: Colors.black,
         alignItems: 'center',
         justifyContent: 'center'
     },
     connectionListStyle: {
         position: 'absolute',
-        backgroundColor: Colors.black,
         width,
         height: ITEM_HEIGHT,
         top: height / 2 - ITEM_HEIGHT / 2,

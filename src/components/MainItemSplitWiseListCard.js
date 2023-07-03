@@ -14,7 +14,7 @@ import { useTranslation } from "react-i18next";
 // Custom Import
 import COLORS from '../common/Colors';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
-import { getAddedAmountArray } from '../common/utils/arrayObjectUtils';
+import { darkModeColor, getAddedAmountArray } from '../common/utils/arrayObjectUtils';
 import { htmltable } from '../common/pdfView';
 import InvoiceModal from './InvoiceModal';
 import { deleteNoteById, fetchNotes, updateSplitwise } from '../views/SplitWise/api/SplitWiseApi';
@@ -31,6 +31,9 @@ export default function MainItemSplitWiseListCard(props) {
     const isFocuesd = useIsFocused();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const [pdfModalVisible, setPdfModalVisible] = useState(false);
     const [generateBillLocation, setGenerateBillLocation] = useState('');
@@ -51,11 +54,11 @@ export default function MainItemSplitWiseListCard(props) {
     const styles = StyleSheet.create({
         listItemContainer: {
             elevation: 5,
-            backgroundColor: COLORS.primary,
+            backgroundColor: backgroundColor,
             alignItems: 'center',
             height: convertHeight(80),
             borderBottomWidth: 2,
-            borderBottomColor: '#e5e5e5'
+            borderBottomColor: isDarkMode ? '#2E2E2E' : '#e5e5e5'
         },
         editBtnContainer: {
             backgroundColor: 'green',
@@ -74,7 +77,7 @@ export default function MainItemSplitWiseListCard(props) {
         label: {
             textAlign: 'center',
             fontWeight: 'bold',
-            color: COLORS.black,
+            color: textColor,
             fontSize: convertHeight(20)
         },
         labelContainer: {
@@ -85,7 +88,7 @@ export default function MainItemSplitWiseListCard(props) {
         subItemContainer: {
             padding: convertHeight(5),
             margin: convertWidth(10),
-            backgroundColor: COLORS.primary,
+            backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary,
             elevation: 5,
             width: convertWidth(160),
             justifyContent: 'center',
@@ -96,7 +99,7 @@ export default function MainItemSplitWiseListCard(props) {
             fontSize: convertHeight(12),
             fontWeight: 'bold',
             padding: convertHeight(3),
-            color: COLORS.black
+            color: textColor
         },
         actionBox: {
             justifyContent: 'center',
@@ -105,7 +108,7 @@ export default function MainItemSplitWiseListCard(props) {
             height: convertHeight(80),
         },
         splitTile: { 
-            color: Colors.black, 
+            color: textColor, 
             textAlign: 'center',
             fontWeight: '800',
             textTransform: 'uppercase'
@@ -118,7 +121,7 @@ export default function MainItemSplitWiseListCard(props) {
         return (
             <TouchableOpacity activeOpacity={10} style={styles.subItemContainer}>
                 <Text style={styles.bottomScroll}>{item.name} {t('Splitwise:paid_total')}</Text>
-                <Text style={[styles.bottomScroll, { color: COLORS.black, fontSize: convertHeight(15) }]}>{item.paid} RS</Text>
+                <Text style={[styles.bottomScroll, { color: textColor, fontSize: convertHeight(15) }]}>{item.paid} RS</Text>
                 <Text style={{
                     fontSize: convertHeight(12), fontWeight: 'bold', padding: convertHeight(3),
                     color: Math.sign(balance) == 1 ? '#3CE911' : Math.sign(balance) == 0 ? COLORS.tertiary : COLORS.validation
@@ -154,8 +157,8 @@ export default function MainItemSplitWiseListCard(props) {
                 swipeableRef.current.close();
             }} activeOpacity={0.6}>
                 <View style={[styles.actionBox, { backgroundColor: props.backgroundColor }]}>
-                    <MaterialIcons name={props.iconname} size={convertHeight(20)} color="white" />
-                    <Animated.Text style={{ textAlign: 'center', transform: [{ scale: props.scale }] }}>
+                    <MaterialIcons name={props.iconname} size={convertHeight(20)} color={props.iconColor} />
+                    <Animated.Text style={{ fontWeight: '500', textTransform: 'uppercase', fontSize: 12, paddingTop: 5, textAlign: 'center', color: props.iconColor, transform: [{ scale: props.scale }] }}>
                         {t(props.name)}
                     </Animated.Text>
                 </View>
@@ -185,10 +188,10 @@ export default function MainItemSplitWiseListCard(props) {
         const scale = dragX.interpolate({ inputRange: [0, 50, 100, 101], outputRange: [-20, 0, 0, 1], extrapolate: 'clamp' });
         return (
             <View style={{ flexDirection: 'row' }}>
-                <ButtonComponent
+                <ButtonComponent iconColor={Colors.primary}
                     iconname={'remove-red-eye'} onPressHandler={() => refRBSheet.current.open()}
                     backgroundColor={COLORS.secondary} name={'Splitwise:view_split'} scale={scale} />
-                <ButtonComponent
+                <ButtonComponent iconColor={Colors.primary}
                     iconname={'notes'} onPressHandler={() => {
                         setModalVisible(true)
                         setNoteType(false)
@@ -202,18 +205,18 @@ export default function MainItemSplitWiseListCard(props) {
         const scale = dragX.interpolate({ inputRange: [0, 100], outputRange: [1, 0], extrapolate: 'clamp' });
         return (
             <View style={{ flexDirection: 'row' }}>
-                <ButtonComponent
+                <ButtonComponent iconColor={Colors.primary}
                     iconname={'add-box'} onPressHandler={() => navigationToEdit()}
                     backgroundColor={COLORS.tertiary} name={'Splitwise:add_split'} scale={scale} />
-                <ButtonComponent
+                <ButtonComponent iconColor={Colors.primary}
                     iconname={'create'} onPressHandler={() => {
                         setModalVisible(true)
                         setNoteType(true)
                     }}
-                    backgroundColor={COLORS.green} name={'Splitwise:add_notes'} scale={scale} />
+                    backgroundColor={'#90EE90'} name={'Splitwise:add_notes'} scale={scale} />
                 <ButtonComponent
-                    iconname={'delete'} onPressHandler={() => tryTodelete(item)}
-                    backgroundColor={COLORS.validation} name={'Common:delete'} scale={scale} />
+                    iconname={'delete'} iconColor={Colors.validation} onPressHandler={() => tryTodelete(item)}
+                    backgroundColor={'#FFCCCB'} name={'Common:delete'} scale={scale} />
                 <CustomPopup
                     title={'Common:deleteItem'} message={'Common:please_confirm'}
                     visible={alertVisible} onClose={() => setAlertVisible(false)}
@@ -237,15 +240,15 @@ export default function MainItemSplitWiseListCard(props) {
                         <MaterialIcons name={'keyboard-arrow-left'} size={convertHeight(20)} color="#b5b5b5" style={{ paddingLeft: convertWidth(5) }} />
                     </Animatable.View>
                     <View style={styles.labelContainer}>
-                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:grand_total')}</Text>
+                        <Text style={{ fontSize: convertHeight(10), color: textColor }}>{t('Splitwise:grand_total')}</Text>
                         <Text style={styles.label}>{item.totalAmount}</Text>
                     </View>
                     <View style={styles.labelContainer}>
-                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black }}>{t('Splitwise:members')}</Text>
+                        <Text style={{ fontSize: convertHeight(10), color: textColor }}>{t('Splitwise:members')}</Text>
                         <Text style={styles.label}>{item.members.length}</Text>
                     </View>
                     <View style={styles.labelContainer}>
-                        <Text style={{ fontSize: convertHeight(10), color: COLORS.black, textAlign: 'center' }}>{t('Splitwise:added_notes')}</Text>
+                        <Text style={{ fontSize: convertHeight(10), color: textColor, textAlign: 'center' }}>{t('Splitwise:added_notes')}</Text>
                         <Text style={styles.label}>{item.notes.length}</Text>
                     </View>
                     <Animatable.View animation="slideInRight">
@@ -253,9 +256,10 @@ export default function MainItemSplitWiseListCard(props) {
                     </Animatable.View>
                 </View>
             </View>
-            <RBSheet height={convertHeight(220)} ref={refRBSheet} closeOnDragDown={true} closeOnPressMask={false}
-                customStyles={{ draggableIcon: { backgroundColor: COLORS.black } }}>
-                <List horizontal data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
+            <RBSheet height={convertHeight(220)} ref={refRBSheet} 
+                closeOnDragDown={true}
+                customStyles={{ draggableIcon: { backgroundColor: textColor }, container: { backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary } }}>
+                <List style={{ backgroundColor: backgroundColor }} horizontal data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
                 <Button disabled={item?.splitWiseListItems.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>{t('Splitwise:generate_view_nvoice')}</Button>
             </RBSheet>
             <InvoiceModal

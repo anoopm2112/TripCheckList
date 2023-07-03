@@ -6,7 +6,6 @@ export const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
         padding: convertHeight(8),
-        backgroundColor: COLORS.primary
     },
     counterContainer: {
         justifyContent: 'space-between',
@@ -47,7 +46,6 @@ export const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     txtNameContainer: {
-        color: COLORS.black,
         flex: 0.5,
         textAlign: 'center'
     },

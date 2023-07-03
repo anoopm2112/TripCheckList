@@ -7,10 +7,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNetInfo } from "@react-native-community/netinfo";
+import { useSelector } from 'react-redux';
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import Colors from '../common/Colors';
-import { calculateTravelTime, getDistance } from '../common/utils/arrayObjectUtils';
+import { calculateTravelTime, darkModeColor, getDistance } from '../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../assets/IconProvide';
 import AnimatedText from './AnimatedText';
 import { t } from 'i18next';
@@ -24,6 +25,9 @@ const LocationMapView = (props) => {
     const [mapTypeView, setMapType] = useState(false);
     const mapViewRef = useRef();
     const netInfo = useNetInfo();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+
+    const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     function getCoordinates() {
         const url = `https://www.google.com/maps/dir/?api=1&destination=${props?.currentPlaceLoc?.lat},${props?.currentPlaceLoc?.long}&travelmode=driving`;
@@ -56,13 +60,13 @@ const LocationMapView = (props) => {
             height: convertHeight(42)
         },
         textStyle: {
-            color: Colors.primary,
+            color: backgroundColor,
             fontWeight: '800'
         },
         myLocationIcon: {
             width: convertWidth(45),
             height: convertHeight(40),
-            backgroundColor: Colors.primary,
+            backgroundColor: backgroundColor,
             position: "absolute",
             justifyContent: 'center',
             alignItems: 'center',
@@ -74,7 +78,7 @@ const LocationMapView = (props) => {
         layerIcon: {
             width: convertWidth(45),
             height: convertHeight(40),
-            backgroundColor: Colors.primary,
+            backgroundColor: backgroundColor,
             position: "absolute",
             justifyContent: 'center',
             alignItems: 'center',
@@ -86,10 +90,12 @@ const LocationMapView = (props) => {
         bottomCardViewContainer: {
             marginVertical: 10,
             marginHorizontal: 20,
-            backgroundColor: Colors.primary,
+            backgroundColor: backgroundColor,
             height: convertHeight(40),
             borderRadius: 5,
-            elevation: 2
+            elevation: 2,
+            borderColor: Colors.primary,
+            borderWidth: 0.5
         },
         cardViewItemContainer: {
             flexDirection: 'row',
@@ -132,11 +138,11 @@ const LocationMapView = (props) => {
 
                         <TouchableOpacity activeOpacity={0.5} onPress={() => gotToMyLocation()}
                             style={styles.myLocationIcon}>
-                            <MaterialIcons name="my-location" size={convertHeight(24)} color={Colors.black} />
+                            <MaterialIcons name="my-location" size={convertHeight(24)} color={textColor} />
                         </TouchableOpacity>
 
                         <TouchableOpacity onPress={() => { setMapType(!mapTypeView); }} style={styles.layerIcon}>
-                            <MaterialIcons name="layers" size={convertHeight(24)} color={Colors.black} />
+                            <MaterialIcons name="layers" size={convertHeight(24)} color={textColor} />
                         </TouchableOpacity>
                     </View>
 
@@ -149,12 +155,12 @@ const LocationMapView = (props) => {
 
                             <View style={styles.cardViewItemContainer}>
                                 <MaterialIcons name="location-pin" size={18} color={Colors.green} />
-                                <Text style={{ color: Colors.black, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
+                                <Text style={{ color: textColor, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
                             </View>
                             <FontAwesome5 name="directions" size={24} color={Colors.tertiary} />
                             <View style={styles.cardViewItemContainer}>
                                 <Ionicons name="time-sharp" size={18} color={Colors.secondary} />
-                                <Text style={{ color: Colors.black, fontWeight: '500', paddingLeft: 2 }}>
+                                <Text style={{ color: textColor, fontWeight: '500', paddingLeft: 2 }}>
                                     {
                                         hourTime.hours !== 0 ?
                                             `${hourTime.hours}:${hourTime.minutes} ${t('Touristplace:min')}`
@@ -167,7 +173,7 @@ const LocationMapView = (props) => {
                     </TouchableOpacity>
                 </View>
                 :
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: Colors.primary }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: backgroundColor }}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <Lottie source={AssetIconsPack.icons.no_internet_location_icon} autoPlay loop style={{ height: convertHeight(120) }} />
                         <TouchableOpacity activeOpacity={0.8}
@@ -176,12 +182,12 @@ const LocationMapView = (props) => {
                             <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }}>
                                 <View style={styles.cardViewItemContainer}>
                                     <MaterialIcons name="location-pin" size={18} color={Colors.green} />
-                                    <Text style={{ color: Colors.black, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
+                                    <Text style={{ color: textColor, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
                                 </View>
                                 <FontAwesome5 name="directions" size={24} color={Colors.tertiary} />
                                 <View style={styles.cardViewItemContainer}>
                                     <MaterialIcons name="access-time" size={18} color={Colors.secondary} />
-                                    <Text style={{ color: Colors.black, fontWeight: '500', paddingLeft: 2 }}>
+                                    <Text style={{ color: textColor, fontWeight: '500', paddingLeft: 2 }}>
                                         {
                                             hourTime.hours !== 0 ?
                                                 `${hourTime.hours}:${hourTime.minutes} ${t('Touristplace:min')}`

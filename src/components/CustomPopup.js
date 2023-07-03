@@ -1,12 +1,57 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { convertHeight } from '../common/utils/dimentionUtils';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import COLORS from '../common/Colors';
+import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 const CustomPopup = ({ title, message, visible, onClose, onConfirm }) => {
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
+    const { backgroundLiteColor, textColor } = darkModeColor(isDarkMode);
+
+    const styles = StyleSheet.create({
+        container: {
+            flex: 1,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        popupBox: {
+            width: '80%',
+            backgroundColor: backgroundLiteColor,
+            borderRadius: convertHeight(5),
+            padding: convertHeight(15),
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        title: {
+            fontSize: convertHeight(16),
+            fontWeight: 'bold',
+            color: textColor,
+            textAlign: 'center'
+        },
+        message: {
+            fontSize: convertHeight(12),
+            textAlign: 'center',
+            color: textColor,
+            padding: convertHeight(5)
+        },
+        closeButton: {
+            width: '47%',
+            padding: convertHeight(8),
+            marginTop: convertHeight(7),
+            alignItems: 'center',
+            borderRadius: 3
+        },
+        closeText: {
+            color: 'white',
+            fontWeight: 'bold',
+        },
+    });
+
     return (
         <Modal animationType="fade" transparent={true} visible={visible}>
             <View style={styles.container}>
@@ -31,45 +76,5 @@ const CustomPopup = ({ title, message, visible, onClose, onConfirm }) => {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    popupBox: {
-        width: '80%',
-        backgroundColor: 'white',
-        borderRadius: convertHeight(5),
-        padding: convertHeight(15),
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    title: {
-        fontSize: convertHeight(16),
-        fontWeight: 'bold',
-        color: '#000',
-        textAlign: 'center'
-    },
-    message: {
-        fontSize: convertHeight(12),
-        textAlign: 'center',
-        color: '#000',
-        padding: convertHeight(5)
-    },
-    closeButton: {
-        width: '47%',
-        padding: convertHeight(8),
-        marginTop: convertHeight(7),
-        alignItems: 'center',
-        borderRadius: 3
-    },
-    closeText: {
-        color: 'white',
-        fontWeight: 'bold',
-    },
-});
 
 export default CustomPopup;

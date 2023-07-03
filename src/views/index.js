@@ -21,6 +21,7 @@ import TouristStateList from './TouristPlaces/views/TouristStateList';
 import TouristLocationMap from './TouristPlaces/views/TouristLocationMap';
 
 import CostPlanner from './CostPlanner/views/CostPlanner';
+import AboutUs from './AboutUs/views/AboutUsView';
 
 export {
     CheckItemListView,
@@ -41,5 +42,6 @@ export {
     TouristStateList,
     TouristLocationMap,
 
-    CostPlanner
+    CostPlanner,
+    AboutUs
 };

@@ -6,9 +6,11 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useTranslation } from "react-i18next";
+import { useSelector } from 'react-redux';
 // Custom Imports
 import Colors from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 
 const COST = 'Cost';
 const MILEAGE = 'Mileage';
@@ -18,6 +20,7 @@ export default function CostPlanner() {
 
     const { t } = useTranslation();
 
+    const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const [currentPriceOfPetrol, setCurrentPriceOfPetrol] = useState('');
     const [mileage, setMileage] = useState('');
     const [distanceCovered, setDistanceCovered] = useState('');
@@ -35,11 +38,11 @@ export default function CostPlanner() {
     const handleCostCalculation = () => {
         if (currentPriceOfPetrol === '' || currentPriceOfPetrol === 0) {
             setValCurrentPriceOfPetrol(true);
-        } else if (mileage === '' || mileage === 0) {
+        } else if ((TopTab !== MILEAGE) && (mileage === '' || mileage === 0)) {
             setValMileage(true);
-        } else if (distanceCovered === '' || distanceCovered === 0) {
+        } else if ((TopTab !== DISTANCE) && (distanceCovered === '' || distanceCovered === 0)) {
             setValDistance(true);
-        } else if ((TopTab === DISTANCE && costTravel === '') || (TopTab === DISTANCE && costTravel === 0)) {
+        } else if ((TopTab === DISTANCE) && (costTravel === '' || costTravel === 0)) {
             setValCost(true);
         } else {
             let travelPlanner;
@@ -64,7 +67,7 @@ export default function CostPlanner() {
                 postLetter: '\u20B9', fuelLabel: t('CostPlanner:fuel_price'),
                 iconCostSize: convertHeight(27), iconMileageSize: convertHeight(16), iconDistanceSize: convertHeight(16),
                 fuelPlaceHolder: t('CostPlanner:enter_fuel_price'),
-                bgCostColor: '#eaf4ff', bgMileageColor: Colors.primary, bgDistanceColor: Colors.primary,
+                bgCostColor: isDarkMode ? Colors.black : '#eaf4ff', bgMileageColor: backgroundColor, bgDistanceColor: backgroundColor,
             };
         } else if (TopTab === MILEAGE) {
             return {
@@ -72,7 +75,7 @@ export default function CostPlanner() {
                 postLetter: t('CostPlanner:L'), fuelLabel: t('CostPlanner:fuel_liters'),
                 iconCostSize: convertHeight(21), iconMileageSize: convertHeight(20), iconDistanceSize: convertHeight(16),
                 fuelPlaceHolder: t('CostPlanner:enter_fuel_liters'),
-                bgCostColor: Colors.primary, bgMileageColor: '#eaf4ff', bgDistanceColor: Colors.primary,
+                bgCostColor: backgroundColor, bgMileageColor: isDarkMode ? Colors.black : '#eaf4ff', bgDistanceColor: backgroundColor,
             };
         } else if (TopTab === DISTANCE) {
             return {
@@ -80,7 +83,7 @@ export default function CostPlanner() {
                 postLetter: t('CostPlanner:km'), fuelLabel: t('CostPlanner:fuel_price'),
                 iconCostSize: convertHeight(21), iconMileageSize: convertHeight(16), iconDistanceSize: convertHeight(20),
                 fuelPlaceHolder: t('CostPlanner:enter_fuel_price'),
-                bgCostColor: Colors.primary, bgMileageColor: Colors.primary, bgDistanceColor: '#eaf4ff'
+                bgCostColor: backgroundColor, bgMileageColor: backgroundColor, bgDistanceColor: isDarkMode ? Colors.black : '#eaf4ff'
             };
         }
     };
@@ -93,14 +96,18 @@ export default function CostPlanner() {
         setTotalCostOfTravel(0);
     };
 
+    const { backgroundColor, textBrownColor } = darkModeColor(isDarkMode);
+
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            paddingTop: convertHeight(20)
+            paddingTop: convertHeight(20),
+            backgroundColor: isDarkMode ? Colors.black : '#dddddd'
         },
         input: {
             paddingBottom: convertHeight(15),
-            width: '100%'
+            width: '100%',
+            backgroundColor: isDarkMode ? '#333333' : '#f5f5f5'
         },
         btnContainer: {
             padding: convertHeight(8),
@@ -115,7 +122,7 @@ export default function CostPlanner() {
             paddingVertical: convertHeight(3)
         },
         cardView: {
-            backgroundColor: Colors.primary,
+            backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: convertHeight(2),
@@ -131,13 +138,13 @@ export default function CostPlanner() {
             })
         },
         label: {
-            color: Colors.black,
+            color: textBrownColor,
             fontWeight: '500',
             paddingBottom: convertHeight(8)
         },
         totalTxt: {
             fontSize: convertHeight(16),
-            color: Colors.black,
+            color: textBrownColor,
             letterSpacing: -1
         },
         topBar: {
@@ -151,19 +158,19 @@ export default function CostPlanner() {
         topBarContainer: {
             flexDirection: 'row',
             justifyContent: 'space-evenly',
-            backgroundColor: Colors.primary,
+            backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary,
             height: convertHeight(90),
             alignItems: 'center'
         },
         info_title: {
-            color: Colors.black,
+            color: textBrownColor,
             textAlign: 'left',
             fontWeight: '800',
             fontSize: convertHeight(11),
             textDecorationLine: 'underline'
         },
         info_text: {
-            color: '#363836',
+            color: isDarkMode ? '#A9A9A9' : '#363836',
             textAlign: 'left',
             paddingTop: convertHeight(3),
             fontWeight: '700',
@@ -179,11 +186,11 @@ export default function CostPlanner() {
 
     return (
         <KeyboardAwareScrollView>
-            <StatusBar backgroundColor={Colors.primary} barStyle={'dark-content'} />
+            <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <View style={styles.container}>
 
                 <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: convertHeight(20) }}>
-                    <Text style={[styles.totalTxt, { fontWeight: '500', fontSize: convertHeight(14), color: '#515452' }]}>{itemsRenderByValue().title}</Text>
+                    <Text style={[styles.totalTxt, { fontWeight: '500', fontSize: convertHeight(14), color: textBrownColor }]}>{itemsRenderByValue().title}</Text>
                     <Text style={[styles.totalTxt, { fontWeight: '900', fontSize: convertHeight(28) }]}>{totalCostOfTravel}{itemsRenderByValue().postLetter}</Text>
                 </View>
 
@@ -191,23 +198,23 @@ export default function CostPlanner() {
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => { handleResetPress(); setTopTab(COST); }} activeOpacity={0.5}
                             style={[styles.topBar, { backgroundColor: itemsRenderByValue().bgCostColor }]}>
-                            <MaterialIcons name="local-gas-station" size={itemsRenderByValue().iconCostSize} color={Colors.black} />
+                            <MaterialIcons name="local-gas-station" size={itemsRenderByValue().iconCostSize} color={textBrownColor} />
                         </TouchableOpacity>
-                        <Text style={[styles.textBtn, { color: Colors.black, letterSpacing: -1 }]}>{t('CostPlanner:cost')}</Text>
+                        <Text style={[styles.textBtn, { color: textBrownColor, letterSpacing: -1 }]}>{t('CostPlanner:cost')}</Text>
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => { handleResetPress(); setTopTab(MILEAGE); }} activeOpacity={0.5}
                             style={[styles.topBar, { backgroundColor: itemsRenderByValue().bgMileageColor }]}>
-                            <Ionicons name="md-speedometer" size={convertHeight(itemsRenderByValue().iconMileageSize)} color={Colors.black} />
+                            <Ionicons name="md-speedometer" size={convertHeight(itemsRenderByValue().iconMileageSize)} color={textBrownColor} />
                         </TouchableOpacity>
-                        <Text style={[styles.textBtn, { color: Colors.black, letterSpacing: -1 }]}>{t('CostPlanner:mileage')}</Text>
+                        <Text style={[styles.textBtn, { color: textBrownColor, letterSpacing: -1 }]}>{t('CostPlanner:mileage')}</Text>
                     </View>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => { handleResetPress(); setTopTab(DISTANCE); }} activeOpacity={0.5}
                             style={[styles.topBar, { backgroundColor: itemsRenderByValue().bgDistanceColor }]}>
-                            <MaterialCommunityIcons name="map-marker-distance" size={convertHeight(itemsRenderByValue().iconDistanceSize)} color={Colors.black} />
+                            <MaterialCommunityIcons name="map-marker-distance" size={convertHeight(itemsRenderByValue().iconDistanceSize)} color={textBrownColor} />
                         </TouchableOpacity>
-                        <Text style={[styles.textBtn, { color: Colors.black, letterSpacing: -1 }]}>{t('CostPlanner:distance')}</Text>
+                        <Text style={[styles.textBtn, { color: textBrownColor, letterSpacing: -1 }]}>{t('CostPlanner:distance')}</Text>
                     </View>
                 </View>
 
@@ -221,11 +228,13 @@ export default function CostPlanner() {
                                 setValCurrentPriceOfPetrol(false);
                                 setCurrentPriceOfPetrol(text.replace(/[^0-9.]/g, ''));
                             }}
+                            status={valCurrentPriceOfPetrol ? 'danger' : ''}
+                            textStyle={{ color: textBrownColor }}
                             keyboardType="numeric"
                             style={styles.input}
                             accessoryRight={
                                 <TouchableOpacity>
-                                    <MaterialIcons name="local-gas-station" size={convertHeight(20)} color={Colors.black} />
+                                    <MaterialIcons name="local-gas-station" size={convertHeight(20)} color={textBrownColor} />
                                 </TouchableOpacity>
                             }
                         />
@@ -238,15 +247,17 @@ export default function CostPlanner() {
                             <Input
                                 placeholder={t('CostPlanner:enter_mileage')}
                                 value={mileage}
+                                status={valMileage ? 'danger' : ''}
                                 onChangeText={(text) => {
                                     setMileage(text.replace(/[^0-9.]/g, ''));
                                     setValMileage(false);
                                 }}
+                                textStyle={{ color: textBrownColor }}
                                 keyboardType="numeric"
                                 style={styles.input}
                                 accessoryRight={
                                     <TouchableOpacity>
-                                        <Ionicons name="md-speedometer" size={convertHeight(20)} color={Colors.black} />
+                                        <Ionicons name="md-speedometer" size={convertHeight(20)} color={textBrownColor} />
                                     </TouchableOpacity>
                                 }
                             />
@@ -264,11 +275,12 @@ export default function CostPlanner() {
                                     setDistanceCovered(text.replace(/[^0-9.]/g, ''));
                                     setValDistance(false);
                                 }}
+                                textStyle={{ color: textBrownColor }}
                                 keyboardType="numeric"
                                 style={styles.input}
                                 accessoryRight={
                                     <TouchableOpacity>
-                                        <MaterialCommunityIcons name="map-marker-distance" size={convertHeight(20)} color={Colors.black} />
+                                        <MaterialCommunityIcons name="map-marker-distance" size={convertHeight(20)} color={textBrownColor} />
                                     </TouchableOpacity>
                                 }
                             />
@@ -284,11 +296,12 @@ export default function CostPlanner() {
                                     setCostTravel(text.replace(/[^0-9.]/g, ''));
                                     setValCost(false);
                                 }}
+                                textStyle={{ color: textBrownColor }}
                                 keyboardType="numeric"
                                 style={styles.input}
                                 accessoryRight={
                                     <TouchableOpacity>
-                                        <MaterialCommunityIcons name="cash" size={convertHeight(20)} color={Colors.black} />
+                                        <MaterialCommunityIcons name="cash" size={convertHeight(20)} color={textBrownColor} />
                                     </TouchableOpacity>
                                 }
                             />
