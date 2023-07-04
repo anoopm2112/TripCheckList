@@ -58,7 +58,11 @@
         "light": "Light",
         "data_cleaning": "Data Cleaning...",
         "clear_all_data": "CLEAR ALL DATA",
-        "clear_all_val": "Do you want to erase all data related to the app?"
+        "clear_all_val": "Do you want to erase all data related to the app?",
+        "share": "Share",
+        "rateus": "Rate Us",
+        "appVersion": "App Version",
+        "termsCondition": "Terms & Condition"
     },
     "Languages": {
         "Tamil": "தமிழ்",
@@ -172,6 +176,22 @@
         "cost_val": "Please enter Cost"
     },
     "AboutUs": {
-        "AboutUs": "About Us"
+        "AboutUs": "ABOUT US"
+    },
+    "ContactUs": {
+        "contactUs": "CONTACT US",
+        "subject": "Subject",
+        "enter_subject": "Please Enter Subject",
+        "enter_message": "Please Enter Message",
+        "enter_your_subject": "Enter Your Subject",
+        "enter_your_message": "Enter Your Message",
+        "message": "Message",
+        "send": "Send"
+    },
+    "Help": {
+        "help": "HELP"
+    },
+    "Logout": {
+        "logout": "LOGOUT AND EXIT"
     }
 }

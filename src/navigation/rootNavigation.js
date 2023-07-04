@@ -10,7 +10,7 @@ import {
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen,
   CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, DashboardScreen,
   PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
-  CostPlanner, AboutUs
+  CostPlanner, AboutUs, ContactUsView
 } from '../views';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
@@ -58,7 +58,8 @@ export default function rootNavigation(props) {
       <Screen options={getScreenOptions({ title: t('Touristplace:state') })} name={ROUTE_KEYS.TOURIST_STATES} component={TouristStateList} />
       <Screen options={getScreenOptions({ title: t('Touristplace:map') })} name={ROUTE_KEYS.TOURIST_LOCATION} component={TouristLocationMap} />
       <Screen options={getScreenOptions({ title: t('CostPlanner:costPlanner') })} name={ROUTE_KEYS.COST_PLANNER} component={CostPlanner} />
-      <Screen options={getScreenOptions({ title: t('AboutUs:AboutUs') })} name={ROUTE_KEYS.ABOUT_US} component={AboutUs} />
+      <Screen options={{ headerShown: false }} name={ROUTE_KEYS.ABOUT_US} component={AboutUs} />
+      <Screen options={getScreenOptions({ title: t('ContactUs:contactUs') })} name={ROUTE_KEYS.CONTACT_US} component={ContactUsView} />
     </Navigator>
     </NavigationContainer>
   );

@@ -18,5 +18,6 @@ export const ROUTE_KEYS = {
     TOURIST_LOCATION: 'TouristLocationScreen',
 
     COST_PLANNER: 'CostPalnnerScreen',
-    ABOUT_US: 'AboutUs'
+    ABOUT_US: 'AboutUs',
+    CONTACT_US: 'ContactUs'
 };

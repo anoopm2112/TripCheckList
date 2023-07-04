@@ -140,7 +140,6 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { withTranslation } from "react-i18next";
 import { connect } from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import Lottie from 'lottie-react-native';
 import AssetIconsPack from "../../../assets/IconProvide";
 import AboutUsData from '../../../common/data/AboutUsData';
 import { convertHeight, convertWidth } from "../../../common/utils/dimentionUtils";
@@ -336,12 +335,13 @@ class App extends React.Component {
                     i18n.language === 'ml' ? moduleWise.notes.ml : 
                     i18n.language === 'hi' ? moduleWise.notes.hi : moduleWise.notes.ta,
                 bg: isDarkMode ? "#6e704c" : "#ccd444",
-                lottieIcon: AssetIconsPack.icons.cost_planner_about
+                lottieIcon: AssetIconsPack.icons.more_Info_about
             }
         ];
 
         return (
             <View style={styles.container}>
+                <StatusBar backgroundColor={PRODUCT_LIST[this.state.currentIndex].bg} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
                 <Animated.ScrollView
                     ref={this.scrollViewRef}
                     pagingEnabled
@@ -355,6 +355,7 @@ class App extends React.Component {
                                 const offsetX = event.nativeEvent.contentOffset.x;
                                 const currentIndex = Math.round(offsetX / width);
                                 this.setState({ currentIndex });
+                                StatusBar.setBackgroundColor(PRODUCT_LIST[currentIndex].bg);
                             },
                         }
                     )}
@@ -384,13 +385,24 @@ class App extends React.Component {
 
         return (
             <View key={item.id} style={[styles.container, styles.item]}>
+                <View style={[styles.HeaderContainer, { backgroundColor: item.bg }]}>
+                    <View style={{ flexDirection: 'row' }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack(null)} style={styles.HeaderBackButton}>
+                            <MaterialCommunityIcons name="arrow-left" size={24} color={this.props.isDarkMode ? Colors.primary : Colors.black} />
+                        </TouchableOpacity>
+                        <Text style={[styles.HeaderTitle, { color: this.props.isDarkMode ? Colors.primary : Colors.black }]}>{item.title}</Text>
+                    </View>
+                    <TouchableOpacity style={styles.HeaderIconContainer}>
+                        <Image style={{ height: convertHeight(30), width: convertWidth(35) }} source={AssetIconsPack.icons.app_logo_side_image} />
+                    </TouchableOpacity>
+                </View>
                 <Animated.View style={[styles.image, { transform: [{ scale: imageScale }], opacity: imageOpacity }]}>
                     {(i18n.language === 'en' || i18n.language === 'hi') && <Image source={item.lottieIcon} style={{ height: convertHeight(120), resizeMode: 'contain' }} />}
                 </Animated.View>
                 <Animated.View style={{ opacity: imageOpacity, marginHorizontal: 45, transform: [{ scale: imageScale }] }}>
-                    <Text style={[styles.title, { paddingVertical: 20, color: this.props.isDarkMode ? Colors.primary : Colors.black, }]}>{item.title}</Text>
+                    {/* <Text style={[styles.title, { paddingVertical: 20, color: this.props.isDarkMode ? Colors.primary : Colors.black, }]}>{item.title}</Text> */}
 
-                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: (i18n.language === 'en' || i18n.language === 'hi') ? 20 : 0 }}>
                         <View style={styles.iconContainer}>
                             <MaterialCommunityIcons name={item.side_Icon_1} size={24} color={Colors.primary} />
                         </View>
@@ -570,7 +582,26 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.secondary,
         justifyContent: 'center',
         alignItems: 'center'
-    }
+    },
+    HeaderContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 16,
+        height: 60,
+        width: '100%'
+    },
+    HeaderBackButton: {
+        paddingRight: 16,
+    },
+    HeaderTitle: {
+        fontSize: 20,
+        fontWeight: '500',
+        paddingLeft: 13,
+    },
+    HeaderIconContainer: {
+        paddingLeft: 26,
+    },
 });
 
 const mapStateToProps = (state) => ({

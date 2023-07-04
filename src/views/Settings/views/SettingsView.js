@@ -1,12 +1,15 @@
-import React, { useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useTranslation } from "react-i18next";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
+import DeviceInfo from 'react-native-device-info';
+// Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import Colors from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -16,6 +19,7 @@ import { toggleDarkMode } from '../settingsSlice';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { deleteAllSplitWise } from '../../SplitWise/api/SplitWiseApi';
 import { deleteAllChecklist } from '../../CheckList/api/ChecklistApi';
+import AssetIconsPack from '../../../assets/IconProvide';
 
 export default function SettingsView(props) {
     const { i18n, t } = useTranslation();
@@ -26,12 +30,19 @@ export default function SettingsView(props) {
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     const [eraseModalVisible, setEraseModalVisible] = useState(false);
+    const isFocused = useIsFocused();
 
     const onChangeLanguage = (lang) => {
         refRBSheet.current.close();
         i18n.changeLanguage(lang);
         // props.navigation.navigate(ROUTE_KEYS.DASHBOARD_SCREEN);
     };
+
+    useEffect(() => {
+        if (isFocused) {
+            StatusBar.setBackgroundColor(backgroundColor);
+        }
+    }, [isFocused]);
 
     const settingsArray = [
         {
@@ -54,14 +65,26 @@ export default function SettingsView(props) {
         },
         {
             id: 4,
-            name: 'ABOUT US',
+            name: 'AboutUs:AboutUs',
             icon_name: 'information',
             onPress: () => props.navigation.navigate(ROUTE_KEYS.ABOUT_US)
         },
         {
             id: 5,
-            name: 'LOGOUT AND EXIT',
-            icon_name: 'exit-to-app',
+            name: 'ContactUs:contactUs',
+            icon_name: 'contacts',
+            onPress: () => props.navigation.navigate(ROUTE_KEYS.CONTACT_US)
+        },
+        {
+            id: 6,
+            name: 'Help:help',
+            icon_name: 'help-circle',
+            onPress: () => props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN)
+        },
+        {
+            id: 7,
+            name: 'Logout:logout',
+            icon_name: 'location-exit',
             onPress: () => props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN)
         }
     ];
@@ -89,6 +112,25 @@ export default function SettingsView(props) {
         dispatch(deleteAllChecklist());
     };
 
+    const AppShareHandler = async () => {
+        try {
+            await Share.share({
+                title: 'Trip Checklist',
+                message: `Please install this app and explore more ${'https://play.google.com/store/apps/details?id=com.tripchecklist&pli=1'}`,
+                url: 'https://play.google.com/store/apps/details?id=com.tripchecklist&pli=1'
+            });
+        } catch (error) {
+            alert(error.message);
+        }
+    };
+
+    const RateUsHandler = () => {
+        const url = Platform.OS === 'android' ?
+            'https://play.google.com/store/apps/details?id=com.tripchecklist&pli=1' :
+            'https://apps.apple.com/us/app/doorhub-driver/id=com.tripchecklist&pli=1';
+        Linking.openURL(url);
+    };
+
     const styles = StyleSheet.create({
         mainContainer: {
             backgroundColor: backgroundColor,
@@ -113,6 +155,27 @@ export default function SettingsView(props) {
             borderRadius: 3,
             borderColor: Colors.primary,
             borderWidth: isDarkMode ? 1 : 0
+        },
+        bottomText: {
+            color: isDarkMode ? '#8f8f8f' : '#696969',
+            fontWeight: '400',
+            textDecorationLine: 'underline',
+            fontSize: 13
+        },
+        bottomContainer: {
+            padding: 40,
+            position: 'absolute',
+            bottom: 0,
+            backgroundColor: isDarkMode ? '#262626' : '#f0f0f0',
+            borderTopWidth: 0.5,
+            borderTopColor: '#f2f2f2'
+        },
+        appVesrion: { 
+            color: isDarkMode ? '#8f8f8f' : '#696969', 
+            fontWeight: '400', 
+            paddingVertical: 20, 
+            textAlign: 'center', 
+            fontSize: 12 
         }
     });
 
@@ -124,7 +187,7 @@ export default function SettingsView(props) {
                 return (
                     <TouchableOpacity key={item.id} style={styles.button} onPress={item.onPress}>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            {item.id == 1 ?
+                            {item.id === 1 ?
                                 <FontAwesome name={item.icon_name} size={24} color={textColor} />
                                 :
                                 <MaterialCommunityIcons name={item.icon_name} size={24} color={textColor} />
@@ -193,6 +256,28 @@ export default function SettingsView(props) {
                 visible={eraseModalVisible}
                 onClose={() => { setEraseModalVisible(false); }}
                 onConfirm={() => { }} />
+
+            <View style={styles.bottomContainer}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+                    <TouchableOpacity onPress={() => AppShareHandler()}>
+                        <Text style={styles.bottomText}>{t('Settings:share')}</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: '#696969', fontWeight: '300' }}>|</Text>
+                    <TouchableOpacity onPress={() => RateUsHandler()}>
+                        <Text style={styles.bottomText}>{t('Settings:rateus')}</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: '#696969', fontWeight: '300' }}>|</Text>
+                    <Image source={AssetIconsPack.icons.app_logo_side_image} 
+                        style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                </View>
+
+                <View>
+                    <Text style={styles.appVesrion}>{t('Settings:appVersion')}: {DeviceInfo.getVersion()}</Text>
+                    <TouchableOpacity onPress={() => openGmail()}>
+                        <Text style={[styles.bottomText, { paddingVertical: 10, textAlign: 'center', fontSize: 12 }]}>{t('Settings:termsCondition')}</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
 
         </View>
     );

@@ -71,7 +71,8 @@ const AssetIconsPack = {
         'money_splitter_aboutus': require('../assets/money_splitter_aboutus.png'),
         'tourist_spot_about': require('../assets/tourist_spot_about.png'),
         'cost_planner_about': require('../assets/cost_planner_about.png'),
-        
+        'more_Info_about': require('../assets/more_Info.png'),
+        'contact_us_mail': require('../assets/74348-new-mail'),
         
     },
 };
