@@ -173,7 +173,7 @@ export default function CostPlanner() {
             color: isDarkMode ? '#A9A9A9' : '#363836',
             textAlign: 'left',
             paddingTop: convertHeight(3),
-            fontWeight: '700',
+            fontWeight: '500',
             fontSize: convertHeight(10)
         },
         errortxt: {
@@ -323,12 +323,14 @@ export default function CostPlanner() {
 
                 <View style={{ padding: convertHeight(15) }}>
                     <Text style={styles.info_title}>{t('CostPlanner:how_to_save_fuel')}</Text>
-                    <Text style={styles.info_text}>{t('CostPlanner:info_1')}</Text>
-                    <Text style={styles.info_text}>{t('CostPlanner:info_2')}</Text>
-                    <Text style={styles.info_text}>{t('CostPlanner:info_3')}</Text>
-                    <Text style={styles.info_text}>{t('CostPlanner:info_4')}</Text>
+                    <Text style={styles.info_text}>{'• '}{t('CostPlanner:info_1')}</Text>
+                    <Text style={styles.info_text}>{'• '}{t('CostPlanner:info_2')}</Text>
+                    <Text style={styles.info_text}>{'• '}{t('CostPlanner:info_3')}</Text>
+                    <Text style={styles.info_text}>{'• '}{t('CostPlanner:info_4')}</Text>
                     <Text style={[styles.info_text, {
-                        fontStyle: 'italic', fontSize: convertHeight(9), color: '#686968'
+                        // fontStyle: 'italic', 
+                        fontSize: convertHeight(9), color: '#686968',
+                        fontWeight: '400'
                     }]}>{t('CostPlanner:info_5')}</Text>
                 </View>
 

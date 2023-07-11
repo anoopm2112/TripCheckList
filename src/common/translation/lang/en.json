@@ -65,7 +65,8 @@
         "share": "Share",
         "rateus": "Rate Us",
         "appVersion": "App Version",
-        "termsCondition": "Terms & Condition"
+        "privacyPolicy": "Privacy Policy",
+        "double_tab_info": "Double tab to view app features"
     },
     "Languages": {
         "Tamil": "தமிழ்",

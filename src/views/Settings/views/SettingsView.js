@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking, Animated } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useTranslation } from "react-i18next";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,6 +9,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
+import * as Animatable from 'react-native-animatable';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import Colors from '../../../common/Colors';
@@ -37,6 +38,8 @@ export default function SettingsView(props) {
     const [privacyPolicyModalVisible, setPrivacyPolicyModalVisible] = useState(false);
     const [tapCount, setTapCount] = useState(0);
     const isFocused = useIsFocused();
+    const iconAnimation = useRef(new Animated.Value(0)).current;
+    const iconLanguageAnimation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         if (tapCount === 2) {
@@ -52,6 +55,18 @@ export default function SettingsView(props) {
     };
 
     const onChangeLanguage = (lang) => {
+        Animated.sequence([
+            Animated.timing(iconLanguageAnimation, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+            Animated.timing(iconLanguageAnimation, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+        ]).start();
         refRBSheet.current.close();
         i18n.changeLanguage(lang);
         // props.navigation.navigate(ROUTE_KEYS.DASHBOARD_SCREEN);
@@ -125,8 +140,40 @@ export default function SettingsView(props) {
     };
 
     const handleToggleDarkMode = () => {
+        Animated.sequence([
+            Animated.timing(iconAnimation, {
+                toValue: 1,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+            Animated.timing(iconAnimation, {
+                toValue: 0,
+                duration: 300,
+                useNativeDriver: true,
+            }),
+        ]).start();
         dispatch(toggleDarkMode());
         refRBThemeSheet.current.close();
+    };
+
+    const rotateInterpolation = iconAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
+
+    const iconStyle = {
+        opacity: iconAnimation,
+        transform: [{ rotate: rotateInterpolation }],
+    };
+
+    const rotateLangInterpolation = iconLanguageAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
+
+    const iconLangStyle = {
+        opacity: iconLanguageAnimation,
+        transform: [{ rotate: rotateLangInterpolation }],
     };
 
     const handleEraseAllData = () => {
@@ -216,9 +263,29 @@ export default function SettingsView(props) {
                                 :
                                 <MaterialCommunityIcons name={item.icon_name} size={24} color={textColor} />
                             }
-                            <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5 }}>{t(item.name)}</Text>
+                            <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5, width: '70%' }}>{t(item.name)}</Text>
                         </View>
-                        <Ionicons name="md-chevron-forward-sharp" size={24} color={textColor} />
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            {item.id === 1 && 
+                                <Animated.View style={[iconLangStyle, { opacity: 1 }]}>
+                                    <MaterialCommunityIcons 
+                                        name={
+                                            i18n.language === 'en' ? 'alpha-e-circle-outline' : 
+                                                i18n.language === 'ml' ? 'alpha-m-circle-outline' :
+                                                    i18n.language === 'hi' ? 'alpha-h-circle-outline' : 'alpha-t-circle-outline'
+                                        }
+                                        size={24} color={textColor} />
+                                </Animated.View>
+                            }
+                            {item.id === 2 && 
+                                <Animated.View style={[iconStyle, { opacity: 1 }]}>
+                                    <MaterialCommunityIcons 
+                                        name={isDarkMode ? 'weather-night' : 'white-balance-sunny'}
+                                        size={24} color={textColor} />
+                                </Animated.View>
+                            }
+                            <Ionicons name="md-chevron-forward-sharp" size={24} color={textColor} />
+                        </View>
                     </TouchableOpacity>
                 );
             })}
@@ -292,15 +359,17 @@ export default function SettingsView(props) {
                     </TouchableOpacity>
                     <Text style={{ color: '#696969', fontWeight: '300' }}>|</Text>
                     <TouchableOpacity onPress={handlePress}>
-                        <Image source={AssetIconsPack.icons.app_logo_side_image} 
-                            style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                        <Animatable.View animation="pulse" easing="ease-out" iterationCount="infinite">  
+                            <Image source={AssetIconsPack.icons.app_logo_side_image} 
+                                style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                        </Animatable.View>
                     </TouchableOpacity>
                 </View>
 
                 <View>
                     <Text style={styles.appVesrion}>{t('Settings:appVersion')}: {DeviceInfo.getVersion()}</Text>
                     <TouchableOpacity onPress={() => setPrivacyPolicyModalVisible(true)}>
-                        <Text style={[styles.bottomText, { paddingVertical: 10, textAlign: 'center', fontSize: 12 }]}>{t('Settings:termsCondition')}</Text>
+                        <Text style={[styles.bottomText, { paddingVertical: 10, textAlign: 'center', fontSize: 12 }]}>{t('Settings:privacyPolicy')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
