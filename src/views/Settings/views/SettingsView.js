@@ -20,6 +20,9 @@ import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { deleteAllSplitWise } from '../../SplitWise/api/SplitWiseApi';
 import { deleteAllChecklist } from '../../CheckList/api/ChecklistApi';
 import AssetIconsPack from '../../../assets/IconProvide';
+import QuoteModal from '../../AboutUs/views/QuoteModal';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import PrivacyPolicyModal from './PrivacyPolicyModal';
 
 export default function SettingsView(props) {
     const { i18n, t } = useTranslation();
@@ -30,7 +33,23 @@ export default function SettingsView(props) {
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     const [eraseModalVisible, setEraseModalVisible] = useState(false);
+    const [quoteModalVisible, setQuoteModalVisible] = useState(false);
+    const [privacyPolicyModalVisible, setPrivacyPolicyModalVisible] = useState(false);
+    const [tapCount, setTapCount] = useState(0);
     const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if (tapCount === 2) {
+            setQuoteModalVisible(true);
+        }
+    }, [tapCount]);
+
+    const handlePress = () => {
+        setTapCount(tapCount + 1);
+        setTimeout(() => {
+            setTapCount(0);
+        }, 300); // Reset tap count after 300 milliseconds (adjust as needed)
+    };
 
     const onChangeLanguage = (lang) => {
         refRBSheet.current.close();
@@ -77,17 +96,22 @@ export default function SettingsView(props) {
         },
         {
             id: 6,
-            name: 'Help:help',
+            name: 'Help:takeTour',
             icon_name: 'help-circle',
-            onPress: () => props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN)
+            onPress: () => props.navigation.navigate(ROUTE_KEYS.HELP_VIEW)
         },
         {
             id: 7,
             name: 'Logout:logout',
             icon_name: 'location-exit',
-            onPress: () => props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN)
+            onPress: () => perfomLogout()
         }
     ];
+
+    const perfomLogout = () => {
+        AsyncStorage.removeItem('userAuth');
+        props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN);
+    }
 
     const renderItem = (item) => {
         return (
@@ -138,7 +162,7 @@ export default function SettingsView(props) {
         },
         button: {
             backgroundColor: backgroundColor,
-            padding: convertHeight(17),
+            padding: convertHeight(15),
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
@@ -192,7 +216,7 @@ export default function SettingsView(props) {
                                 :
                                 <MaterialCommunityIcons name={item.icon_name} size={24} color={textColor} />
                             }
-                            <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500' }}>{t(item.name)}</Text>
+                            <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5 }}>{t(item.name)}</Text>
                         </View>
                         <Ionicons name="md-chevron-forward-sharp" size={24} color={textColor} />
                     </TouchableOpacity>
@@ -208,7 +232,7 @@ export default function SettingsView(props) {
                         backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary
                     }
                 }}>
-                <List data={languagesInitialValue} renderItem={({ item }) => renderItem(item)} />
+                <List style={{ backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }} data={languagesInitialValue} renderItem={({ item }) => renderItem(item)} />
             </RBSheet>
 
             <RBSheet height={convertHeight(127)} ref={refRBThemeSheet} closeOnDragDown={true}
@@ -267,17 +291,29 @@ export default function SettingsView(props) {
                         <Text style={styles.bottomText}>{t('Settings:rateus')}</Text>
                     </TouchableOpacity>
                     <Text style={{ color: '#696969', fontWeight: '300' }}>|</Text>
-                    <Image source={AssetIconsPack.icons.app_logo_side_image} 
-                        style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                    <TouchableOpacity onPress={handlePress}>
+                        <Image source={AssetIconsPack.icons.app_logo_side_image} 
+                            style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                    </TouchableOpacity>
                 </View>
 
                 <View>
                     <Text style={styles.appVesrion}>{t('Settings:appVersion')}: {DeviceInfo.getVersion()}</Text>
-                    <TouchableOpacity onPress={() => openGmail()}>
+                    <TouchableOpacity onPress={() => setPrivacyPolicyModalVisible(true)}>
                         <Text style={[styles.bottomText, { paddingVertical: 10, textAlign: 'center', fontSize: 12 }]}>{t('Settings:termsCondition')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>
+
+            <QuoteModal
+                visible={quoteModalVisible}
+                onClose={() => { setQuoteModalVisible(false); }}
+                onConfirm={() => { }} />
+
+            <PrivacyPolicyModal
+                visible={privacyPolicyModalVisible}
+                onClose={() => { setPrivacyPolicyModalVisible(false); }}
+                onConfirm={() => { }} />
 
         </View>
     );

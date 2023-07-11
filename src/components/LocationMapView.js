@@ -23,11 +23,18 @@ const LocationMapView = (props) => {
     const [longitude, setLongitude] = useState(Number(props?.currentPlaceLoc?.long));
     const [marginBottom, setMarginBottom] = useState(1);
     const [mapTypeView, setMapType] = useState(false);
+    const [getCoordButtonDisable, setGetCoordButtonDisable] = useState(false);
     const mapViewRef = useRef();
     const netInfo = useNetInfo();
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
 
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
+
+    useEffect(() => {
+        if(props.locModal) {
+            gotToMyLocation();
+        }
+    }, []);
 
     function getCoordinates() {
         const url = `https://www.google.com/maps/dir/?api=1&destination=${props?.currentPlaceLoc?.lat},${props?.currentPlaceLoc?.long}&travelmode=driving`;
@@ -52,7 +59,7 @@ const LocationMapView = (props) => {
     const styles = StyleSheet.create({
         map: {
             width: '100%',
-            height: convertHeight(500)
+            height: convertHeight(450)
         },
         buttonContainer: {
             alignItems: 'center',
@@ -127,9 +134,11 @@ const LocationMapView = (props) => {
                             onPress={(e) => {
                                 setLatitude(e.nativeEvent.coordinate.latitude);
                                 setLongitude(e.nativeEvent.coordinate.longitude);
+                                setGetCoordButtonDisable(false);
                             }}
                             onMapReady={() => {
                                 setMarginBottom(0);
+                                setGetCoordButtonDisable(false);
                             }}>
                             <Marker
                                 coordinate={{ latitude: latitude, longitude: longitude }}
@@ -147,30 +156,54 @@ const LocationMapView = (props) => {
                     </View>
 
                     <View style={{ paddingTop: convertHeight(10) }}>
-                        <AnimatedText label={'Touristplace:viewgmaploc'} />
+                        {props.locModal ?
+                            <View style={{ width: convertWidth(330) }}>
+                                <AnimatedText label={'Touristplace:recieveLocation'} /> 
+                            </View>:
+                            <AnimatedText label={'Touristplace:viewgmaploc'} />}
                     </View>
 
-                    <TouchableOpacity activeOpacity={0.8} onPress={() => getCoordinates()} style={styles.bottomCardViewContainer}>
-                        <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }}>
+                    <View>
+                        {props.locModal ?
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                                    setGetCoordButtonDisable(true);
+                                    props.onConfirm({ "long": longitude, "lat": latitude });
+                                }}
+                                    style={[styles.bottomCardViewContainer]}>
+                                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 10 }}>
+                                        <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>{getCoordButtonDisable ? t('Touristplace:recieve_location') : t('Touristplace:get_location')}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                                <TouchableOpacity activeOpacity={0.8} onPress={() => props.onClose()} style={styles.bottomCardViewContainer}>
+                                    <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 10 }}>
+                                        <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>{getCoordButtonDisable ? t('Common:done') : t('Common:close')}</Text>
+                                    </View>
+                                </TouchableOpacity>
+                            </View>
+                            :
+                            <TouchableOpacity activeOpacity={0.8} onPress={() => getCoordinates()} style={styles.bottomCardViewContainer}>
+                                <View style={{ flex: 1, alignItems: 'center', flexDirection: 'row', justifyContent: 'space-around' }}>
 
-                            <View style={styles.cardViewItemContainer}>
-                                <MaterialIcons name="location-pin" size={18} color={Colors.green} />
-                                <Text style={{ color: textColor, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
-                            </View>
-                            <FontAwesome5 name="directions" size={24} color={Colors.tertiary} />
-                            <View style={styles.cardViewItemContainer}>
-                                <Ionicons name="time-sharp" size={18} color={Colors.secondary} />
-                                <Text style={{ color: textColor, fontWeight: '500', paddingLeft: 2 }}>
-                                    {
-                                        hourTime.hours !== 0 ?
-                                            `${hourTime.hours}:${hourTime.minutes} ${t('Touristplace:min')}`
-                                            :
-                                            `${hourTime.minutes} ${t('Touristplace:min')}`
-                                    }
-                                </Text>
-                            </View>
-                        </View>
-                    </TouchableOpacity>
+                                    <View style={styles.cardViewItemContainer}>
+                                        <MaterialIcons name="location-pin" size={18} color={Colors.green} />
+                                        <Text style={{ color: textColor, fontWeight: '500' }}>{distanceKm} {t('Touristplace:km')}</Text>
+                                    </View>
+                                    <FontAwesome5 name="directions" size={24} color={Colors.tertiary} />
+                                    <View style={styles.cardViewItemContainer}>
+                                        <Ionicons name="time-sharp" size={18} color={Colors.secondary} />
+                                        <Text style={{ color: textColor, fontWeight: '500', paddingLeft: 2 }}>
+                                            {
+                                                hourTime.hours !== 0 ?
+                                                    `${hourTime.hours}:${hourTime.minutes} ${t('Touristplace:min')}`
+                                                    :
+                                                    `${hourTime.minutes} ${t('Touristplace:min')}`
+                                            }
+                                        </Text>
+                                    </View>
+                                </View>
+                            </TouchableOpacity>}
+                    </View>
                 </View>
                 :
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: backgroundColor }}>

@@ -25,22 +25,57 @@ export default function SubItemSplitWise(props) {
             paddingHorizontal: convertWidth(5),
             height: convertHeight(32),
             flexDirection: 'row'
+        },
+        buttonViewContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: deleteItem ? 'space-between' : 'center',
+            backgroundColor: backgroundLiteColor,
+            borderRadius: 5,
+            width: convertWidth(150),
+            borderWidth: 0.5,
+            borderColor: COLORS.info,
+            elevation: 3,
+            margin: convertHeight(10),
+        },
+        textBtnSplit: {
+            flex: 1,
+            textAlign: 'center',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            fontSize: convertHeight(9),
+            paddingHorizontal: 1
+        },
+        reminderIconContainer: {
+            height: convertHeight(35), 
+            width: convertHeight(35), 
+            borderRadius: convertHeight(2), 
+            justifyContent: 'center',
+            alignItems: 'center', 
+            backgroundColor: COLORS.tertiary
         }
     });
 
     return (
-        <TouchableOpacity
-            onPress={() => onSubmitCheckList && onSubmitCheckList(item.name, index)}
-            disabled={onSubmitCheckList ? false : true}
-            style={styles.listItemContainer}>
-            {paidValue ?
-                <Text style={{ color: textColor }}>For {item.expense} {item.name} paid {item.paid}</Text>
+        <>
+            {deleteItem ?
+                <TouchableOpacity activeOpacity={0.8}
+                    style={[styles.buttonViewContainer]}>
+                    <Text numberOfLines={2} style={[styles.textBtnSplit, { color: textColor }]}>{item.name}</Text>
+                    <TouchableOpacity onPress={() => deleteItem(item.id)} activeOpacity={0.8} 
+                        style={[styles.reminderIconContainer, { backgroundColor: COLORS.info }]}>
+                        <Ionicons name="remove-sharp" size={convertHeight(20)} color={COLORS.primary} />
+                    </TouchableOpacity>
+                </TouchableOpacity>
                 :
-                <Text style={{ color: textColor }}>{item.name}</Text>}
-            <TouchableOpacity onPress={() => deleteItem(item.id)}>
-                {deleteItem &&
-                    <Ionicons name="remove-circle-sharp" size={convertHeight(24)} color={'#2E2E2E'} />}
-            </TouchableOpacity>
-        </TouchableOpacity>
-    )
+                <TouchableOpacity
+                    onPress={() => onSubmitCheckList && onSubmitCheckList(item.name, index)}
+                    disabled={onSubmitCheckList ? false : true}
+                    style={styles.listItemContainer}>
+                    <Text style={{ color: textColor }}>For {item.expense} {item.name} paid {item.paid}</Text>
+                </TouchableOpacity> 
+            }
+        </>
+
+    );
 }

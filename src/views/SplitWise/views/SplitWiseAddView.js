@@ -2,6 +2,7 @@ import { View, Text, TouchableOpacity, Keyboard, LogBox, Animated, Image } from 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import * as Animatable from 'react-native-animatable';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import RBSheet from "react-native-raw-bottom-sheet";
 import "react-native-get-random-values";
 import { v4 as uuidv4 } from 'uuid';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
@@ -9,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // Other files
 import { splitWiseDataItem, splitWiseDataItemMal, splitWiseDataItemTamil, splitWiseDataItemHindi } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -24,6 +25,7 @@ import {
 } from '../../../components';
 import { calculateTotalAmount, darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
+import Colors from '../../../common/Colors';
 
 export default function CheckListAddView(props) {
     const [animation] = useState(new Animated.Value(1));
@@ -35,6 +37,7 @@ export default function CheckListAddView(props) {
     const { t, i18n } = useTranslation();
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
+    const refRBPaidBySheet = useRef();
 
     const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
     const [localArrayData, setLocalArrayData] = useState(item.members ? JSON.parse(JSON.stringify(item.members)) : []);
@@ -61,6 +64,7 @@ export default function CheckListAddView(props) {
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
+    const [payedIndex, setPayedIndex] = useState();
 
     useEffect(() => {
         LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
@@ -224,6 +228,29 @@ export default function CheckListAddView(props) {
         setPdfModalVisible(true);
     };
 
+    const renderItemPaidBy = ({ item, index }) => {
+        return (
+            <TouchableOpacity activeOpacity={10} style={[styles.subItemContainer, { backgroundColor: backgroundColor }]}>
+                <Image source={AssetIconsPack.icons.avatar} style={{ height: convertHeight(45), width: convertHeight(45) }} />
+                <Text numberOfLines={1} style={[styles.bottomScroll, { color: textColor, textTransform: 'uppercase' }]}>{item.name}</Text>
+                <TouchableOpacity onPress={() => {
+                    setPayedIndex(index);
+                    setTimeout(() => {
+                        refRBPaidBySheet.current.close();
+                        onSubmitCheckList(item.name, index);
+                    }, 500);
+                }} activeOpacity={0.8} style={[styles.addBtn, { backgroundColor: textColor }]}>
+                    {
+                        index === payedIndex ?
+                            <MaterialIcons name="check" size={24} color={backgroundColor} />
+                            :
+                            <MaterialIcons name="add" size={24} color={backgroundColor} />
+                    }
+                </TouchableOpacity>
+            </TouchableOpacity>
+        );
+    };
+
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: backgroundColor }}>
             <View style={[styles.mainContainer, { backgroundColor: backgroundColor }]}>
@@ -282,40 +309,59 @@ export default function CheckListAddView(props) {
                     </View>
                 </View>
 
-                <View style={styles.buttonRow}>
-                    <TouchableOpacity onPress={() => {
-                        if (displayValue === 'Select your food category') {
-                            setValSelectFoodType(true);
-                        } else {
-                            setPaidByModalVisible(true);
-                        }
-                    }} style={[styles.button, { backgroundColor: '#65a9d7' }]}>
-                        <Image source={AssetIconsPack.icons.payment_icon} style={styles.button} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => { setViewType(true), setModalVisible(true); }}
-                        style={[styles.button, { backgroundColor: '#fba16f' }]}>
-                        <Image source={AssetIconsPack.icons.notepad_icon} style={styles.button} />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (item?.notes?.length > 0) {
-                                setViewType(false), setModalVisible(true);
+                <View style={[styles.buttonRow, { justifyContent: 'space-between' }]}>
+                    <View>
+                        <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                            if (displayValue === 'Select your food category') {
+                                setValSelectFoodType(true);
+                            } else {
+                                // setPaidByModalVisible(true);
+                                refRBPaidBySheet.current.open();
                             }
-                        }} style={[styles.button, { backgroundColor: '#b933fe' }]}>
-                        <Image source={AssetIconsPack.icons.notebook_icon} style={styles.button} />
-                    </TouchableOpacity>
+                        }} style={[styles.buttonViewContainer, { backgroundColor: '#eb6471' }]}>
+                            <Text style={[styles.textBtnSplit, { color: Colors.primary }]}>{t('Splitwise:paid_by')}</Text>
+                            <Image source={AssetIconsPack.icons.payment_icon} style={styles.button} />
+                        </TouchableOpacity>
 
-                    <TouchableOpacity
-                        onPress={() => {
-                            if (item.splitWiseListItems.length > 1) {
-                                createPDF();
-                            }
-                        }} style={[styles.button, { backgroundColor: '#fe5c7d' }]}>
-                        <Image source={AssetIconsPack.icons.report_icon} style={styles.button} />
-                    </TouchableOpacity>
+                    </View>
+
+                    <View>
+                        <TouchableOpacity activeOpacity={0.8}
+                            onPress={() => { setViewType(true), setModalVisible(true); }}
+                            style={[styles.buttonViewContainer, { backgroundColor: '#eecc60' }]}>
+                            <Text style={[styles.textBtnSplit, { color: Colors.primary }]}>{t('Splitwise:add_notes')}</Text>
+                            <Image source={AssetIconsPack.icons.notepad_icon} style={styles.button} />
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={[styles.buttonRow, { justifyContent: item?.notes?.length > 0 ? 'space-between' : 'center' }]}>
+                    {item?.notes?.length > 0 &&
+                        <View>
+                            <TouchableOpacity activeOpacity={0.8}
+                                onPress={() => {
+                                    if (item?.notes?.length > 0) {
+                                        setViewType(false), setModalVisible(true);
+                                    }
+                                }} style={[styles.buttonViewContainer, { backgroundColor: '#eecc60' }]}>
+                                <Text style={[styles.textBtnSplit, { color: Colors.primary }]}>{t('Splitwise:view_notes')}</Text>
+                                <Image source={AssetIconsPack.icons.notebook_icon} style={styles.button} />
+                            </TouchableOpacity>
+                        </View>
+                    }
+
+                    {item.splitWiseListItems.length > 1 &&
+                        <View>
+                            <TouchableOpacity activeOpacity={0.8}
+                                onPress={() => {
+                                    if (item.splitWiseListItems.length > 1) {
+                                        createPDF();
+                                    }
+                                }} style={[styles.buttonViewContainer, { backgroundColor: '#5cb09f' }]}>
+                                <Text style={[styles.textBtnSplit, { color: Colors.primary }]}>{t('Splitwise:view_invoice')}</Text>
+                                <Image source={AssetIconsPack.icons.report_icon} style={styles.button} />
+                            </TouchableOpacity>
+                        </View>
+                    }
                 </View>
 
                 <NoteModal
@@ -335,6 +381,18 @@ export default function CheckListAddView(props) {
                     value={localArrayData}
                     onSubmitCheckList={(name, index) => onSubmitCheckList(name, index)}
                 />
+
+                <RBSheet
+                    height={convertHeight(197)} ref={refRBPaidBySheet} closeOnDragDown={true}
+                    customStyles={{
+                        draggableIcon: { backgroundColor: textColor },
+                        container: { backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }
+                    }}>
+                    <View>
+                        <Text style={{ color: textColor, fontWeight: 'bold', textAlign: 'center' }}>{t('PaidBy:payer')}</Text>
+                        <List horizontal data={localArrayData} renderItem={renderItemPaidBy} style={{ padding: convertHeight(10), backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }} />
+                    </View>
+                </RBSheet>
 
                 <InvoiceModal
                     pdfModalVisible={pdfModalVisible}

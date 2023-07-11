@@ -4,18 +4,21 @@ import Lottie from 'lottie-react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 // Custom Icons
 import AssetIconsPack from '../../assets/IconProvide';
 import Colors from '../../common/Colors';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import { ROUTE_KEYS } from '../../navigation/constants';
 import { darkModeColor } from '../../common/utils/arrayObjectUtils';
+import TouristPlaces from '../../common/data/TouristPlaces.json';
 
 export default function DashboardScreen(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const { t } = useTranslation();
     const [lottieAnimation, setLottieAnimation] = useState(true);
+    const [userName, setUserName] = useState('');
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
@@ -23,12 +26,27 @@ export default function DashboardScreen(props) {
         if (isFocused) {
             setLottieAnimation(false);
         }
+
+        async function fetchTouristPlace() {
+            var value = await AsyncStorage.getItem('userName');
+            setUserName(value);
+        }
+
+        fetchTouristPlace();
     }, [isFocused, lottieAnimation]);
+
+    const onHandlingTouristSpot = async () => {
+        var touristValue = await AsyncStorage.getItem('TouristPlaceData');
+        if (JSON.parse(touristValue).length === 0) {
+            AsyncStorage.setItem('TouristPlaceData', JSON.stringify(TouristPlaces));
+        }
+        navigation.navigate(ROUTE_KEYS.TOURIST_STATES)
+    }
 
     const styles = StyleSheet.create({
         button: {
             backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: 20, height: 160, width: 160,
-            justifyContent: 'center', alignItems: 'center',
+            justifyContent: 'center', alignItems: 'center', borderWidth: 0.2, borderColor: Colors.primary, 
             ...Platform.select({
                 ios: {
                     shadowColor: '#c7c7c7', shadowOffset: { width: 5, height: 5 },
@@ -56,7 +74,7 @@ export default function DashboardScreen(props) {
         topCardSubContainer: {
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop: convertHeight(30)
+            marginTop: convertHeight(35)
         },
         subSection: {
             marginTop: convertHeight(180),
@@ -87,7 +105,7 @@ export default function DashboardScreen(props) {
                     source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
                     <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: backgroundColor }} />
-                    <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(18), fontSize: convertHeight(16) }]}>{t('Dashboard:title')}</Text>
+                    <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {userName}!</Text>
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text>
                 </View>
                 </ImageBackground>
@@ -100,7 +118,7 @@ export default function DashboardScreen(props) {
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon}
-                    cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
+                    cardName={t('Dashboard:actions:tourist_places')} onPress={() => onHandlingTouristSpot()} />
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon}
                     cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>

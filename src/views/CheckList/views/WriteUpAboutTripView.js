@@ -6,6 +6,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
+import * as Animatable from 'react-native-animatable';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
@@ -90,6 +91,33 @@ export default function WriteUpAboutTripView(props) {
             color: COLORS.validation,
             fontStyle: 'italic',
             textAlign: 'center'
+        },
+        buttonViewContainer: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'flex-end',
+            borderRadius: 50,
+            width: '48%',
+            borderWidth: 0.5,
+            borderColor: COLORS.info,
+            marginTop: 25,
+            elevation: 3
+        },
+        textBtnSplit: {
+            flex: 1,
+            textAlign: 'center',
+            fontWeight: '500',
+            textTransform: 'uppercase',
+            fontSize: convertHeight(9),
+            paddingHorizontal: 1
+        },
+        reminderIconContainer: {
+            height: convertHeight(35), 
+            width: convertHeight(35), 
+            borderRadius: convertHeight(45), 
+            justifyContent: 'center',
+            alignItems: 'center', 
+            backgroundColor: COLORS.tertiary
         }
     });
 
@@ -110,15 +138,19 @@ export default function WriteUpAboutTripView(props) {
                 <Text style={styles.txtStyle}>{t('checklist:pack_your_bag')}</Text>
                 <Lottie source={AssetIconsPack.icons.write_up_icon} autoPlay loop
                     style={{ height: convertHeight(170), width: convertWidth(170) }} />
-                {showTime &&
-                    <>
-                        <Ionicons name="alarm" size={convertHeight(20)} color={textColor} />
-                        <Text style={styles.txtStyle}>{showTime}</Text>
-                    </>
-                }
+                <>
+                    <Ionicons name="alarm" size={convertHeight(20)} color={showTime ? COLORS.tertiary : valDateTime ? COLORS.validation : textColor} />
+                    {
+                        showTime ?
+                            <Text style={[styles.txtStyle, { color: COLORS.tertiary }]}>{showTime}</Text> :
+                            valDateTime ?
+                                <Animatable.Text animation="tada" style={styles.errortxt}>{t('checklist:return_val')}</Animatable.Text> :
+                                <Text style={[styles.errortxt, { color: textColor, textTransform: 'uppercase', fontWeight: '500' }]}>{t('checklist:return_val')}</Text>
+                    }
+                </>
             </View>
 
-            <View style={{ flex: 1, paddingHorizontal: convertWidth(18), justifyContent: 'center' }}>
+            <View style={{ flex: 1, paddingHorizontal: convertWidth(18), paddingTop: convertHeight(25) }}>
                 <Input
                     placeholder={t('checklist:input_placeholder')}
                     value={value}
@@ -136,11 +168,29 @@ export default function WriteUpAboutTripView(props) {
                     }
                 />
                 {valTextInput && <Text style={styles.errortxt}>{t('checklist:input_val')}</Text>}
-                {valDateTime && <Text style={styles.errortxt}>{t('checklist:return_val')}</Text>}
 
-                <Button onPress={() => { onWriteUpSubmit() }} style={[styles.reminderBtn, {
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                    <TouchableOpacity onPress={showDatepicker} activeOpacity={0.8}
+                        style={[styles.buttonViewContainer, { backgroundColor: '#69c1ff' }]}>
+                        <Text style={[styles.textBtnSplit, { color: COLORS.primary }]}>{t('checklist:checklist_reminder')}</Text>
+                        <View style={styles.reminderIconContainer}>
+                            <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.primary} />
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity onPress={() => { onWriteUpSubmit() }} activeOpacity={0.8}
+                        style={[styles.buttonViewContainer, { backgroundColor: COLORS.secondary }]}>
+                        <Text style={[styles.textBtnSplit, { color: COLORS.primary }]}>{t('Common:submit')}</Text>
+                        <View style={[styles.reminderIconContainer, { backgroundColor: '#fa4e28' }]}>
+                            <Ionicons name="checkmark-sharp" size={convertHeight(20)} color={COLORS.primary} />
+                        </View>
+                    </TouchableOpacity>
+
+                </View>
+
+                {/* <Button onPress={() => { onWriteUpSubmit() }} style={[styles.reminderBtn, {
                     backgroundColor: COLORS.secondary, borderColor: COLORS.secondary
-                }]}>{t('Common:submit')}</Button>
+                }]}>{t('Common:submit')}</Button> */}
 
                 {show && (
                     <DateTimePicker

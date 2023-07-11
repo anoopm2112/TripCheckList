@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import COLORS from "../../common/Colors";
 import { convertHeight, convertWidth } from "../../common/utils/dimentionUtils";
+import Colors from "../../common/Colors";
 
 export const styles = StyleSheet.create({
     mainContainer: {
@@ -50,11 +51,11 @@ export const styles = StyleSheet.create({
         textAlign: 'center'
     },
     paidByTitle: {
-        color: COLORS.black, 
-        padding: convertHeight(7), 
+        color: COLORS.black,
+        padding: convertHeight(7),
         textAlign: 'center',
-        fontWeight: 'bold', 
-        fontSize: convertHeight(16), 
+        fontWeight: 'bold',
+        fontSize: convertHeight(16),
         color: COLORS.secondary,
         textDecorationLine: 'underline'
     },
@@ -74,16 +75,15 @@ export const styles = StyleSheet.create({
     },
     buttonRow: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         paddingHorizontal: 10,
         marginTop: 20,
     },
     button: {
         borderRadius: 50,
-        width: 70,
-        height: 70,
-        alignItems: 'center',
-        justifyContent: 'center'
+        width: 50,
+        height: 50,
+        borderWidth: 1,
+        borderColor: '#FFF',
     },
     buttonText: {
         color: 'white',
@@ -95,5 +95,48 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flex: 1,
+    },
+    textBtnSplit: {
+        flex: 1,
+        textAlign: 'center',
+        fontWeight: '500',
+        textTransform: 'uppercase',
+        fontSize: 12
+    },
+    buttonViewContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-end',
+        borderRadius: 50,
+        width: convertWidth(155),
+        borderWidth: 0.5,
+        borderColor: Colors.info,
+    },
+    subItemContainer: {
+        padding: convertHeight(5),
+        margin: convertWidth(10),
+        elevation: 1,
+        width: convertWidth(100),
+        height: convertWidth(120),
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 5,
+        marginBottom: 25,
+        borderWidth: 0.2,
+        borderColor: Colors.info
+    },
+    bottomScroll: {
+        fontSize: convertHeight(12),
+        fontWeight: 'bold',
+        padding: convertHeight(6)
+    },
+    addBtn: {
+        borderRadius: 20,
+        width: 40,
+        height: 40,
+        justifyContent: 'center',
+        alignItems: 'center',
+        position: 'absolute',
+        bottom: -20
     }
 });

@@ -1,7 +1,7 @@
 const AssetIconsPack = {
     icons: {
         // Images
-        'on_board_image': require('../assets/onboardImage.jpeg'),
+        'on_board_image': require('../assets/onboardImage-01.jpeg'),
         'app_logo_side_image': require('../assets/side_logo.png'),
         'checklist_item_no_image': require('../assets/clothes_three.png'),
         'checklist_clothes_image': require('../assets/clothes.jpg'),
@@ -52,12 +52,12 @@ const AssetIconsPack = {
         'splitwise_empty_icon': require('../assets/92520-money-hand.json'),
         'money_hand_dark': require('../assets/money_hand_dark.json'),
         'checklist_empty_icon': require('../assets/66350-checklist.json'),
-        'add_friends_icon': require('../assets/126331-add-friend.json'),
+        'add_friends_icon': require('../assets/78666-friendly-faces'),
         'write_up_icon': require('../assets/95434-history.json'),
         'checklist_history_icon': require('../assets/114398-no-transaction-history.json'),
         'no_image_icon': require('../assets/122840-image.json'),
         'settings_icon': require('../assets/69362-green-setting-wheel.json'),
-        'cost_planner_icon': require('../assets/91889-budgeting.json'),
+        'cost_planner_icon': require('../assets/92163-food-courier.json'),
         'no_internet_location_icon': require('../assets/107013-loader-for-wi-fi-connection.json'),
         'tourist_icon': require('../assets/85352-globe.json'),
         'report_icon': require('../assets/report.png'),
@@ -73,6 +73,13 @@ const AssetIconsPack = {
         'cost_planner_about': require('../assets/cost_planner_about.png'),
         'more_Info_about': require('../assets/more_Info.png'),
         'contact_us_mail': require('../assets/74348-new-mail'),
+        'checklist_help': require('../assets/checklist_help.png'),
+        'moneysplit_help': require('../assets/moneysplit_help.jpg'),
+        'travel_help': require('../assets/travel_help.jpg'),
+        'costplan_help': require('../assets/costplan_help.jpg'),
+        'background_help': require('../assets/background_help.png'),
+        'avatar': require('../assets/man.png'),
+        'location_pin_lottie': require('../assets/115802-realistic-location-pin-pointer-on-global-earth.json'),
         
     },
 };

@@ -1,7 +1,7 @@
 {
     "Dashboard": {
         "app_name": "TRIP CHECKLIST",
-        "title": "Hello Welcome!",
+        "title": "Welcome",
         "subtitle": "What do you want to do today?",
         "actions": {
             "checklist": "CHECKLIST",
@@ -30,6 +30,7 @@
         "validation_add_friends": "Please enter a friend to add",
 
         "generate_view_nvoice": "Generate & View Invoice",
+        "view_invoice": "View Invoice",
         "need": "Need",
         "give_back" : "Give Back",
         "paid_total": "paid a total of",
@@ -45,7 +46,9 @@
         "select_food_category": "Please select your food category",
         "split_amount": "Split Amount",
         "input_val": "Please enter something about your split.",
-        "input_placeholder": "Write something about your split..."
+        "input_placeholder": "Write something about your split...",
+        "money_help_info": "Allows users to effortlessly add friends, manage expenses, add notes, and display the split amount as an invoice.",
+        "add_friend_info": "Friends are like stars. You don't always see them, but you know they're always there."
     },
     "History": {
         "history": "HISTORY"
@@ -85,7 +88,8 @@
         "reset": "Reset",
         "remove_all_data": "REMOVE ALL",
         "items": "ITEMS",
-        "done": "DONE"
+        "done": "DONE",
+        "play_video": "PLAY VIDEO"
     },
     "checklist": {
         "info": "Gather all necessary materials and supplies. Review and revise the checklist as needed to ensure accuracy and efficiency. Enjoy your journey!!!",
@@ -99,7 +103,9 @@
         "header": {
             "Add_Checklist": "ADD CHECKLIST",
             "Add_Checklist_Items": "ADD CHECKLIST ITEMS"
-        }
+        },
+        "checklist_reminder": "SET TIME FOR RETURN",
+        "checklist_help_info": "Create and maintain personalized lists, ensuring they remember all necessary items during their journeys."
     },
     "Touristplace": {
         "district": "DISTRICT",
@@ -120,9 +126,26 @@
         "allow_blocked_permissions": "Some permissions where denied more than once, please enable them from settings",
         "youAreOffline": "You are currently offline", 
         "viewgmaploc": "To view the driving route on Google Map, tap on Card View.",
+        "recieveLocation": "Click on get location and recieve your needed location and click done to exit google map view",
+        "recieve_location": "LOCATION RECIEVED",
         "view_location": "View Location",
         "km": "km",
-        "min": "min"
+        "min": "min",
+        "tourist_help_info": "Efficient expense tracking and splitting among friends or travelers.",
+        "location": "Place Location",
+        "place_google_location": "Place Google Location",
+        "place_name": "Place Name",
+        "place_note": "Place Note",
+        "add_new_place": "NEW PLACE",
+        "add_place": "ADD PLACE",
+        "update_place": "UPDATE PLACE",
+        "list_all_place": "LIST ALL PLACES",
+        "enter_place_name": "Please Enter Place Name",
+        "enter_place_note": "Please Enter Place Note",
+        "enter_your_place_name": "Enter Your Place Name",
+        "enter_your_place_note": "Enter Your Place Note",
+        "edit": "EDIT",
+        "created_By": "Created By"
     },
     "Districts": {
         "Kasaragod": "Kasaragod",
@@ -173,7 +196,8 @@
         "fuel_price_val": "Please enter fuel price",
         "mileage_val": "Please enter Mileage",
         "distance_val": "Please enter Distance",
-        "cost_val": "Please enter Cost"
+        "cost_val": "Please enter Cost",
+        "cost_help_inof": "Users can calculate distance, mileage, and cost by inputting fuel price, mileage, and distance."
     },
     "AboutUs": {
         "AboutUs": "ABOUT US"
@@ -189,9 +213,24 @@
         "send": "Send"
     },
     "Help": {
-        "help": "HELP"
+        "help": "HELP",
+        "takeTour": "TAKE A TOUR"
     },
     "Logout": {
         "logout": "LOGOUT AND EXIT"
+    },
+    "Quotes": {
+        "quote_1": "A well-prepared traveler is a confident adventurer. A checklist ensures you never leave behind the essentials, turning your trip into a worry-free experience.",
+        "quote_2": "Checklists are the backbone of a successful journey. They help us remember the small things that make a big difference and ensure our trips are filled with joy, not regret.",
+        "quote_3": "Splitwise takes the hassle out of money matters, bringing harmony to group expenses and keeping friendships intact.",
+        "quote_4": "It's not how much money you make, but how much money you keep, how hard it works for you, and how many generations you keep it for.",
+        "quote_5": "The world is a book, and those who do not travel read only one page.",
+        "quote_6": "Travel is fatal to prejudice, bigotry, and narrow-mindedness.",
+        "quote_7": "A budget is telling your money where to go instead of wondering where it went.",
+        "quote_8": "Travel doesn't have to break the bank. With careful planning and budgeting, you can create incredible adventures within your means.",
+        "dave_ramsey": "Dave Ramsey",
+        "robert_kiyosaki": "Robert Kiyosaki",
+        "saint_augustine": "Saint Augustine",
+        "mark_twain": "Mark Twain"
     }
 }

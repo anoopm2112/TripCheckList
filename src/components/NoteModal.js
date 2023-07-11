@@ -99,7 +99,7 @@ export default function NoteModal(props) {
     return (
         <View>
             <Modal
-                animationType="none"
+                animationType={!viewType ? "slide" : "none"}
                 transparent={true}
                 visible={showView}
                 onRequestClose={() => { onClose() }}>

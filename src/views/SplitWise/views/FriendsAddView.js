@@ -13,8 +13,9 @@ import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { addNewSplitwises } from '../api/SplitWiseApi';
 import AssetIconsPack from '../../../assets/IconProvide';
-import { SubItemSplitWise, List, Input, Button } from '../../../components';
+import { SubItemSplitWise, List, Input, Button, AnimatedText } from '../../../components';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import Colors from '../../../common/Colors';
 
 export default function FriendsAddView(props) {
   const { navigation } = props;
@@ -192,9 +193,15 @@ export default function FriendsAddView(props) {
           </TouchableOpacity>} />
       </View>
       {valTextInput && <Text style={styles.errortxt}>{t('Splitwise:validation_add_friends')}</Text>}
-
-      <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(6), backgroundColor: backgroundColor }} />
-
+  
+      {
+        localArrayData.length > 0 ?
+          <List numColumns={2} data={localArrayData} renderItem={renderItem} style={{ padding: convertHeight(6), backgroundColor: backgroundColor }} />
+          :
+          <View style={{ color: Colors.info, paddingTop: 20, textAlign: 'center', flex: 1 }}>
+            <AnimatedText label={'Splitwise:add_friend_info'} />
+          </View>
+      }
       {!isKeyboardVisible && <Button onPress={() => { onSubmitAddFriends() }} style={styles.submitBtn}>{t('Common:submit')}</Button>}
     </View>
   )
