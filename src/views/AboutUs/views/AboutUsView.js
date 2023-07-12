@@ -393,7 +393,7 @@ class App extends React.Component {
                         <Text style={[styles.HeaderTitle, { color: this.props.isDarkMode ? Colors.primary : Colors.black }]}>{item.title}</Text>
                     </View>
                     <TouchableOpacity style={styles.HeaderIconContainer}>
-                        <Image style={{ height: convertHeight(30), width: convertWidth(35) }} source={AssetIconsPack.icons.app_logo_side_image} />
+                        <Image style={{ height: convertHeight(30), width: convertWidth(35), backgroundColor: item.bg }} source={AssetIconsPack.icons.app_logo_side_image} />
                     </TouchableOpacity>
                 </View>
                 <Animated.View style={[styles.image, { transform: [{ scale: imageScale }], opacity: imageOpacity }]}>
@@ -588,7 +588,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        height: 60,
+        paddingVertical: convertHeight(7),
         width: '100%'
     },
     HeaderBackButton: {

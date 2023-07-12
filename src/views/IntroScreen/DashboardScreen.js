@@ -37,7 +37,7 @@ export default function DashboardScreen(props) {
 
     const onHandlingTouristSpot = async () => {
         var touristValue = await AsyncStorage.getItem('TouristPlaceData');
-        if (JSON.parse(touristValue).length === 0) {
+        if (touristValue === null) {
             AsyncStorage.setItem('TouristPlaceData', JSON.stringify(TouristPlaces));
         }
         navigation.navigate(ROUTE_KEYS.TOURIST_STATES)
@@ -104,7 +104,7 @@ export default function DashboardScreen(props) {
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }} 
                     source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
-                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: backgroundColor }} />
+                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: '#ffffff00' }} />
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {userName}!</Text>
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text>
                 </View>

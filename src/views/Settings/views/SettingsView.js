@@ -361,7 +361,7 @@ export default function SettingsView(props) {
                     <TouchableOpacity onPress={handlePress}>
                         <Animatable.View animation="pulse" easing="ease-out" iterationCount="infinite">  
                             <Image source={AssetIconsPack.icons.app_logo_side_image} 
-                                style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20) }} />
+                                style={{ resizeMode: 'cover', height: convertHeight(20), width: convertHeight(20), backgroundColor: isDarkMode ? '#262626' : '#f0f0f0' }} />
                         </Animatable.View>
                     </TouchableOpacity>
                 </View>
