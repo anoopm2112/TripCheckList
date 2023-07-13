@@ -6,5 +6,7 @@ export default COLORS = {
     tertiary: '#33ACFF',
     validation: 'red',
     paleGreen: '#83E14A',
-    green: 'green'
+    green: 'green',
+    lightRed: '#f55f4e',
+    lightGreen: '#43a159'
 };

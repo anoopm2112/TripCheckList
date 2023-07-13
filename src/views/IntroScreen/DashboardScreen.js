@@ -12,11 +12,12 @@ import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import { ROUTE_KEYS } from '../../navigation/constants';
 import { darkModeColor } from '../../common/utils/arrayObjectUtils';
 import TouristPlaces from '../../common/data/TouristPlaces.json';
+import { AnimatedText } from '../../components';
 
 export default function DashboardScreen(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [lottieAnimation, setLottieAnimation] = useState(true);
     const [userName, setUserName] = useState('');
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
@@ -84,7 +85,8 @@ export default function DashboardScreen(props) {
         },
         textLabel: {
             fontWeight: 'bold',
-            textAlign: 'center'
+            textAlign: 'center',
+            fontSize: (i18n.language === 'ml' || i18n.language === 'ta') ? convertHeight(10) : convertHeight(11)
         }
     });
 
@@ -106,7 +108,8 @@ export default function DashboardScreen(props) {
                 <View style={styles.topCardSubContainer}>
                     <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: '#ffffff00' }} />
                     <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {userName}!</Text>
-                    <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text>
+                    {/* <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text> */}
+                    <AnimatedText style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]} label={'Dashboard:subtitle'} />
                 </View>
                 </ImageBackground>
             </View>

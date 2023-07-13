@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Linking, StatusBar, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Platform, PermissionsAndroid, Linking, StatusBar, ScrollView, Alert } from 'react-native';
 import { useTranslation } from "react-i18next";
 import { Transition, Transitioning } from 'react-native-reanimated';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -185,6 +185,12 @@ export default function TouristDistrict(props) {
             </View>
 
             {TouristPlaces[districtName].map(({ name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI, location }, index) => {
+                
+                const onPressArrow = () => {
+                    ref.current.animateNextTransition();
+                    setCurrentIndex(index === currentIndex ? null : index);
+                }
+                
                 return (
                     <TouchableOpacity
                         key={name}
@@ -203,7 +209,7 @@ export default function TouristDistrict(props) {
                                             i18n.language === 'hi' ? name_HI : name_TA
                                 }</Text>
                                 {index !== currentIndex && 
-                                    <UpDownIconAnimation colorValue={selectItemBgColor(index).color}/>
+                                    <UpDownIconAnimation onPress={onPressArrow} colorValue={selectItemBgColor(index).color} />
                                 }
                             </View>
                             {index === currentIndex && (

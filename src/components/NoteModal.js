@@ -41,7 +41,7 @@ export default function NoteModal(props) {
             <View style={styles.listItemContainer}>
                 <Text style={{ color: textColor, width: '85%', textAlign: 'justify' }}>{item.note}</Text>
                 <TouchableOpacity onPress={() => { deleteNote(item.id) }}>
-                    <Ionicons name="remove-circle-sharp" size={convertHeight(24)} color={'red'} />
+                    <Ionicons name="remove-circle-sharp" size={convertHeight(24)} color={COLORS.lightRed} />
                 </TouchableOpacity>
             </View>
         )

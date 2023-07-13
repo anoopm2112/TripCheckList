@@ -190,7 +190,7 @@ export default function AllPlaceList(props) {
                             </View>
                             <Text style={[styles.locationContainer, {
                                 justifyContent: 'flex-start', color: Colors.info, fontStyle: 'italic', fontSize: 10
-                            }]}>{t('Touristplace:created_By')} <Text style={{ fontWeight: '500', textTransform: 'uppercase', fontStyle: 'italic', fontSize: 10 }}> : {createdBy ? createdBy : 'CHECKLIST'}</Text></Text>
+                            }]}>{t('Touristplace:created_By')}<Text style={{ fontWeight: '500', textTransform: 'uppercase', fontStyle: 'italic', fontSize: 10 }}> {createdBy ? createdBy : 'CHECKLIST'}</Text></Text>
                             <View style={styles.noteList}>
                                 <Text key={note} style={[styles.body, { color: selectItemBgColor(index).color }]}>
                                     {
@@ -213,8 +213,8 @@ export default function AllPlaceList(props) {
                                                 name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI, location
                                             } })}
                                             style={styles.locationContainer}>
-                                            <AntDesign name="edit" size={15} color={Colors.green} style={{ paddingRight: 2 }} />
-                                            <Text style={[styles.locationBtn, { color: Colors.green }]}>{t('Touristplace:edit')}</Text>
+                                            <AntDesign name="edit" size={15} color={Colors.lightGreen} style={{ paddingRight: 2 }} />
+                                            <Text style={[styles.locationBtn, { color: Colors.lightGreen }]}>{t('Touristplace:edit')}</Text>
                                         </TouchableOpacity>
                                     </View>}
 

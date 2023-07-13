@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import COLORS from '../common/Colors';
 import { darkModeColor } from '../common/utils/arrayObjectUtils';
+import Colors from '../common/Colors';
 
 const CustomPopup = ({ title, message, visible, onClose, onConfirm }) => {
     const dispatch = useDispatch();
@@ -59,14 +60,14 @@ const CustomPopup = ({ title, message, visible, onClose, onConfirm }) => {
                     <Text style={styles.title}>{t(title)}</Text>
                     <Text style={styles.message}>{t(message)}</Text>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: '100%' }}>
-                        <TouchableOpacity style={[styles.closeButton, { backgroundColor: 'green' }]}
+                        <TouchableOpacity style={[styles.closeButton, { backgroundColor: COLORS.lightGreen }]}
                             onPress={() => {
                                 dispatch(onConfirm)
                                 onClose()
                             }}>
                             <Text style={styles.closeText}>{t('Common:yes')}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity style={[styles.closeButton, { backgroundColor: 'red' }]}
+                        <TouchableOpacity style={[styles.closeButton, { backgroundColor: Colors.lightRed }]}
                             onPress={onClose}>
                             <Text style={styles.closeText}>{t('Common:no')}</Text>
                         </TouchableOpacity>

@@ -68,7 +68,7 @@ export default function CheckItemListView(props) {
             position: 'absolute',
             bottom: convertHeight(30),
             left: convertWidth(20),
-            backgroundColor: COLORS.validation,
+            backgroundColor: COLORS.lightRed,
             borderRadius: 5,
         },
         infoTxt: {

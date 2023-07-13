@@ -315,7 +315,7 @@ export default function CostPlanner() {
                             <Text style={[styles.textBtn, { textTransform: 'uppercase' }]}>{t('Common:reset')}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={handleCostCalculation} activeOpacity={0.5}
-                            style={[styles.btnContainer, { backgroundColor: Colors.green, width: '68%' }]}>
+                            style={[styles.btnContainer, { backgroundColor: Colors.lightGreen, width: '68%' }]}>
                             <Text style={[styles.textBtn, { textTransform: 'uppercase' }]}>{itemsRenderByValue().btnText}</Text>
                         </TouchableOpacity>
                     </View>

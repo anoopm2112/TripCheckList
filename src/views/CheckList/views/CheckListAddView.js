@@ -169,8 +169,8 @@ export default function CheckListAddView(props) {
             paddingVertical: convertHeight(12)
         },
         addTask: {
-            backgroundColor: 'green',
-            borderColor: 'green',
+            backgroundColor: COLORS.lightGreen,
+            borderColor: COLORS.lightGreen,
             width: convertWidth(150)
         }
     });
@@ -213,7 +213,7 @@ export default function CheckListAddView(props) {
                         onPress={() => reduceCounterFun()}>
                     </Button>
                     <Text style={{ fontWeight: 'bold', color: textColor }}>{counter} {displayValue}</Text>
-                    <Button style={{ backgroundColor: backgroundColor, borderColor: 'green' }}
+                    <Button style={{ backgroundColor: backgroundColor, borderColor: COLORS.lightGreen }}
                         accessoryRight={<MaterialIcons name="add-circle" size={convertHeight(16)} color="green" />}
                         appearance='outline'
                         onPress={() => setCounter(counter + 1)}>

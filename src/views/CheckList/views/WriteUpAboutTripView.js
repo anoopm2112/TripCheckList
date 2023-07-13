@@ -4,6 +4,7 @@ import { Input, Button } from '@ui-kitten/components';
 import Lottie from 'lottie-react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
@@ -163,7 +164,7 @@ export default function WriteUpAboutTripView(props) {
                     textStyle={{ minHeight: convertHeight(30), color: textColor }}
                     accessoryRight={
                         <TouchableOpacity onPress={showDatepicker}>
-                            <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.tertiary} />
+                            <AntDesign name="edit" size={convertHeight(20)} color={'#b3afa8'} />
                         </TouchableOpacity>
                     }
                 />

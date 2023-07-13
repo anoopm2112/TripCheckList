@@ -48,7 +48,7 @@ export default function MainItemListCardView(props) {
             borderColor: COLORS.primary
         },
         deleteBtnContainer: {
-            backgroundColor: 'red',
+            backgroundColor: COLORS.lightRed,
             height: convertHeight(35),
             width: convertWidth(40),
             justifyContent: 'center',
@@ -57,7 +57,7 @@ export default function MainItemListCardView(props) {
             borderBottomLeftRadius: 3
         },
         editBtnContainer: {
-            backgroundColor: 'green',
+            backgroundColor: COLORS.lightGreen,
             height: convertHeight(35),
             width: convertWidth(40),
             justifyContent: 'center',

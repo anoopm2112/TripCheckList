@@ -61,14 +61,14 @@ export default function MainItemSplitWiseListCard(props) {
             borderBottomColor: isDarkMode ? '#2E2E2E' : '#e5e5e5'
         },
         editBtnContainer: {
-            backgroundColor: 'green',
+            backgroundColor: COLORS.lightGreen,
             height: '100%',
             width: '15%',
             justifyContent: 'center',
             alignItems: 'center'
         },
         deleteBtnContainer: {
-            backgroundColor: 'red',
+            backgroundColor: COLORS.lightRed,
             height: '100%',
             width: '15%',
             justifyContent: 'center',

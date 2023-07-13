@@ -3,7 +3,7 @@ import { Animated, Easing, TouchableOpacity } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 const UpDownIconAnimation = (props) => {
-    const { colorValue } = props;
+    const { colorValue, onPress } = props;
     const animationValue = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -41,7 +41,10 @@ const UpDownIconAnimation = (props) => {
     };
 
     return (
-        <TouchableOpacity onPress={animateIcon}>
+        <TouchableOpacity onPress={() => {
+            onPress(),
+            animateIcon
+        }}>
             <Animated.View style={iconStyle}>
                 <MaterialIcons name="keyboard-arrow-down" size={24} color={colorValue} />
             </Animated.View>

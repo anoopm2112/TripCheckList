@@ -314,6 +314,8 @@ export default function CheckListAddView(props) {
                         <TouchableOpacity activeOpacity={0.8} onPress={() => {
                             if (displayValue === 'Select your food category') {
                                 setValSelectFoodType(true);
+                            } else if (amount == '') {
+                                setValAmount(true);
                             } else {
                                 // setPaidByModalVisible(true);
                                 refRBPaidBySheet.current.open();

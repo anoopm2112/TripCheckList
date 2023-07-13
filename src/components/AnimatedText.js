@@ -35,7 +35,7 @@ export default FloatingText = (props) => {
     return (
         <View style={{ alignItems: 'center' }}>
             <Animated.Text
-                style={[styles.infoText, { transform: [{ translateY }] }]}>
+                style={[styles.infoText, { transform: [{ translateY }] }, props.style && props.style]}>
                 {t(props.label)}
             </Animated.Text>
         </View>

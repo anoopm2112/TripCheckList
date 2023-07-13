@@ -393,7 +393,7 @@ class App extends React.Component {
                         <Text style={[styles.HeaderTitle, { color: this.props.isDarkMode ? Colors.primary : Colors.black }]}>{item.title}</Text>
                     </View>
                     <TouchableOpacity style={styles.HeaderIconContainer}>
-                        <Image style={{ height: convertHeight(30), width: convertWidth(35), backgroundColor: item.bg }} source={AssetIconsPack.icons.app_logo_side_image} />
+                        <Image style={{ height: convertHeight(30), width: convertWidth(35), borderRadius: convertWidth(35), backgroundColor: item.bg }} source={AssetIconsPack.icons.app_logo_side_image} />
                     </TouchableOpacity>
                 </View>
                 <Animated.View style={[styles.image, { transform: [{ scale: imageScale }], opacity: imageOpacity }]}>
@@ -403,7 +403,7 @@ class App extends React.Component {
                     {/* <Text style={[styles.title, { paddingVertical: 20, color: this.props.isDarkMode ? Colors.primary : Colors.black, }]}>{item.title}</Text> */}
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: (i18n.language === 'en' || i18n.language === 'hi') ? 20 : 0 }}>
-                        <View style={styles.iconContainer}>
+                        <View style={[styles.iconContainer, { backgroundColor: item.bg }]}>
                             <MaterialCommunityIcons name={item.side_Icon_1} size={24} color={Colors.primary} />
                         </View>
                         <View>
@@ -413,7 +413,7 @@ class App extends React.Component {
                     </View>
 
                     <View style={{ flexDirection: 'row', alignItems: 'center', marginVertical: 15 }}>
-                        <View style={styles.iconContainer}>
+                        <View style={[styles.iconContainer, { backgroundColor: item.bg }]}>
                             <MaterialCommunityIcons name={item.side_Icon_2} size={24} color={Colors.primary} />
                         </View>
                         <View>
@@ -423,7 +423,7 @@ class App extends React.Component {
                     </View>
 
                     {item.side_Icon_3 && <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <View style={styles.iconContainer}>
+                        <View style={[styles.iconContainer, { backgroundColor: item.bg }]}>
                             <MaterialCommunityIcons name={item.side_Icon_3} size={24} color={Colors.primary} />
                         </View>
                         <View>
@@ -588,7 +588,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 16,
-        paddingVertical: convertHeight(7),
+        paddingTop: convertHeight(3),
+        height: convertHeight(50),
         width: '100%'
     },
     HeaderBackButton: {

@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import COLORS from '../common/Colors';
 import { darkModeColor } from '../common/utils/arrayObjectUtils';
+import AnimatedText from './AnimatedText';
 
 export default function EmptyList(props) {
     const { t } = useTranslation();
@@ -19,19 +20,13 @@ export default function EmptyList(props) {
             justifyContent: 'center',
             alignItems: 'center',
             backgroundColor: backgroundColor
-        },
-        infoTxt: {
-            color: COLORS.info,
-            fontStyle: 'italic',
-            paddingHorizontal: convertWidth(30),
-            textAlign: 'center'
         }
     });
 
     return (
         <View style={styles.mainContainer}>
             <Lottie source={props.lottieSrc} autoPlay loop style={{ height: convertHeight(120) }} />
-            <Text style={styles.infoTxt}>{t(props.shownText)}</Text>
+            <AnimatedText label={props.shownText}  />
         </View>
     )
 }

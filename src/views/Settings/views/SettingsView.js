@@ -125,6 +125,9 @@ export default function SettingsView(props) {
 
     const perfomLogout = () => {
         AsyncStorage.removeItem('userAuth');
+        AsyncStorage.removeItem('userName');
+        dispatch(deleteAllSplitWise());
+        dispatch(deleteAllChecklist());
         props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN);
     }
 
@@ -133,7 +136,7 @@ export default function SettingsView(props) {
             <TouchableOpacity activeOpacity={0.9} onPress={() => onChangeLanguage(item.languageCode)} style={[styles.button, { backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }]}>
                 <Text style={{ color: textColor, fontWeight: 'bold' }}>{t(`Languages:${item?.language}`)}</Text>
                 {i18n.language === item.languageCode &&
-                    <AntDesign name="checkcircle" size={24} color={isDarkMode ? Colors.primary : Colors.green} />
+                    <AntDesign name="checkcircle" size={24} color={isDarkMode ? Colors.primary : Colors.lightGreen} />
                 }
             </TouchableOpacity>
         );
@@ -316,7 +319,7 @@ export default function SettingsView(props) {
 
                     <TouchableOpacity disabled={!isDarkMode} onPress={() => handleToggleDarkMode()} style={[styles.button, { backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }]}>
                         <Text style={{ color: textColor, fontWeight: 'bold' }}>{t('Settings:light')}</Text>
-                        {!isDarkMode && <AntDesign name="checkcircle" size={24} color={Colors.green} />}
+                        {!isDarkMode && <AntDesign name="checkcircle" size={24} color={Colors.lightGreen} />}
                     </TouchableOpacity>
 
                 </View>
@@ -333,11 +336,11 @@ export default function SettingsView(props) {
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 32 }}>
                         <TouchableOpacity activeOpacity={0.5} onPress={() => handleEraseAllData()} style={styles.buttonErase}>
                             <Text style={{ color: textColor, fontWeight: 'bold' }}>{t('Common:yes')}</Text>
-                            <AntDesign name="checkcircle" size={24} color={Colors.green} />
+                            <AntDesign name="checkcircle" size={24} color={Colors.lightGreen} />
                         </TouchableOpacity>
                         <TouchableOpacity activeOpacity={0.5} onPress={() => refRBClearAllSheet.current.close()} style={styles.buttonErase}>
                             <Text style={{ color: textColor, fontWeight: 'bold' }}>{t('Common:no')}</Text>
-                            <AntDesign name="closecircle" size={24} color={Colors.validation} />
+                            <AntDesign name="closecircle" size={24} color={Colors.lightRed} />
                         </TouchableOpacity>
                     </View>
                 </View>

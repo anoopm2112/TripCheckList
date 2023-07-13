@@ -77,7 +77,7 @@ export default function App(props) {
                 {
                     key: '2',
                     id: 2,
-                    poster: AssetIconsPack.icons.travel_help,
+                    poster: AssetIconsPack.icons.tourist_spot_about,
                     poster_color: isDarkMode ? Colors.black : '#ededeb',
                     title: 'Dashboard:actions:tourist_places',
                     description: 'Touristplace:tourist_help_info',
@@ -87,7 +87,7 @@ export default function App(props) {
                 {
                     key: '3',
                     id: 3,
-                    poster: AssetIconsPack.icons.moneysplit_help,
+                    poster: AssetIconsPack.icons.money_splitter_aboutus,
                     poster_color: isDarkMode ? '#3D3C3A' : '#fafae3',
                     title: 'Dashboard:actions:money_splitter',
                     description: 'Splitwise:money_help_info',
@@ -97,7 +97,7 @@ export default function App(props) {
                 {
                     key: '4',
                     id: 4,
-                    poster: AssetIconsPack.icons.checklist_help,
+                    poster: AssetIconsPack.icons.checklist_image_about,
                     poster_color: isDarkMode ? Colors.black : '#ebf8fc',
                     title: 'Dashboard:actions:checklist',
                     description: 'checklist:checklist_help_info',
@@ -171,14 +171,14 @@ export default function App(props) {
                                 }}
                             >
                                 <View style={styles.posterImage}>
-                                    <Image source={item.poster} style={styles.posterImage} />
+                                    <Image source={item.poster} style={[styles.posterImage, { backgroundColor: item.backdrop_color }]} />
                                     {/* <Lottie source={item.poster} loop={true} autoPlay style={{ height: item.id === 1 ? convertHeight(120) : convertHeight(170) }} /> */}
                                 </View>
 
                                 {/* <Text style={{ fontSize: 20, fontWeight: '500', color: textColor, textTransform: 'uppercase', paddingBottom: 8 }} numberOfLines={1}>
                                     {t(item.title)}
                                 </Text> */}
-                                <Text style={{ fontSize: 12, color: textColor, textAlign: 'center' }} numberOfLines={3}>
+                                <Text style={{ fontSize: 12, color: textColor, textAlign: 'center', paddingTop: convertHeight(15) }} numberOfLines={3}>
                                     {t(item.description)}
                                 </Text>
                                 <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.VIDEO_VIEW)}
@@ -215,13 +215,11 @@ const styles = StyleSheet.create({
     posterImage: {
         width: convertHeight(150),
         height: convertHeight(150),
-        resizeMode: 'cover',
+        resizeMode: 'contain',
         borderRadius: convertHeight(150),
         margin: 0,
         // marginBottom: 10,
         justifyContent: 'center',
-        alignItems: 'center',
-        borderWidth: 0.5,
-        borderColor: Colors.primary
+        alignItems: 'center'
     },
 });
