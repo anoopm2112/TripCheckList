@@ -9,6 +9,7 @@ export const ROUTE_KEYS = {
     SPLIT_WISE_ADD: 'SpltWiseAddView',
     SPLIT_WISE_LIST: 'SplitWiseListView',
     DASHBOARD_SCREEN: 'DashboardScreen',
+    SPLASH_SCREEN: 'SplashScreen',
 
     FETCH_POST: 'fetchPost',
     SETTINGS: 'SettingScreen',

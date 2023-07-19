@@ -90,7 +90,8 @@
         "remove_all_data": "REMOVE ALL",
         "items": "ITEMS",
         "done": "DONE",
-        "play_video": "PLAY VIDEO"
+        "play_video": "PLAY VIDEO",
+        "logoutApp": "Do you want to logout?"
     },
     "checklist": {
         "info": "Gather all necessary materials and supplies. Review and revise the checklist as needed to ensure accuracy and efficiency. Enjoy your journey!!!",

@@ -1,5 +1,6 @@
 import WelcomeScreen from './IntroScreen/WelcomeScreen';
 import DashboardScreen from './IntroScreen/DashboardScreen';
+import SplashScreen from './IntroScreen/SplashScreen';
 
 import CheckItemListView from './CheckList/views/CheckItemListView';
 import CheckListAddView from './CheckList/views/CheckListAddView';
@@ -39,6 +40,7 @@ export {
     SplitWiseAddView,
     SplitWiseListView,
     DashboardScreen,
+    SplashScreen,
 
     PostList,
     SettingsView,

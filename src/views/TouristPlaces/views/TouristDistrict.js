@@ -118,11 +118,12 @@ export default function TouristDistrict(props) {
         },
         card: {
             flexGrow: 1,
-            alignItems: 'center',
+            // alignItems: 'center',
             justifyContent: 'center',
+            paddingLeft: convertWidth(15)
         },
         heading: {
-            fontSize: 17,
+            fontSize: 15,
             fontWeight: '900',
             textTransform: 'uppercase',
             textAlign: 'center',
@@ -131,8 +132,8 @@ export default function TouristDistrict(props) {
         body: {
             fontSize: 16,
             lineHeight: 20 * 1.4,
-            textAlign: 'center',
-            padding: 5
+            // textAlign: 'center',
+            paddingVertical: 5
         },
         noteList: {
             marginTop: 10,
@@ -142,7 +143,7 @@ export default function TouristDistrict(props) {
             fontSize: 18,
             textAlign: 'center',
             fontWeight: 'bold',
-            textDecorationLine: 'underline',
+            // textDecorationLine: 'underline',
             textTransform: 'uppercase'
         },
         locationBtn: {
@@ -162,7 +163,9 @@ export default function TouristDistrict(props) {
             justifyContent: 'space-between', 
             paddingHorizontal: convertWidth(13), 
             alignItems: 'center',
-            paddingBottom: convertHeight(10) 
+            paddingBottom: convertHeight(10),
+            borderBottomWidth: 0.7,
+            borderBottomColor: Colors.info
         }
     });
 
@@ -173,13 +176,13 @@ export default function TouristDistrict(props) {
             style={styles.container}>
             <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <View style={styles.headerContainer}>
+                <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.ALL_PLACE_LIST, { districtName: districtName })}>
+                    <Ionicons name="list" size={30} color={textColor} />
+                </TouchableOpacity>
                 <Text style={styles.districtHeader}>{t(`Districts:${districtName}`)}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.ALL_PLACE_LIST, { districtName: districtName })}>
-                        <Foundation name="indent-more" style={{ paddingRight: convertWidth(7) }} size={24} color={textColor} />
-                    </TouchableOpacity>
                     <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.CREATE_NEW_PLACE, { districtName: districtName })}>
-                        <Ionicons name="add-circle-sharp" size={30} color={textColor} />
+                        <Ionicons name="ios-add-circle-outline" size={30} color={textColor} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -189,8 +192,8 @@ export default function TouristDistrict(props) {
                 const onPressArrow = () => {
                     ref.current.animateNextTransition();
                     setCurrentIndex(index === currentIndex ? null : index);
-                }
-                
+                };
+
                 return (
                     <TouchableOpacity
                         key={name}
@@ -221,13 +224,19 @@ export default function TouristDistrict(props) {
                                                     i18n.language === 'hi' ? note_HI : note_TA
                                         }
                                     </Text>
-                                    {location &&
-                                        <TouchableOpacity
-                                            onPress={() => { locationCheckPermission(location); }}
-                                            style={styles.locationContainer}>
-                                            <Ionicons name="location" size={15} color={'#0aabf0'} style={{ paddingRight: 2 }} />
-                                            <Text style={styles.locationBtn}>{t('Touristplace:view_location')}</Text>
-                                        </TouchableOpacity>}
+
+                                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingRight: 20 }}>
+                                        {index === currentIndex &&
+                                            <UpDownIconAnimation onPurpose={true} onPress={onPressArrow} colorValue={selectItemBgColor(index).color} />
+                                        }
+                                        {location &&
+                                            <TouchableOpacity
+                                                onPress={() => { locationCheckPermission(location); }}
+                                                style={styles.locationContainer}>
+                                                <Ionicons name="location" size={15} color={'#0aabf0'} style={{ paddingRight: 2 }} />
+                                                <Text style={styles.locationBtn}>{t('Touristplace:view_location')}</Text>
+                                            </TouchableOpacity>}
+                                    </View>
                                 </View>
                             )}
                         </View>

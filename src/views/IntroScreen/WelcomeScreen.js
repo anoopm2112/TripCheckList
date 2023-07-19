@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, ImageBackground, StatusBar, Text, TouchableOpacity, TextInput } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import { View, StyleSheet, ImageBackground, StatusBar, Text, TouchableOpacity, TextInput, BackHandler } from 'react-native';
 import PushNotification from "react-native-push-notification";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
@@ -10,10 +10,23 @@ import COLORS from '../../common/Colors';
 import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
 import EN_IN from '../../common/languages/en_IN';
 import AssetIconsPack from '../../assets/IconProvide';
+import { Context as AuthContext } from '../../context/AuthContext';
 
 const WelcomeScreen = ({ navigation }) => {
     const [yourName, setYourName] = useState('');
     const [valYourName, setValYourName] = useState(false);
+    const { signin } = useContext(AuthContext);
+
+    useEffect(() => {
+        const handleBackButton = () => {
+            BackHandler.exitApp();
+            return true;
+        };
+        BackHandler.addEventListener('hardwareBackPress', handleBackButton);
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackButton);
+        };
+    }, []);
 
     const onhandleWelcome = () => {
         if (yourName === '') {
@@ -26,8 +39,8 @@ const WelcomeScreen = ({ navigation }) => {
             });
             PushNotification.cancelAllLocalNotifications();
             AsyncStorage.setItem('userAuth', JSON.stringify(true));
+            signin({ userToken: 'tripChecklist@userToken' });
             AsyncStorage.setItem('userName', yourName);
-            navigation.navigate(ROUTE_KEYS.DASHBOARD_SCREEN);
         }
     };
 

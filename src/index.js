@@ -1,37 +1,24 @@
 import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react';
+import './common/translation/LangTranslationManager';
+import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import RootNavigation from './navigation/rootNavigation';
 import * as eva from '@eva-design/eva';
-import { ApplicationProvider, ThemeProvider } from '@ui-kitten/components';
-import SplashScreen from 'react-native-splash-screen';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
-import './common/translation/LangTranslationManager'
+import { Provider as AuthProvider } from './context/AuthContext';
 
 export default function App() {
-
-    const [auth, setAuth] = useState();
-
-    useEffect(() => {
-        async function fetchUserAuth() {
-            var value = await AsyncStorage.getItem('userAuth');
-            setAuth(value);
-        }
-
-        fetchUserAuth();
-
-        SplashScreen.hide();
-    }, [])
-
     return (
-        <Provider store={store}>
-            <ApplicationProvider {...eva} theme={eva.light}>
-                <SafeAreaProvider>
-                    <RootNavigation props={auth} />
-                </SafeAreaProvider>
-            </ApplicationProvider>
-        </Provider>
+        <AuthProvider>
+            <Provider store={store}>
+                <ApplicationProvider {...eva} theme={eva.light}>
+                    <SafeAreaProvider>
+                        <RootNavigation />
+                    </SafeAreaProvider>
+                </ApplicationProvider>
+            </Provider>
+        </AuthProvider>
     );
 }

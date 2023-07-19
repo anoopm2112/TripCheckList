@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking, Animated } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ import * as Animatable from 'react-native-animatable';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import Colors from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
-import { EraseModal, List } from '../../../components';
+import { CustomPopup, EraseModal, List } from '../../../components';
 import { languagesInitialValue } from '../../../common/translation/constant';
 import { toggleDarkMode } from '../settingsSlice';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
@@ -24,6 +24,7 @@ import AssetIconsPack from '../../../assets/IconProvide';
 import QuoteModal from '../../AboutUs/views/QuoteModal';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import PrivacyPolicyModal from './PrivacyPolicyModal';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function SettingsView(props) {
     const { i18n, t } = useTranslation();
@@ -35,11 +36,13 @@ export default function SettingsView(props) {
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     const [eraseModalVisible, setEraseModalVisible] = useState(false);
     const [quoteModalVisible, setQuoteModalVisible] = useState(false);
+    const [logoutAlertVisible, setLogoutAlertVisible] = useState(false);
     const [privacyPolicyModalVisible, setPrivacyPolicyModalVisible] = useState(false);
     const [tapCount, setTapCount] = useState(0);
     const isFocused = useIsFocused();
     const iconAnimation = useRef(new Animated.Value(0)).current;
     const iconLanguageAnimation = useRef(new Animated.Value(0)).current;
+    const { signout } = useContext(AuthContext);
 
     useEffect(() => {
         if (tapCount === 2) {
@@ -119,7 +122,7 @@ export default function SettingsView(props) {
             id: 7,
             name: 'Logout:logout',
             icon_name: 'location-exit',
-            onPress: () => perfomLogout()
+            onPress: () => setLogoutAlertVisible(true)
         }
     ];
 
@@ -128,7 +131,7 @@ export default function SettingsView(props) {
         AsyncStorage.removeItem('userName');
         dispatch(deleteAllSplitWise());
         dispatch(deleteAllChecklist());
-        props.navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN);
+        signout();
     }
 
     const renderItem = (item) => {
@@ -386,6 +389,11 @@ export default function SettingsView(props) {
                 visible={privacyPolicyModalVisible}
                 onClose={() => { setPrivacyPolicyModalVisible(false); }}
                 onConfirm={() => { }} />
+
+            <CustomPopup
+                title={'Common:logoutApp'} message={'Common:please_confirm'}
+                visible={logoutAlertVisible} onClose={() => setLogoutAlertVisible(false)}
+                onConfirm={() => perfomLogout()} />
 
         </View>
     );
