@@ -3,9 +3,9 @@ const AssetIconsPack = {
         // Images
         'on_board_image': require('../assets/onboardImage-01.jpeg'),
         'app_logo_side_image': require('../assets/side_logo_New.png'),
-        'checklist_item_no_image': require('../assets/clothes_twos.jpg'),
+        'checklist_item_no_image': require('../assets/clothes_new.jpg'),
         'checklist_clothes_image': require('../assets/clothes_new.jpg'),
-        'checklist_clothes_two_image': require('../assets/background_help.png'),
+        'checklist_clothes_two_image': require('../assets/clothes_new.jpg'),
 
         'Kerala_district_map_ml': require('../assets/kerala/light/kerala-map-with-districts-malayalam.png'),
         'Kerala_district_map_hi': require('../assets/kerala/light/kerala-map-with-districts-hindi.png'),
@@ -66,6 +66,7 @@ const AssetIconsPack = {
         'tick_complete_blue': require('../assets/lottie_files/72594-tick-mark.json'),
         'contact_us_mail': require('../assets/lottie_files/74348-new-mail'),
         'location_pin_lottie': require('../assets/lottie_files/115802-realistic-location-pin-pointer-on-global-earth.json'),
+        'network_error_lottie': require('../assets/lottie_files/animation_lkc8ug3k.json'),
 
         // Icons
         'report_icon': require('../assets/report.png'),

@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import { updateChecklist } from '../api/ChecklistApi';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -19,6 +20,7 @@ export default function ListParticularCheckItem(props) {
     const refRBSheet = useRef();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const netInfo = NetInfo.useNetInfo();
 
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
@@ -90,6 +92,7 @@ export default function ListParticularCheckItem(props) {
             refRBSheet.current.open()
         } else {
             const newCheckList = {
+                checklistId: item._id,
                 id: item.id,
                 creationDate: item.creationDate,
                 title: item.title,
@@ -143,7 +146,7 @@ export default function ListParticularCheckItem(props) {
                         <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={styles.modalOpenStyle}>
                             <Ionicons name="close" size={convertHeight(30)} color={COLORS.black} />
                         </TouchableOpacity>
-                        <Image style={{ height: '100%', width: '100%' }} resizeMode='stretch' source={{ uri: modalmageItem }} />
+                        <Image style={{ height: '100%', width: '100%' }} resizeMode='stretch' source={{ uri: netInfo.isConnected ? `data:image/jpeg;base64,${modalmageItem}` : modalmageItem }} />
                     </View>
                 </View>
             </Modal>

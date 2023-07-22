@@ -80,7 +80,26 @@ export const darkModeColor = (isDarkMode) => {
     const backgroundFlipColor = isDarkMode ? '#2E2E2E' : Colors.primary;
     const textFlipColor = isDarkMode ? Colors.primary : '#446073';
     const backgroundLiteColor = isDarkMode ? '#787774' : Colors.primary;
-    return { 
+    return {
         backgroundColor, textColor, textBrownColor, backgroundFlipColor, textFlipColor, backgroundLiteColor
-    }
+    };
 };
+
+function blobToBase64(blob) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = () => reject(new Error('Error reading the blob.'));
+        reader.readAsDataURL(blob);
+    });
+}
+
+export const getBase64FromImageURI = (imageURI) => {
+    return new Promise((resolve, reject) => {
+        fetch(imageURI)
+            .then(response => response.blob())
+            .then(blob => blobToBase64(blob))
+            .then(base64String => resolve(base64String))
+            .catch(error => reject(error));
+    });
+}

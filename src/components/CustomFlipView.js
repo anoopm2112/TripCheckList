@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, Animated, Image, TouchableOpacity } from 'react-native';
 import { useSelector } from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
@@ -9,6 +10,7 @@ import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 export default FlipCard = (props) => {
     const { item } = props;
+    const netInfo = NetInfo.useNetInfo();
     const [isFlipped, setIsFlipped] = useState(false);
     const animatedValue = useRef(new Animated.Value(0)).current;
 
@@ -122,7 +124,7 @@ export default FlipCard = (props) => {
                     {!item.image ?
                         <Lottie source={AssetIconsPack.icons.no_image_icon} autoPlay loop style={{ height: convertHeight(120) }} />
                         :
-                        <Image style={Styles.thumbnail} source={{ uri: item.image }} />
+                        <Image style={Styles.thumbnail} source={{ uri: netInfo.isConnected ? `data:image/jpeg;base64,${item.image}` : item.image }} />
                     }
 
                 </Animated.View>

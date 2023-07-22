@@ -3,3 +3,4 @@ export const ADD_NEW_CHECKLIST_LIST = 'checklists/AddNewChecklistList';
 export const UPDATE_CHECKLIST_LIST = 'checklists/UpdateChecklistList';
 export const DELETE_CHECKLIST_BY_ID = 'checklists/deleteChecklistById';
 export const DELETE_ALL_CHECKLIST_LIST = 'checklists/deleteAllChecklistList';
+export const GET_ALL_CHECKLIST_LIST_HISTORY = 'checklists/getAllChecklistHistory';

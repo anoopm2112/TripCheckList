@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { FLOATING_ACTION } from '../../../common/Itemdata';
@@ -16,28 +17,48 @@ import { deleteAllChecklist, deleteChecklistById, fetchChecklists } from '../api
 import { selectAllChecklists } from '../checklistSlice';
 import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List } from '../../../components';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import SyncPopUp from './SyncPopUp';
+import { queryAllCheckList } from '../../../database/allSchemas';
 
 export default function CheckItemListView(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const netInfo = NetInfo.useNetInfo();
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     const { checklists, status, error } = useSelector(selectAllChecklists);
 
-    const [alertVisible, setAlertVisible] = useState(false)
+    const [alertVisible, setAlertVisible] = useState(false);
+    const [openSyncPopUp, setOpenSyncPopUp] = useState(false);
 
     useEffect(() => {
         if (isFocused) {
             dispatch(fetchChecklists());
         }
-    }, [isFocused, dispatch]);
+        const syncOperation = async () => {
+            const response = await queryAllCheckList();
+            const responseDataLength = JSON.parse(JSON.stringify(response))?.length;
+            if (netInfo.isConnected && responseDataLength > 0) {
+                setOpenSyncPopUp(true);
+            } else {
+                setOpenSyncPopUp(false);
+            }
+        }
+        if (netInfo.isConnected) {
+            syncOperation();
+        }
+    }, [isFocused, netInfo, dispatch]);
 
-    const removeAllItem = async () => { dispatch(deleteAllChecklist()) }
-    const removeParticularItem = async (id) => {
-        dispatch(deleteChecklistById({ id: id }))
+    const removeAllItem = async () => { 
+        dispatch(deleteAllChecklist());
+        dispatch(fetchChecklists());
+    }
+    const removeParticularItem = async ({id, item}) => {
+        dispatch(fetchChecklists());
+        dispatch(deleteChecklistById({ id: id, checklistId: item._id }))
     }
 
     const renderItem = ({ item }) => {
@@ -53,7 +74,7 @@ export default function CheckItemListView(props) {
         return (
             <MainItemListCardView
                 item={item}
-                removeParticularItem={removeParticularItem}
+                removeParticularItem={({id, item}) => removeParticularItem({id, item})}
                 navigationToNext={navigationToNext}
                 navigationToEdit={navigationToEdit}
             />
@@ -82,6 +103,9 @@ export default function CheckItemListView(props) {
             alignItems: 'center',
             flex: 1,
             backgroundColor: '#FFFFFF'
+        },
+        scrollViewContent: {
+            paddingBottom: convertHeight(80), // Space for the gap at the end of the scrollable content
         }
     });
 
@@ -94,17 +118,24 @@ export default function CheckItemListView(props) {
     }
 
     if (status === 'failed') {
-        return <Text style={{ color: 'black' }}>{error}</Text>;
+        return (
+            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+                <Text style={{ color: 'black' }}>{error}</Text>
+                <TouchableOpacity style={{ paddingVertical: 5 }} onPress={() => dispatch(fetchChecklists())}>
+                    <Text style={{ color: 'black' }}>Please click here to reload</Text>
+                </TouchableOpacity>
+            </View>
+        ) 
     }
 
     return (
         <>
             <View style={{ flex: 1, backgroundColor: backgroundColor }}>
                 <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-                {checklists.length === 0 ?
+                {checklists?.length === 0 ?
                     <EmptyList lottieSrc={AssetIconsPack.icons.checklist_empty_icon} shownText={'checklist:info'} />
                     :
-                    <List style={{ backgroundColor: backgroundColor }} data={checklists} renderItem={renderItem} />}
+                    <List contentContainerStyle={styles.scrollViewContent} style={{ backgroundColor: backgroundColor }} data={checklists} renderItem={renderItem} />}
             </View>
 
             <FloatingAction
@@ -136,7 +167,12 @@ export default function CheckItemListView(props) {
                 visible={alertVisible} onClose={() => setAlertVisible(false)}
                 onConfirm={() => removeAllItem()} />
 
-            {checklists.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
+            <SyncPopUp
+                visible={openSyncPopUp}
+                onClose={() => { setOpenSyncPopUp(false); }}
+                onConfirm={() => { dispatch(fetchChecklists()) }} />
+
+            {checklists?.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
                 <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{t('Splitwise:remove_all_data')}</Text>
             </TouchableOpacity>}
         </>

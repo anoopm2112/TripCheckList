@@ -5,6 +5,7 @@ import PushNotification from "react-native-push-notification";
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTranslation } from "react-i18next";
+import NetInfo from '@react-native-community/netinfo';
 // Other files
 import { dataItem, dataItemML, dataItemHI, dataItemTA } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -13,7 +14,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
-import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import { darkModeColor, getBase64FromImageURI } from '../../../common/utils/arrayObjectUtils';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
@@ -21,6 +22,7 @@ export default function CheckListAddView(props) {
 
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
+    const netInfo = NetInfo.useNetInfo();
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
@@ -29,6 +31,7 @@ export default function CheckListAddView(props) {
     const [counter, setCounter] = useState(1);
     const [localArrayData, setLocalArrayData] = useState(item ? JSON.parse(JSON.stringify(item.checkListItems)) : []);
     const [itemImage, setItemImage] = useState('');
+    const [base64ItemImage, setBase64ItemImage] = useState('');
 
     const [toolTipVisible, setToolTipVisible] = useState(false);
     const [value, setValue] = useState('');
@@ -52,7 +55,7 @@ export default function CheckListAddView(props) {
             id: Math.floor(Date.now() / 1000),
             item: selectedIndex == 4 ? value : displayValue,
             counter: counter,
-            image: itemImage,
+            image: netInfo.isConnected ? base64ItemImage : itemImage,
             checked: false
         };
         localArrayData.push(checkListObj);
@@ -68,6 +71,7 @@ export default function CheckListAddView(props) {
         if (editMode) {
             console.log("edit");
             const newCheckList = {
+                checklistId: item._id,
                 id: item.id,
                 creationDate: item.creationDate,
                 title: item.title,
@@ -89,13 +93,13 @@ export default function CheckListAddView(props) {
             setLocalArrayData([]);
 
             // Push Notification Scheduling
-            PushNotification.localNotificationSchedule({
-                channelId: "test-channel",
-                title: "Reminder!!!",
-                message: `Time to Return. Pack you bag, Its ${moment.utc(ReminderTime, "YYYY-MM-DD HH").local().format('DD-MM-YYYY h:mm A')}. Hurry Up!`,
-                date: new Date(ReminderTime),
-                allowWhileIdle: true,
-            });
+            // PushNotification.localNotificationSchedule({
+            //     channelId: "test-channel",
+            //     title: "Reminder!!!",
+            //     message: `Time to Return. Pack you bag, Its ${moment.utc(ReminderTime, "YYYY-MM-DD HH").local().format('DD-MM-YYYY h:mm A')}. Hurry Up!`,
+            //     date: new Date(ReminderTime),
+            //     allowWhileIdle: true,
+            // });
         }
 
         navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST);
@@ -128,6 +132,9 @@ export default function CheckListAddView(props) {
 
     let options = {
         // saveToPhotos: true,
+        maxWidth: 800,
+        maxHeight: 800,
+        quality: 0.8,
         mediaType: 'photo'
     };
 
@@ -138,6 +145,11 @@ export default function CheckListAddView(props) {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
             const result = await launchCamera(options);
             setItemImage(result.assets[0].uri);
+            getBase64FromImageURI(result.assets[0].uri).then(base64String => {
+                setBase64ItemImage(base64String);
+            }).catch(error => {
+                console.error(error);
+            });
         }
         setToolTipVisible(true);
     };
@@ -149,7 +161,7 @@ export default function CheckListAddView(props) {
     };
 
     const renderToggleButton = () => (
-        <Button accessoryRight={<MaterialIcons name="add-task" size={convertHeight(16)} color={COLORS.primary} />} 
+        <Button accessoryRight={<MaterialIcons name="add-task" size={convertHeight(16)} color={COLORS.primary} />}
             style={styles.addTask}
             onPress={() => {
                 setToolTipVisible(false);
@@ -196,9 +208,9 @@ export default function CheckListAddView(props) {
                         placeholder='Other Item'
                         value={value}
                         textStyle={{ color: textColor }}
-                        style={{ 
+                        style={{
                             paddingTop: convertHeight(10),
-                            backgroundColor: isDarkMode ? '#333333' : '#f5f5f5' 
+                            backgroundColor: isDarkMode ? '#333333' : '#f5f5f5'
                         }}
                         onChangeText={nextValue => {
                             setValue(nextValue);

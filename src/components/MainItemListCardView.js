@@ -116,7 +116,7 @@ export default function MainItemListCardView(props) {
             <CustomPopup
                 title={'Common:deleteItem'} message={'Common:please_confirm'}
                 visible={alertVisible} onClose={() => setAlertVisible(false)}
-                onConfirm={() => removeParticularItem(item.id)} />
+                onConfirm={() => removeParticularItem({id: item.id, item: item})} />
         </>
     )
 }

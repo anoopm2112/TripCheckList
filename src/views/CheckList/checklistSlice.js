@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import {
-    addNewChecklists, deleteAllChecklist, deleteChecklistById, fetchChecklists, updateChecklist
+    addNewChecklists, deleteAllChecklist, deleteChecklistById, fetchChecklists, getAllChecklistHistory, updateChecklist
 } from "./api/ChecklistApi";
 
 const initialState = {
@@ -45,6 +45,18 @@ const checklistsSlice = createSlice({
             // Delete All Splitwises
             .addCase(deleteAllChecklist.fulfilled, (state, action) => {
                 state.checklists = action.payload;
+            })
+            // Get Checklist History
+            .addCase(getAllChecklistHistory.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(getAllChecklistHistory.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.checklists = action.payload
+            })
+            .addCase(getAllChecklistHistory.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
             })
     }
 })
