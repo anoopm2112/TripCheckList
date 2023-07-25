@@ -13,12 +13,10 @@ import EN_IN from '../../../common/languages/en_IN';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { registerNewUserIntro } from '../api/IntroScreenAPI';
-import { selectAllIntro } from '../introSlice';
 
 const WelcomeScreen = () => {
     const { signin } = useContext(AuthContext);
     const dispatch = useDispatch();
-    const { status } = useSelector(selectAllIntro);
 
     useEffect(() => {
         GoogleSignin.configure({
