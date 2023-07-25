@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, PermissionsAndroid, TouchableOpacity } from 'react-native';
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useContext } from 'react';
 import { launchCamera } from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
 import moment from 'moment';
@@ -15,6 +15,7 @@ import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Toolt
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
 import { darkModeColor, getBase64FromImageURI } from '../../../common/utils/arrayObjectUtils';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function CheckListAddView(props) {
     const { navigation } = props;
@@ -23,6 +24,7 @@ export default function CheckListAddView(props) {
     const dispatch = useDispatch();
     const { t, i18n } = useTranslation();
     const netInfo = NetInfo.useNetInfo();
+    const { state } = useContext(AuthContext);
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
@@ -87,19 +89,20 @@ export default function CheckListAddView(props) {
                 title: textData,
                 isCompleted: false,
                 ReminderTime: ReminderTime,
-                checkListItems: localArrayData
+                checkListItems: localArrayData,
+                userId: state?.userToken
             };
             dispatch(addNewChecklists(newCheckList));
             setLocalArrayData([]);
 
             // Push Notification Scheduling
-            // PushNotification.localNotificationSchedule({
-            //     channelId: "test-channel",
-            //     title: "Reminder!!!",
-            //     message: `Time to Return. Pack you bag, Its ${moment.utc(ReminderTime, "YYYY-MM-DD HH").local().format('DD-MM-YYYY h:mm A')}. Hurry Up!`,
-            //     date: new Date(ReminderTime),
-            //     allowWhileIdle: true,
-            // });
+            PushNotification.localNotificationSchedule({
+                channelId: "test-channel",
+                title: "Reminder!!!",
+                message: `Time to Return. Pack you bag, Its ${moment.utc(ReminderTime, "YYYY-MM-DD HH").local().format('DD-MM-YYYY h:mm A')}. Hurry Up!`,
+                date: new Date(ReminderTime),
+                allowWhileIdle: true,
+            });
         }
 
         navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST);

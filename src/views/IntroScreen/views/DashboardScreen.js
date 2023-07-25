@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { TouchableOpacity, Text, StyleSheet, Platform, View, Image, StatusBar, ImageBackground } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useIsFocused } from '@react-navigation/native';
@@ -6,20 +6,21 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 // Custom Icons
-import AssetIconsPack from '../../assets/IconProvide';
-import Colors from '../../common/Colors';
-import { convertHeight, convertWidth } from '../../common/utils/dimentionUtils';
-import { ROUTE_KEYS } from '../../navigation/constants';
-import { darkModeColor } from '../../common/utils/arrayObjectUtils';
-import TouristPlaces from '../../common/data/TouristPlaces.json';
-import { AnimatedText } from '../../components';
+import AssetIconsPack from '../../../assets/IconProvide';
+import Colors from '../../../common/Colors';
+import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
+import { ROUTE_KEYS } from '../../../navigation/constants';
+import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import TouristPlaces from '../../../common/data/TouristPlaces.json';
+import { AnimatedText } from '../../../components';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function DashboardScreen(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const { t, i18n } = useTranslation();
+    const { state } = useContext(AuthContext);
     const [lottieAnimation, setLottieAnimation] = useState(true);
-    const [userName, setUserName] = useState('');
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
@@ -27,13 +28,6 @@ export default function DashboardScreen(props) {
         if (isFocused) {
             setLottieAnimation(false);
         }
-
-        async function fetchTouristPlace() {
-            var value = await AsyncStorage.getItem('userName');
-            setUserName(value);
-        }
-
-        fetchTouristPlace();
     }, [isFocused, lottieAnimation]);
 
     const onHandlingTouristSpot = async () => {
@@ -69,7 +63,7 @@ export default function DashboardScreen(props) {
         topCard: {
             width: '100%',
             height: '40%',
-            backgroundColor: isDarkMode ? '#000' : Colors.tertiary,
+            backgroundColor: isDarkMode ? '#000' : Colors.appIntro,
             position: 'absolute'
         },
         topCardSubContainer: {
@@ -101,13 +95,13 @@ export default function DashboardScreen(props) {
 
     return (
         <View style={{ backgroundColor: isDarkMode ? '#565051' : '#e5e5e5', flex: 1 }}>
-            <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.tertiary} barStyle='light-content' />
+            <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.appIntro} barStyle='light-content' />
             <View style={styles.topCard}>
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }} 
                     source={AssetIconsPack.icons.checklist_clothes_image}>
                 <View style={styles.topCardSubContainer}>
                     <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: '#ffffff00' }} />
-                    <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {userName}!</Text>
+                    <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {state?.userName}!</Text>
                     {/* <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text> */}
                     <AnimatedText style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]} label={'Dashboard:subtitle'} />
                 </View>

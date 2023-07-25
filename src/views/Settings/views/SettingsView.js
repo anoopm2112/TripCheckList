@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useContext } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Image, Share, Linking, Animated, ScrollView } from 'react-native';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useTranslation } from "react-i18next";
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,6 +10,7 @@ import { useIsFocused } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import DeviceInfo from 'react-native-device-info';
 import * as Animatable from 'react-native-animatable';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import Colors from '../../../common/Colors';
@@ -42,7 +43,7 @@ export default function SettingsView(props) {
     const isFocused = useIsFocused();
     const iconAnimation = useRef(new Animated.Value(0)).current;
     const iconLanguageAnimation = useRef(new Animated.Value(0)).current;
-    const { signout } = useContext(AuthContext);
+    const { signout, state } = useContext(AuthContext);
 
     useEffect(() => {
         if (tapCount === 2) {
@@ -126,11 +127,10 @@ export default function SettingsView(props) {
         }
     ];
 
-    const perfomLogout = () => {
+    const perfomLogout = async () => {
         AsyncStorage.removeItem('userAuth');
         AsyncStorage.removeItem('userName');
-        dispatch(deleteAllSplitWise());
-        dispatch(deleteAllChecklist());
+        await GoogleSignin.signOut();
         signout();
     }
 
@@ -269,7 +269,10 @@ export default function SettingsView(props) {
                                 :
                                 <MaterialCommunityIcons name={item.icon_name} size={24} color={textColor} />
                             }
-                            <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5, width: '70%' }}>{t(item.name)}</Text>
+                            <View>
+                                <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5 }}>{t(item.name)}</Text>   
+                                {item.id === 7 && <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontStyle: 'italic', fontWeight: '400', fontSize: convertHeight(9) }}>{state?.userToken}</Text>}
+                            </View>
                         </View>
                         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                             {item.id === 1 && 

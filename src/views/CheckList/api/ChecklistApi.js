@@ -17,14 +17,14 @@ export async function checkNetworkConnectivity() {
     return isConnected;
 }
 
-export const fetchChecklists = createAsyncThunk(FETCH_CHECKLIST_LIST, async () => {
+export const fetchChecklists = createAsyncThunk(FETCH_CHECKLIST_LIST, async (userId) => {
     const isConnected = await checkNetworkConnectivity();
 
     if (!isConnected) {
         const response = await queryAllCheckList()
         return JSON.parse(JSON.stringify(response));
     } else {
-        const apiResponse = await axios.get(`${apiUrl}${'/checklists'}`);
+        const apiResponse = await axios.get(`${apiUrl}${'/checklists'}/${userId?.userId}`);
         return apiResponse.data.checklist
     } 
 });

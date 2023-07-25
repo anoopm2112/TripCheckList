@@ -167,7 +167,7 @@ export default function CostPlanner() {
             textAlign: 'left',
             fontWeight: '800',
             fontSize: convertHeight(11),
-            textDecorationLine: 'underline'
+            // textDecorationLine: 'underline'
         },
         info_text: {
             color: isDarkMode ? '#A9A9A9' : '#363836',
@@ -329,9 +329,9 @@ export default function CostPlanner() {
                     <Text style={styles.info_text}>{'• '}{t('CostPlanner:info_4')}</Text>
                     <Text style={[styles.info_text, {
                         // fontStyle: 'italic', 
-                        fontSize: convertHeight(9), color: '#686968',
+                        fontSize: convertHeight(9), color: 'red',
                         fontWeight: '400'
-                    }]}>{t('CostPlanner:info_5')}</Text>
+                    }]}><Text style={{ color: 'red' }}>{'* '}</Text>{t('CostPlanner:info_5')}</Text>
                 </View>
 
 

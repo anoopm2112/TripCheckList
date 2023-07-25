@@ -1,6 +1,6 @@
-import WelcomeScreen from './IntroScreen/WelcomeScreen';
-import DashboardScreen from './IntroScreen/DashboardScreen';
-import SplashScreen from './IntroScreen/SplashScreen';
+import WelcomeScreen from './IntroScreen/views/WelcomeScreen';
+import DashboardScreen from './IntroScreen/views/DashboardScreen';
+import SplashScreen from './IntroScreen/views/SplashScreen';
 
 import CheckItemListView from './CheckList/views/CheckItemListView';
 import CheckListAddView from './CheckList/views/CheckListAddView';

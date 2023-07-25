@@ -8,5 +8,6 @@ export default COLORS = {
     paleGreen: '#83E14A',
     green: 'green',
     lightRed: '#f55f4e',
-    lightGreen: '#43a159'
+    lightGreen: '#43a159',
+    appIntro: '#56c499'
 };

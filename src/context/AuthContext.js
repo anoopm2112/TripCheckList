@@ -3,10 +3,11 @@ import createDataContext from './createDataContext';
 const authReducer = (state, action) => {
     switch (action.type) {
         case 'signout':
-            return { userToken: '' };
+            return { userToken: '', userName: '' };
         case 'signin':
             return {
                 userToken: action.payload.userToken,
+                userName: action.payload.userName
             };
         default:
             return state;
@@ -14,10 +15,10 @@ const authReducer = (state, action) => {
 };
 
 const signin = dispatch => {
-    return ({ userToken }) => {
+    return ({ userToken, userName }) => {
         dispatch({
             type: 'signin',
-            payload: { userToken }
+            payload: { userToken, userName }
         });
     };
 };
@@ -28,4 +29,4 @@ const signout = dispatch => {
     };
 };
 
-export const { Provider, Context } = createDataContext(authReducer, { signin, signout }, { userToken: '' });
+export const { Provider, Context } = createDataContext(authReducer, { signin, signout }, { userToken: '', userName: '' });

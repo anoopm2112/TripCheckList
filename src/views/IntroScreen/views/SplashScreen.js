@@ -3,8 +3,8 @@ import { View, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import SplashScreen from 'react-native-splash-screen';
 // Custom Imports
-import { Context as AuthContext } from '../../context/AuthContext';
-import { ROUTE_KEYS } from '../../navigation/constants';
+import { Context as AuthContext } from '../../../context/AuthContext';
+import { ROUTE_KEYS } from '../../../navigation/constants';
 
 export default function SplashDataScreen(props) {
     const { navigation } = props;
@@ -14,7 +14,7 @@ export default function SplashDataScreen(props) {
         async function fetchUserAuth() {
             var value = await AsyncStorage.getItem('userAuth');
             if (value !== null) {
-                signin({ userToken: 'tripChecklist@userToken' });
+                signin({ userToken: value?.userToken });
             } else {
                 navigation.navigate(ROUTE_KEYS.WELCOME_SCREEN);
             }

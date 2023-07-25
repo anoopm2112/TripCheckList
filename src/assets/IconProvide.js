@@ -6,6 +6,7 @@ const AssetIconsPack = {
         'checklist_item_no_image': require('../assets/clothes_new.jpg'),
         'checklist_clothes_image': require('../assets/clothes_new.jpg'),
         'checklist_clothes_two_image': require('../assets/clothes_new.jpg'),
+        'google_icon': require('../assets/google.png'),
 
         'Kerala_district_map_ml': require('../assets/kerala/light/kerala-map-with-districts-malayalam.png'),
         'Kerala_district_map_hi': require('../assets/kerala/light/kerala-map-with-districts-hindi.png'),

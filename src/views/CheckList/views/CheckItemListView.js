@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, StatusBar, Modal } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { FloatingAction } from "react-native-floating-action";
@@ -19,6 +19,7 @@ import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List } from '.
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import SyncPopUp from './SyncPopUp';
 import { queryAllCheckList } from '../../../database/allSchemas';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function CheckItemListView(props) {
     const { navigation } = props;
@@ -26,6 +27,7 @@ export default function CheckItemListView(props) {
     const dispatch = useDispatch();
     const { t } = useTranslation();
     const netInfo = NetInfo.useNetInfo();
+    const { state } = useContext(AuthContext);
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
@@ -36,7 +38,7 @@ export default function CheckItemListView(props) {
 
     useEffect(() => {
         if (isFocused) {
-            dispatch(fetchChecklists());
+            dispatch(fetchChecklists({ userId: state?.userToken }));
         }
         const syncOperation = async () => {
             const response = await queryAllCheckList();
@@ -54,10 +56,10 @@ export default function CheckItemListView(props) {
 
     const removeAllItem = async () => { 
         dispatch(deleteAllChecklist());
-        dispatch(fetchChecklists());
+        dispatch(fetchChecklists({ userId: state?.userToken }));
     }
     const removeParticularItem = async ({id, item}) => {
-        dispatch(fetchChecklists());
+        dispatch(fetchChecklists({ userId: state?.userToken }));
         dispatch(deleteChecklistById({ id: id, checklistId: item._id }))
     }
 
@@ -121,7 +123,7 @@ export default function CheckItemListView(props) {
         return (
             <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: 'black' }}>{error}</Text>
-                <TouchableOpacity style={{ paddingVertical: 5 }} onPress={() => dispatch(fetchChecklists())}>
+                <TouchableOpacity style={{ paddingVertical: 5 }} onPress={() => dispatch(fetchChecklists({ userId: state?.userToken }))}>
                     <Text style={{ color: 'black' }}>Please click here to reload</Text>
                 </TouchableOpacity>
             </View>
@@ -170,7 +172,7 @@ export default function CheckItemListView(props) {
             <SyncPopUp
                 visible={openSyncPopUp}
                 onClose={() => { setOpenSyncPopUp(false); }}
-                onConfirm={() => { dispatch(fetchChecklists()) }} />
+                onConfirm={() => { dispatch(fetchChecklists({ userId: state?.userToken })) }} />
 
             {checklists?.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
                 <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{t('Splitwise:remove_all_data')}</Text>
