@@ -9,6 +9,7 @@ import Geolocation from 'react-native-geolocation-service';
 import { useSelector } from 'react-redux';
 import SimpleLineIcons from 'react-native-vector-icons/MaterialIcons';
 import * as Animatable from 'react-native-animatable';
+import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import TouristPlaces from '../../../common/data/TouristPlaces.json';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -18,6 +19,7 @@ import { locationPermissionCheck, locationPermissionRequest } from '../../../com
 import LocationAlertModal from '../../../components/LocationAlertModal';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import UpDownIconAnimation from '../../../components/UpAndDownAnimation';
+import { CustomSnackbar } from '../../../components';
 
 const transition = (
     <Transition.Together>
@@ -36,10 +38,12 @@ export default function TouristDistrict(props) {
     const [accessLocation, setAccessLocation] = useState(true);
     const [permissionStatus, setPermissionStatus] = useState('');
     const [locationAlertVisible, setLocationAlertVisible] = useState(false);
+    const [snackbarVisible, setSnackbarVisible] = useState(false);
 
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
     const ref = useRef();
+    const netInfo = NetInfo.useNetInfo();
     const { i18n, t } = useTranslation();
 
     function selectItemBgColor(index) {
@@ -169,6 +173,14 @@ export default function TouristDistrict(props) {
         }
     });
 
+    const showSnackbar = () => {
+        setSnackbarVisible(true);
+    };
+
+    const hideSnackbar = (showAgain) => {
+        setSnackbarVisible(showAgain);
+    };
+
     return (
         <Transitioning.View
             ref={ref}
@@ -176,19 +188,34 @@ export default function TouristDistrict(props) {
             style={styles.container}>
             <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <View style={styles.headerContainer}>
-                <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.ALL_PLACE_LIST, { districtName: districtName })}>
+                <TouchableOpacity
+                    onPress={() => {
+                        if(netInfo?.isConnected) {
+                            navigation.navigate(ROUTE_KEYS.ALL_PLACE_LIST, { districtName: districtName });
+                        } else {
+                            onPress={showSnackbar}
+                        }
+                    }}
+                >
                     <Ionicons name="list" size={30} color={textColor} />
                 </TouchableOpacity>
                 <Text style={styles.districtHeader}>{t(`Districts:${districtName}`)}</Text>
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.CREATE_NEW_PLACE, { districtName: districtName })}>
+                    <TouchableOpacity 
+                        onPress={() => {
+                            if(netInfo?.isConnected) {
+                                navigation.navigate(ROUTE_KEYS.CREATE_NEW_PLACE, { districtName: districtName });
+                            } else {
+                                onPress={showSnackbar}
+                            }
+                        }}>
                         <Ionicons name="ios-add-circle-outline" size={30} color={textColor} />
                     </TouchableOpacity>
                 </View>
             </View>
 
             {TouristPlaces[districtName].map(({ name, name_ML, name_HI, name_TA, note, note_ML, note_TA, note_HI, location }, index) => {
-                
+
                 const onPressArrow = () => {
                     ref.current.animateNextTransition();
                     setCurrentIndex(index === currentIndex ? null : index);
@@ -244,6 +271,7 @@ export default function TouristDistrict(props) {
                 );
             })}
 
+            <CustomSnackbar visible={snackbarVisible} message={'Common:no_internet'} onHideSnackbar={hideSnackbar} />
             <LocationAlertModal
                 title={'Touristplace:grant_permissions'}
                 message={'Touristplace:allow_blocked_permissions'}

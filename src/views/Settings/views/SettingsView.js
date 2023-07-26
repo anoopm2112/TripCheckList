@@ -129,7 +129,6 @@ export default function SettingsView(props) {
 
     const perfomLogout = async () => {
         AsyncStorage.removeItem('userAuth');
-        AsyncStorage.removeItem('userName');
         await GoogleSignin.signOut();
         signout();
     }

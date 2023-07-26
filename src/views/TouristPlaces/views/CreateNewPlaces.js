@@ -1,14 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Linking } from 'react-native';
 import { Input } from '@ui-kitten/components';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { useTranslation } from "react-i18next";
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Octicons from 'react-native-vector-icons/Octicons';
 import * as Animatable from 'react-native-animatable';
 import Lottie from 'lottie-react-native';
 import { RESULTS } from 'react-native-permissions';
@@ -18,16 +16,19 @@ import Colors from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import TouristLocationMapModal from './TouristLocationMapModal';
 import { locationPermissionCheck, locationPermissionRequest } from '../../../common/utils/permissionUtils';
 import LocationAlertModal from '../../../components/LocationAlertModal';
+import { createPlaces, updatePlaces } from '../api/TouristPlacesApi';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function CreateNewPlaces(props) {
     const { navigation } = props;
     const { districtName, isEdit, itemData } = props.route.params;
     const { t } = useTranslation();
+    const dispatch = useDispatch();
+    const { state } = useContext(AuthContext);
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textBrownColor } = darkModeColor(isDarkMode);
 
@@ -39,33 +40,18 @@ export default function CreateNewPlaces(props) {
     const [locationAlertVisible, setLocationAlertVisible] = useState(false);
     const [currentCoords, setCurrentCoords] = useState('');
     const [coordinateValue, setCoordinateValue] = useState('');
-    const [showAllLangInput, setShowAllLangInput] = useState(false);
-    const [userName, setUserName] = useState('');
 
     const validationSchema = yup.object().shape({
         place_name: yup.string().required('Touristplace:enter_place_name'),
         place_note: yup.string().required('Touristplace:enter_place_note'),
     });
 
-    useEffect(() => {
-        async function fetchTouristPlace() {
-            var value = await AsyncStorage.getItem('userName');
-            setUserName(value);
-        }
-
-        fetchTouristPlace();
-    }, []);
-
     const handleSubmit = async (values, { resetForm }) => {
-        var touristValue = await AsyncStorage.getItem('TouristPlaceData');
-        const district_array = JSON.parse(touristValue);
-
         // Define the new name and note
         let place_array = {
             name: values.place_name,
             note: values.place_note,
             location: coordinateValue ? coordinateValue : itemData.location,
-            createdBy: userName,
             name_TA: "",
             name_ML: "",
             name_HI: "",
@@ -75,17 +61,12 @@ export default function CreateNewPlaces(props) {
         };
 
         if (isEdit) {
-            district_array[districtName].find(entry => entry.name === values.place_name).note = values.place_note;
-            AsyncStorage.setItem('TouristPlaceData', JSON.stringify(district_array));
+            place_array.id = itemData.placeId;
+            dispatch(updatePlaces(place_array));
         } else {
-            // Check if the district exists in the touristValue
-            if (districtName in district_array) { // Push the new destination object to the existing array
-                district_array[districtName].push(place_array);
-            } else { // Create a new array for the district and add the new destination object
-                district_array[districtName] = [place_array];
-            }
-
-            AsyncStorage.setItem('TouristPlaceData', JSON.stringify(district_array));
+            place_array.createdBy = state?.userName;
+            place_array.district = districtName;
+            dispatch(createPlaces(place_array));
         }
         navigation.navigate(ROUTE_KEYS.TOURIST_DISTRICT, { districtName: districtName });
     };

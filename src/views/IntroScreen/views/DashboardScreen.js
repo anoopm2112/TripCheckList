@@ -19,7 +19,7 @@ export default function DashboardScreen(props) {
     const { navigation } = props;
     const isFocused = useIsFocused();
     const { t, i18n } = useTranslation();
-    const { state } = useContext(AuthContext);
+    const { state, signin } = useContext(AuthContext);
     const [lottieAnimation, setLottieAnimation] = useState(true);
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
@@ -28,15 +28,12 @@ export default function DashboardScreen(props) {
         if (isFocused) {
             setLottieAnimation(false);
         }
-    }, [isFocused, lottieAnimation]);
-
-    const onHandlingTouristSpot = async () => {
-        var touristValue = await AsyncStorage.getItem('TouristPlaceData');
-        if (touristValue === null) {
-            AsyncStorage.setItem('TouristPlaceData', JSON.stringify(TouristPlaces));
+        async function fetchUserItem() {
+            var value = await AsyncStorage.getItem('userAuth');
+            signin(JSON.parse(value));
         }
-        navigation.navigate(ROUTE_KEYS.TOURIST_STATES)
-    }
+        fetchUserItem();
+    }, [isFocused, lottieAnimation]);
 
     const styles = StyleSheet.create({
         button: {
@@ -115,7 +112,7 @@ export default function DashboardScreen(props) {
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon}
-                    cardName={t('Dashboard:actions:tourist_places')} onPress={() => onHandlingTouristSpot()} />
+                    cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon}
                     cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>

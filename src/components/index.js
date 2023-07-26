@@ -17,11 +17,12 @@ import CustomFlipView from './CustomFlipView';
 import PaidByModal from './PaidByModal';
 import CustomSelect from './CustomSelect';
 import EraseModal from './EraseModal';
+import CustomSnackbar from './CustomSnackBar';
 
 export {
     AppLoader, CustomPopup, EmptyList, Header, InvoiceModal, MainItemListCardView,
     MainItemSplitWiseListCard, NoteModal, SubItemListCardView, SubItemSplitWise,
-    AnimatedText, CustomFlipView, PaidByModal, CustomSelect, EraseModal,
+    AnimatedText, CustomFlipView, PaidByModal, CustomSelect, EraseModal, CustomSnackbar,
     // UI KITTEN COMPONENTS
     List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 };
