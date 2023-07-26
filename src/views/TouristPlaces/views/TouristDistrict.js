@@ -193,7 +193,7 @@ export default function TouristDistrict(props) {
                         if(netInfo?.isConnected) {
                             navigation.navigate(ROUTE_KEYS.ALL_PLACE_LIST, { districtName: districtName });
                         } else {
-                            onPress={showSnackbar}
+                            showSnackbar()
                         }
                     }}
                 >
@@ -206,7 +206,7 @@ export default function TouristDistrict(props) {
                             if(netInfo?.isConnected) {
                                 navigation.navigate(ROUTE_KEYS.CREATE_NEW_PLACE, { districtName: districtName });
                             } else {
-                                onPress={showSnackbar}
+                                showSnackbar()
                             }
                         }}>
                         <Ionicons name="ios-add-circle-outline" size={30} color={textColor} />
