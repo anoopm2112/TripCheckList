@@ -46,7 +46,7 @@ export default function MainItemSplitWiseListCard(props) {
 
     useEffect(() => {
         const GetParticularSplitWiseNoteList = async () => {
-            dispatch(fetchNotes({ id: item.id }));
+            dispatch(fetchNotes({ id: item.id, noteId: item._id }));
         }
         GetParticularSplitWiseNoteList(item.id);
     }, [isFocuesd, modalVisible, dispatch]);
@@ -173,6 +173,7 @@ export default function MainItemSplitWiseListCard(props) {
         noteClonedArray.push(noteData);
         const newSplitWise = {
             id: item.id,
+            splitwiseId: item._id,
             creationDate: item.creationDate,
             totalAmount: item.totalAmount,
             members: item.members,
@@ -220,7 +221,7 @@ export default function MainItemSplitWiseListCard(props) {
                 <CustomPopup
                     title={'Common:deleteItem'} message={'Common:please_confirm'}
                     visible={alertVisible} onClose={() => setAlertVisible(false)}
-                    onConfirm={() => removeParticularItem(item.id)} />
+                    onConfirm={() => removeParticularItem({id: item.id, item: item})} />
             </View>
         );
     };

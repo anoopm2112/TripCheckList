@@ -40,9 +40,9 @@ export default function NoteModal(props) {
         return (
             <View style={styles.listItemContainer}>
                 <Text style={{ color: textColor, width: '85%', textAlign: 'justify' }}>{item.note}</Text>
-                <TouchableOpacity onPress={() => { deleteNote(item.id) }}>
+                {/* <TouchableOpacity onPress={() => { deleteNote(item.id) }}>
                     <Ionicons name="remove-circle-sharp" size={convertHeight(24)} color={COLORS.lightRed} />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </View>
         )
     };
@@ -145,6 +145,9 @@ export default function NoteModal(props) {
                                 :
                                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
                                     <Text style={{ textAlign: 'center', fontWeight: 'bold', color: textColor }}>{t('Splitwise:no_notes')}</Text>
+                                    <TouchableOpacity style={{ paddingTop: convertHeight(8) }} onPress={() => onClose()}>
+                                        <AntDesign name="closecircle" size={24} color={textColor} />
+                                    </TouchableOpacity>
                                 </View>
                             }
                         </View>

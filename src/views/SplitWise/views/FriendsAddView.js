@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useContext } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import Lottie from 'lottie-react-native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -16,6 +16,7 @@ import AssetIconsPack from '../../../assets/IconProvide';
 import { SubItemSplitWise, List, Input, Button, AnimatedText } from '../../../components';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import Colors from '../../../common/Colors';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function FriendsAddView(props) {
   const { navigation } = props;
@@ -23,6 +24,7 @@ export default function FriendsAddView(props) {
   const dispatch = useDispatch();
   const { t } = useTranslation();
   const isFocused = useIsFocused();
+  const { state } = useContext(AuthContext);
 
   const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
   const { backgroundColor, textColor } = darkModeColor(isDarkMode);
@@ -123,7 +125,8 @@ export default function FriendsAddView(props) {
         members: localArrayData,
         totalAmount: 0,
         splitWiseListItems: splitShareArray,
-        notes: []
+        notes: [],
+        userId: state?.userToken
       }
       dispatch(addNewSplitwises(newSplitWise));
       setLocalArrayData([]);

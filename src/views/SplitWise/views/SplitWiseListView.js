@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, StatusBar, Modal } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
@@ -15,6 +15,7 @@ import { ROUTE_KEYS } from '../../../navigation/constants';
 import { deleteAllSplitWise, deleteSplitWiseById, fetchSplitwises } from '../api/SplitWiseApi';
 import { selectAllSplitwises } from '../splitwiseSlice';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function SplitWiseListView(props) {
   const { navigation } = props;
@@ -22,6 +23,7 @@ export default function SplitWiseListView(props) {
   const isFocused = useIsFocused();
   const dispatch = useDispatch();
   const { t } = useTranslation();
+  const { state } = useContext(AuthContext);
 
   const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
   const { backgroundColor, textColor } = darkModeColor(isDarkMode);
@@ -32,12 +34,13 @@ export default function SplitWiseListView(props) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(fetchSplitwises());
+      dispatch(fetchSplitwises({ userId: state?.userToken }));
     }
   }, [isFocused, dispatch]);
 
-  const removeParticularItem = async (id) => {
-    dispatch(deleteSplitWiseById({ id: id }))
+  const removeParticularItem = async ({ id, item }) => {
+    dispatch(deleteSplitWiseById({ id: id, splitwiseId: item._id }));
+    dispatch(fetchSplitwises({ userId: state?.userToken }));
   }
 
   const renderItem = ({ item }) => {
@@ -47,14 +50,18 @@ export default function SplitWiseListView(props) {
     return (
       <>
         <MainItemSplitWiseListCard
-          navigationToEdit={navigationToEdit} removeParticularItem={removeParticularItem}
+          navigationToEdit={navigationToEdit} 
+          removeParticularItem={({ id, item }) => removeParticularItem({ id, item })}
           item={item} spliupAmount={spliupAmount} />
       </>
     )
   };
 
   const deleteAllSplitWiseItems = () => { setAlertVisible(true) }
-  const removeAllItem = async () => { dispatch(deleteAllSplitWise()) }
+  const removeAllItem = async () => {
+    dispatch(deleteAllSplitWise());
+    dispatch(fetchSplitwises({ userId: state?.userToken }));
+  }
 
   const styles = StyleSheet.create({
     floatingBtn: {

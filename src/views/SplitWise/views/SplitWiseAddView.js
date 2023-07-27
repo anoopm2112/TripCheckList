@@ -79,7 +79,7 @@ export default function CheckListAddView(props) {
 
     useEffect(() => {
         const GetParticularSplitWiseNoteList = async () => {
-            dispatch(fetchNotes({ id: item.id }));
+            dispatch(fetchNotes({ id: item.id, noteId: item._id }));
         };
         GetParticularSplitWiseNoteList(item.id);
     }, [isFocuesd, modalVisible, dispatch]);
@@ -150,6 +150,7 @@ export default function CheckListAddView(props) {
             let amountAdded = amountAdded = parseInt(item.totalAmount) + parseInt(amount);
             const newSplitWise = {
                 id: item.id,
+                splitwiseId: item._id,
                 creationDate: item.creationDate,
                 type: selectedIndex == 4 ? value : displayValue,
                 totalAmount: amountAdded,
