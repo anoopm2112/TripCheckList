@@ -18,7 +18,7 @@ import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtil
 import { CustomPopup, EraseModal, List } from '../../../components';
 import { languagesInitialValue } from '../../../common/translation/constant';
 import { toggleDarkMode } from '../settingsSlice';
-import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import { checkIfDataExistsInLocalDB, darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { deleteAllSplitWise } from '../../SplitWise/api/SplitWiseApi';
 import { deleteAllChecklist } from '../../CheckList/api/ChecklistApi';
 import AssetIconsPack from '../../../assets/IconProvide';
@@ -39,6 +39,7 @@ export default function SettingsView(props) {
     const [quoteModalVisible, setQuoteModalVisible] = useState(false);
     const [logoutAlertVisible, setLogoutAlertVisible] = useState(false);
     const [privacyPolicyModalVisible, setPrivacyPolicyModalVisible] = useState(false);
+    const [visibleItem, setVisibleItem] = useState(false);
     const [tapCount, setTapCount] = useState(0);
     const isFocused = useIsFocused();
     const iconAnimation = useRef(new Animated.Value(0)).current;
@@ -79,6 +80,11 @@ export default function SettingsView(props) {
     useEffect(() => {
         if (isFocused) {
             StatusBar.setBackgroundColor(backgroundColor);
+            async function fetchUserItem() {
+                let checklistLen = await checkIfDataExistsInLocalDB();
+                setVisibleItem(checklistLen);
+            }
+            fetchUserItem();
         }
     }, [isFocused]);
 
@@ -94,6 +100,12 @@ export default function SettingsView(props) {
             name: 'Settings:theme',
             icon_name: 'theme-light-dark',
             onPress: () => refRBThemeSheet.current.open()
+        },
+        {
+            id: 8,
+            name: 'Settings:local_data_sync',
+            icon_name: 'database-sync',
+            onPress: () => props.navigation.navigate(ROUTE_KEYS.SYNC_LOCAL_SERVER)
         },
         {
             id: 3,
@@ -214,7 +226,8 @@ export default function SettingsView(props) {
         },
         button: {
             backgroundColor: backgroundColor,
-            padding: convertHeight(15),
+            paddingHorizontal: convertHeight(15),
+            paddingVertical: convertHeight(12),
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
@@ -291,6 +304,9 @@ export default function SettingsView(props) {
                                         name={isDarkMode ? 'weather-night' : 'white-balance-sunny'}
                                         size={24} color={textColor} />
                                 </Animated.View>
+                            }
+                            {(item.id === 8 && visibleItem) &&
+                                <Ionicons name="sync-circle" size={24} color={Colors.lightRed} />
                             }
                             <Ionicons name="md-chevron-forward-sharp" size={24} color={textColor} />
                         </View>

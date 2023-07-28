@@ -10,7 +10,8 @@ import {
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen,
   CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, DashboardScreen,
   PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
-  CostPlanner, AboutUs, ContactUsView, HelpView, VideoModal, CreateNewPlaces, AllPlaceList, SplashScreen
+  CostPlanner, AboutUs, ContactUsView, HelpView, VideoModal, CreateNewPlaces, AllPlaceList, SplashScreen,
+  SyncLocalToServer
 } from '../views';
 import { convertHeight, convertWidth } from '../common/utils/dimentionUtils';
 import AssetIconsPack from '../assets/IconProvide';
@@ -78,6 +79,7 @@ export default function rootNavigation(props) {
             <Screen options={{ headerShown: false }} name={ROUTE_KEYS.VIDEO_VIEW} component={VideoModal} />
             <Screen options={getScreenOptions({ title: t('Touristplace:add_new_place') })} name={ROUTE_KEYS.CREATE_NEW_PLACE} component={CreateNewPlaces} />
             <Screen options={getScreenOptions({ title: t('Touristplace:list_all_place') })} name={ROUTE_KEYS.ALL_PLACE_LIST} component={AllPlaceList} />
+            <Screen options={getScreenOptions({ title: t('Settings:local_data_sync') })} name={ROUTE_KEYS.SYNC_LOCAL_SERVER} component={SyncLocalToServer} />
           </>
         )}
       </Navigator>

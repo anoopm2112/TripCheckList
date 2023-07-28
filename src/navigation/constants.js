@@ -24,5 +24,6 @@ export const ROUTE_KEYS = {
     ABOUT_US: 'AboutUs',
     CONTACT_US: 'ContactUs',
     HELP_VIEW: 'HelpView',
-    VIDEO_VIEW: 'VideoView'
+    VIDEO_VIEW: 'VideoView',
+    SYNC_LOCAL_SERVER: 'SyncLocalToServer',
 };

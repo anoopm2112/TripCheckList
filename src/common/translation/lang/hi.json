@@ -10,7 +10,8 @@
             "settings": "सेटिंग्स",
             "tourist_places": "पर्यटक स्थल",
             "costPlanner": "कॉस्ट प्लानर",
-            "additional_info": "अतिरिक्त जानकारी"
+            "additional_info": "अतिरिक्त जानकारी",
+            "sync_info": "अपने स्थानीय डेटा को सर्वर के साथ सिंक करें"
         }
     },
     "Splitwise": {
@@ -66,7 +67,14 @@
         "rateus": "हमें रेटिंग दें",
         "appVersion": "एप्लिकेशन वेरीज़न",
         "privacyPolicy": "गोपनीयता नीति",
-        "double_tab_info": "ऐप की सुविधाएं देखने के लिए दो बार टैप करें"
+        "double_tab_info": "ऐप की सुविधाएं देखने के लिए दो बार टैप करें",
+        "local_data_sync": "डेटा सिंकिंग",
+        "nothing_to_sync": "कुछ भी सिंक करने की आवश्यकता नहीं है",
+        "items_to_sync": "आइटम को सिंक करने की आवश्यकता है",
+        "waiting_to_sync": "सिंक होने की प्रतीक्षा में...",
+        "sync_processing": "सिंक संसाधित हो रहा है...",
+        "no_data_local_database": "स्थानीय डेटाबेस में कोई डेटा नहीं",
+        "sync_to_server": "सर्वर से सिंक करें"
     },
     "Languages": {
         "Tamil": "தமிழ்",

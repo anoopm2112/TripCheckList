@@ -10,7 +10,8 @@
             "settings": "SETTINGS",
             "tourist_places": "TOURIST PLACES",
             "costPlanner": "COST PLANNER",
-            "additional_info": "ADDITIONAL INFO"
+            "additional_info": "ADDITIONAL INFO",
+            "sync_info": "Sync your local data with the server"
         }
     },
     "Splitwise": {
@@ -66,7 +67,14 @@
         "rateus": "Rate Us",
         "appVersion": "App Version",
         "privacyPolicy": "Privacy Policy",
-        "double_tab_info": "Double tab to view app features"
+        "double_tab_info": "Double tab to view app features",
+        "local_data_sync": "DATA SYNCING",
+        "nothing_to_sync": "Nothing to sync",
+        "items_to_sync": "Items need to sync",
+        "waiting_to_sync": "Waiting to Sync...",
+        "sync_processing": "Sync is processing...",
+        "no_data_local_database": "No Data in local Database",
+        "sync_to_server": "Sync to server"
     },
     "Languages": {
         "Tamil": "தமிழ்",

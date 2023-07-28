@@ -1,3 +1,4 @@
+import { queryAllCheckList, queryAllSplitWiseList } from '../../database/allSchemas';
 import Colors from '../Colors';
 
 export const getAddedAmountArray = item => {
@@ -102,4 +103,14 @@ export const getBase64FromImageURI = (imageURI) => {
             .then(base64String => resolve(base64String))
             .catch(error => reject(error));
     });
-}
+};
+
+export const checkIfDataExistsInLocalDB = async () => {
+    const checklistLength = await queryAllCheckList();
+    const splitwiseLength = await queryAllSplitWiseList();
+    if ((checklistLength?.length) || (splitwiseLength?.length)) {
+        return true;
+    } else {
+        return false;
+    }
+};

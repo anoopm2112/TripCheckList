@@ -16,6 +16,7 @@ import SplitWiseListView from './SplitWise/views/SplitWiseListView';
 import PostList from './post/views/postList';
 
 import SettingsView from './Settings/views/SettingsView';
+import SyncLocalToServer from './Settings/views/SyncLocalToServer';
 import TouristPlaceList from './TouristPlaces/views/TouristPlaceList';
 import TouristDistrict from './TouristPlaces/views/TouristDistrict';
 import TouristStateList from './TouristPlaces/views/TouristStateList';
@@ -44,6 +45,7 @@ export {
 
     PostList,
     SettingsView,
+    SyncLocalToServer,
     TouristPlaceList,
     TouristDistrict,
     TouristStateList,

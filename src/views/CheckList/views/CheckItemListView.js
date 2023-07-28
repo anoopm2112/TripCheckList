@@ -17,8 +17,6 @@ import { deleteAllChecklist, deleteChecklistById, fetchChecklists } from '../api
 import { selectAllChecklists } from '../checklistSlice';
 import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List } from '../../../components';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
-import SyncPopUp from './SyncPopUp';
-import { queryAllCheckList } from '../../../database/allSchemas';
 import { Context as AuthContext } from '../../../context/AuthContext';
 
 export default function CheckItemListView(props) {
@@ -34,23 +32,10 @@ export default function CheckItemListView(props) {
     const { checklists, status, error } = useSelector(selectAllChecklists);
 
     const [alertVisible, setAlertVisible] = useState(false);
-    const [openSyncPopUp, setOpenSyncPopUp] = useState(false);
 
     useEffect(() => {
         if (isFocused) {
             dispatch(fetchChecklists({ userId: state?.userToken }));
-        }
-        const syncOperation = async () => {
-            const response = await queryAllCheckList();
-            const responseDataLength = JSON.parse(JSON.stringify(response))?.length;
-            if (netInfo.isConnected && responseDataLength > 0) {
-                setOpenSyncPopUp(true);
-            } else {
-                setOpenSyncPopUp(false);
-            }
-        }
-        if (netInfo.isConnected) {
-            syncOperation();
         }
     }, [isFocused, netInfo, dispatch]);
 
@@ -168,11 +153,6 @@ export default function CheckItemListView(props) {
                 title={'Common:deleteAllItem'} message={'Common:please_confirm'}
                 visible={alertVisible} onClose={() => setAlertVisible(false)}
                 onConfirm={() => removeAllItem()} />
-
-            <SyncPopUp
-                visible={openSyncPopUp}
-                onClose={() => { setOpenSyncPopUp(false); }}
-                onConfirm={() => { dispatch(fetchChecklists({ userId: state?.userToken })) }} />
 
             {checklists?.length > 1 && <TouchableOpacity style={styles.floatingRemoveBtn} onPress={() => { setAlertVisible(true) }}>
                 <Text style={{ color: COLORS.primary, fontWeight: 'bold' }}>{t('Splitwise:remove_all_data')}</Text>
