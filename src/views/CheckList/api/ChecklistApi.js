@@ -8,14 +8,9 @@ import {
 import {
     FETCH_CHECKLIST_LIST, DELETE_CHECKLIST_BY_ID, DELETE_ALL_CHECKLIST_LIST, ADD_NEW_CHECKLIST_LIST, UPDATE_CHECKLIST_LIST, GET_ALL_CHECKLIST_LIST_HISTORY
 } from "../action";
+import { checkNetworkConnectivity } from "../../../common/utils/permissionUtils";
 
 const apiUrl = Config.API_BASE_URL;
-
-export async function checkNetworkConnectivity() {
-    const netInfoState = await NetInfo.fetch();
-    const isConnected = netInfoState.isConnected;
-    return isConnected;
-}
 
 export const fetchChecklists = createAsyncThunk(FETCH_CHECKLIST_LIST, async (userId) => {
     const isConnected = await checkNetworkConnectivity();

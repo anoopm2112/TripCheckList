@@ -6,6 +6,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import COLORS from '../../../common/Colors';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
@@ -17,6 +18,7 @@ import { registerNewUserIntro } from '../api/IntroScreenAPI';
 const WelcomeScreen = () => {
     const { signin } = useContext(AuthContext);
     const dispatch = useDispatch();
+    const netInfo = NetInfo.useNetInfo();
 
     useEffect(() => {
         GoogleSignin.configure({
@@ -73,7 +75,7 @@ const WelcomeScreen = () => {
             paddingHorizontal: convertWidth(30),
         },
         btn: {
-            backgroundColor: COLORS.primary,
+            backgroundColor: netInfo.isConnected ? COLORS.primary : COLORS.info,
             marginTop: convertHeight(20),
             borderRadius: convertHeight(3),
             justifyContent: 'center',
@@ -100,10 +102,9 @@ const WelcomeScreen = () => {
                 <View style={Styles.details}>
                     <Text style={Styles.txtStyle}>{EN_IN.trip}</Text>
                     <Text style={Styles.txtStyle}>{EN_IN.checkList}</Text>
-                    <Text style={{ color: COLORS.black, lineHeight: convertHeight(20), marginTop: convertHeight(10), fontStyle: 'italic', fontWeight: '500' }}>{EN_IN.welcomeSubTitle}</Text>
+                    <Text style={{ color: COLORS.primary, lineHeight: convertHeight(20), marginTop: convertHeight(10), fontStyle: 'italic', fontWeight: '500' }}>{EN_IN.welcomeSubTitle}</Text>
 
-                    <TouchableOpacity style={Styles.btn} activeOpacity={0.8} onPress={() => onhandleWelcome()}>
-                        {/* <FontAwesome name="google" size={convertHeight(18)} color={COLORS.primary} /> */}
+                    <TouchableOpacity disabled={!netInfo.isConnected} style={Styles.btn} activeOpacity={0.8} onPress={() => onhandleWelcome()}>
                         <Image source={AssetIconsPack.icons.google_icon} resizeMode='contain' style={Styles.googleIcon} />
                         <Text style={{
                             fontWeight: 'bold', color: COLORS.lightGreen,

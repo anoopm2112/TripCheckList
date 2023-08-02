@@ -63,7 +63,7 @@
         "dark": "Dark",
         "light": "Light",
         "data_cleaning": "Data Cleaning...",
-        "clear_all_data": "CLEAR ALL DATA",
+        "clear_all_data": "REMOVE ALL LOCAL DATA",
         "clear_all_val": "Do you want to erase all data related to the app?",
         "share": "Share",
         "rateus": "Rate Us",

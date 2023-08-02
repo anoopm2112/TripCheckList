@@ -1,6 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from 'axios';
-import NetInfo from '@react-native-community/netinfo';
 import Config from 'react-native-config';
 import {
     deleteAllSplitWiseList, deleteNoteList, deleteSplitWiseList, insertNewSplitWise,
@@ -10,14 +9,9 @@ import {
     ADD_NEW_SPLITWISE_LIST, DELETE_ALL_SPLITWISE_LIST, DELETE_NOTE_BY_ID, DELETE_SPLITWISE_BY_ID,
     FETCH_NOTES_LIST, FETCH_SPLITWISE_LIST, UPDATE_SPLITWISE_LIST
 } from "../action";
+import { checkNetworkConnectivity } from "../../../common/utils/permissionUtils";
 
 const apiUrl = Config.API_BASE_URL;
-
-export async function checkNetworkConnectivity() {
-    const netInfoState = await NetInfo.fetch();
-    const isConnected = netInfoState.isConnected;
-    return isConnected;
-}
 
 export const fetchSplitwises = createAsyncThunk(FETCH_SPLITWISE_LIST, async (userId) => {
     const isConnected = await checkNetworkConnectivity();

@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     },
     description: {
         color: '#ccc',
-        fontWeight: '600',
+        fontWeight: '500',
         textAlign: 'left',
         width: width * 0.80,
         paddingRight: 2,

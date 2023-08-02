@@ -37,7 +37,9 @@ export default function DashboardScreen(props) {
 
             async function fetchUserItem() {
                 var value = await AsyncStorage.getItem('userAuth');
-                signin(JSON.parse(value));
+                if (value !== null) {
+                    signin(JSON.parse(value));
+                }
                 if (netInfo.isConnected) {
                     let checklistLen = await checkIfDataExistsInLocalDB();
                     setVisibleItem(checklistLen);

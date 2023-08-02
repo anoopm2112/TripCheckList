@@ -227,7 +227,7 @@ export default function SettingsView(props) {
         button: {
             backgroundColor: backgroundColor,
             paddingHorizontal: convertHeight(15),
-            paddingVertical: convertHeight(13),
+            paddingVertical: i18n.language === 'ta' ? convertHeight(10) : convertHeight(12),
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
@@ -283,7 +283,7 @@ export default function SettingsView(props) {
                                 <MaterialCommunityIcons name={item.icon_name} size={24} color={textColor} />
                             }
                             <View>
-                                <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5 }}>{t(item.name)}</Text>   
+                                <Text numberOfLines={2} style={{ color: textColor, paddingLeft: convertWidth(12), fontWeight: '500', paddingVertical: 5, fontWeight: '500', fontSize: convertHeight(11), width: convertWidth(200) }}>{t(item.name)}</Text>   
                                 {item.id === 7 && <Text style={{ color: textColor, paddingLeft: convertWidth(12), fontStyle: 'italic', fontWeight: '400', fontSize: convertHeight(9) }}>{state?.userToken}</Text>}
                             </View>
                         </View>

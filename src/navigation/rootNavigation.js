@@ -38,6 +38,7 @@ export default function rootNavigation(props) {
       headerStyle: { backgroundColor: blackToWhite },
       headerTitleStyle: {
         color: WhiteToblack,
+        textTransform: 'uppercase',
         fontSize:
           (i18next.language === 'ml' || i18next.language === 'ta') ?
             convertHeight(11) : convertHeight(15)
@@ -50,7 +51,7 @@ export default function rootNavigation(props) {
   return (
     <NavigationContainer theme={{ colors: { background: isDarkMode ? Colors.black : Colors.primary } }}>
       <Navigator>
-        {state.userToken == "" ? (
+        {state?.userToken == "" ? (
           <>
             <Screen options={{ headerShown: false }} name={ROUTE_KEYS.SPLASH_SCREEN} component={SplashScreen} />
             <Screen options={{ headerShown: false }} name={ROUTE_KEYS.WELCOME_SCREEN} component={WelcomeScreen} />
