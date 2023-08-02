@@ -4,7 +4,6 @@ import thunk from 'redux-thunk';
 import checklistReducer from '../views/CheckList/checklistSlice';
 import splitwiseReducer from '../views/SplitWise/splitwiseSlice';
 import settingsReducer from '../views/Settings/settingsSlice';
-import postReducer from '../views/post/postSlice';
 import introReducer from '../views/IntroScreen/introSlice';
 import touristPlaceReducer from '../views/TouristPlaces/placeSlice';
 
@@ -12,7 +11,6 @@ const rootReducer = combineReducers({
     checklist: checklistReducer,
     splitwise: splitwiseReducer,
     settings: settingsReducer,
-    post: postReducer,
     intro: introReducer,
     touristPlaces: touristPlaceReducer
 })

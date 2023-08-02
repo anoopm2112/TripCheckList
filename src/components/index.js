@@ -15,14 +15,16 @@ import SubItemSplitWise from './SubItemSplitWise';
 import AnimatedText from './AnimatedText';
 import CustomFlipView from './CustomFlipView';
 import PaidByModal from './PaidByModal';
-import CustomSelect from './CustomSelect';
 import EraseModal from './EraseModal';
 import CustomSnackbar from './CustomSnackBar';
+import NetworkErrorView from './NetworkErrorView';
+import ProgressWaveBar from './ProgressWaveBar';
 
 export {
     AppLoader, CustomPopup, EmptyList, Header, InvoiceModal, MainItemListCardView,
     MainItemSplitWiseListCard, NoteModal, SubItemListCardView, SubItemSplitWise,
-    AnimatedText, CustomFlipView, PaidByModal, CustomSelect, EraseModal, CustomSnackbar,
+    AnimatedText, CustomFlipView, PaidByModal, EraseModal, CustomSnackbar, NetworkErrorView,
+    ProgressWaveBar,
     // UI KITTEN COMPONENTS
     List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 };

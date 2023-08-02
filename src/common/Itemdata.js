@@ -75,13 +75,6 @@ export const splitWiseDataItemHindi = [
 ];
 
 export const FLOATING_ACTION = [
-    // {
-    //     text: "Post",
-    //     icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,
-    //     name: ROUTE_KEYS.FETCH_POST,
-    //     color: COLORS.secondary,
-    //     position: 4
-    // },
     {
         text: i18n.t("Common:add_checklist"),
         icon: <Octicons name="checklist" size={convertHeight(16)} color={COLORS.primary} />,
@@ -89,13 +82,6 @@ export const FLOATING_ACTION = [
         color: COLORS.secondary,
         position: 3
     },
-    // {
-    //     text: "SplitWise",
-    //     icon: <MaterialIcons name="call-split" size={convertHeight(16)} color={COLORS.primary} />,
-    //     color: COLORS.secondary,
-    //     name: ROUTE_KEYS.SPLIT_WISE_LIST,
-    //     position: 2
-    // },
     {
         text: i18n.t("Common:history"),
         icon: <MaterialIcons name="history" size={convertHeight(16)} color={COLORS.primary} />,

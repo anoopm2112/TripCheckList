@@ -11,7 +11,7 @@
             "tourist_places": "TOURIST PLACES",
             "costPlanner": "COST PLANNER",
             "additional_info": "ADDITIONAL INFO",
-            "sync_info": "Sync your local data with the server"
+            "sync_info": "Sync"
         }
     },
     "Splitwise": {
@@ -49,7 +49,9 @@
         "input_val": "Please enter something about your split.",
         "input_placeholder": "Write something about your split...",
         "money_help_info": "Allows users to effortlessly add friends, manage expenses, add notes, and display the split amount as an invoice.",
-        "add_friend_info": "Friends are like stars. You don't always see them, but you know they're always there."
+        "add_friend_info": "Friends are like stars. You don't always see them, but you know they're always there.",
+        "split_by_amount": "Split By Amount",
+        "split_evently": "Split Evently"
     },
     "History": {
         "history": "HISTORY"

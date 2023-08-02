@@ -9,7 +9,7 @@ import { ROUTE_KEYS } from './constants';
 import {
   CheckItemListView, CheckListAddView, WriteUpAboutTripView, ListParticularCheckItem, WelcomeScreen,
   CheckItemHistoryView, FriendsAddView, SplitWiseAddView, SplitWiseListView, DashboardScreen,
-  PostList, SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
+  SettingsView, TouristPlaceList, TouristDistrict, TouristStateList, TouristLocationMap,
   CostPlanner, AboutUs, ContactUsView, HelpView, VideoModal, CreateNewPlaces, AllPlaceList, SplashScreen,
   SyncLocalToServer
 } from '../views';
@@ -66,7 +66,6 @@ export default function rootNavigation(props) {
             <Screen options={getScreenOptions({ title: t('Splitwise:add_friends') })} name={ROUTE_KEYS.FRIENDS_ADD} component={FriendsAddView} />
             <Screen options={getScreenOptions({ title: t('Dashboard:actions:money_splitter') })} name={ROUTE_KEYS.SPLIT_WISE_ADD} component={SplitWiseAddView} />
             <Screen options={getScreenOptions({ title: t('Dashboard:actions:money_splitter') })} name={ROUTE_KEYS.SPLIT_WISE_LIST} component={SplitWiseListView} />
-            <Screen options={{ title: 'POST', headerRight: () => rightLogoImage(), headerStyle: { backgroundColor: blackToWhite }, headerTitleStyle: { color: WhiteToblack }, }} name={ROUTE_KEYS.FETCH_POST} component={PostList} />
             <Screen options={getScreenOptions({ title: t('Settings:setting') })} name={ROUTE_KEYS.SETTINGS} component={SettingsView} />
             <Screen options={getScreenOptions({ title: t('Dashboard:actions:tourist_places') })} name={ROUTE_KEYS.TOURIST_PLACE} component={TouristPlaceList} />
             <Screen options={getScreenOptions({ title: t('Touristplace:district') })} name={ROUTE_KEYS.TOURIST_DISTRICT} component={TouristDistrict} />

@@ -13,8 +13,6 @@ import FriendsAddView from './SplitWise/views/FriendsAddView';
 import SplitWiseAddView from './SplitWise/views/SplitWiseAddView';
 import SplitWiseListView from './SplitWise/views/SplitWiseListView';
 
-import PostList from './post/views/postList';
-
 import SettingsView from './Settings/views/SettingsView';
 import SyncLocalToServer from './Settings/views/SyncLocalToServer';
 import TouristPlaceList from './TouristPlaces/views/TouristPlaceList';
@@ -43,7 +41,6 @@ export {
     DashboardScreen,
     SplashScreen,
 
-    PostList,
     SettingsView,
     SyncLocalToServer,
     TouristPlaceList,

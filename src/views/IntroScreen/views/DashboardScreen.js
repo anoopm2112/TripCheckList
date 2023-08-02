@@ -41,6 +41,8 @@ export default function DashboardScreen(props) {
                 if (netInfo.isConnected) {
                     let checklistLen = await checkIfDataExistsInLocalDB();
                     setVisibleItem(checklistLen);
+                } else {
+                    setVisibleItem(false);
                 }
             }
             fetchUserItem();
@@ -110,32 +112,29 @@ export default function DashboardScreen(props) {
         },
         syncIconContainer: {
             position: 'absolute',
-            top: convertHeight(5),
-            right: showView ? convertHeight(0) : convertHeight(15),
+            top: convertHeight(10),
+            right: convertHeight(10),
+            paddingLeft: convertWidth(7),
             flexDirection: 'row',
-            alignItems: 'center'
+            alignItems: 'center',
+            backgroundColor: isDarkMode ? Colors.black : Colors.primary,
+            borderRadius: 5
         },
         syncTxtContainer: {
-            backgroundColor: isDarkMode ? Colors.black : Colors.appIntro,
-            height: convertHeight(28),
             justifyContent: 'center',
             alignItems: 'center',
-            borderBottomWidth: 0.5,
-            borderBottomColor: Colors.primary
+            flexDirection: 'row',
+            alignItems: 'center',
         },
         syncTxt: {
-            color: 'red',
-            fontSize: convertHeight(7),
-            fontWeight: '500',
-            fontStyle: 'italic',
-            paddingLeft: 7,
-            textTransform: 'uppercase'
+            color: Colors.lightRed,
+            fontSize: convertHeight(12),
+            fontWeight: 'bold',
+            paddingLeft: convertWidth(5),
+            padding: convertHeight(5)
         },
         iconContainer: {
-            backgroundColor: isDarkMode ? Colors.black : Colors.appIntro,
-            height: convertHeight(28),
-            width: showView ? convertHeight(38) : convertHeight(28),
-            paddingRight: showView ? 10 : 0,
+            backgroundColor: isDarkMode ? Colors.black : Colors.primary,
             justifyContent: 'center',
             alignItems: 'center'
         }
@@ -156,15 +155,15 @@ export default function DashboardScreen(props) {
             <View style={styles.topCard}>
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }}
                     source={AssetIconsPack.icons.checklist_clothes_image}>
-                    <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.SYNC_LOCAL_SERVER)}
-                        activeOpacity={0.8} style={styles.syncIconContainer}>
-                        <Animatable.View animation={'fadeInLeftBig'} ref={viewAnimation} style={styles.syncTxtContainer}>
-                            <Text style={styles.syncTxt}>{t('Dashboard:actions:sync_info')}</Text>
+                    {showView &&
+                        <Animatable.View animation={'fadeInRight'} ref={viewAnimation} style={styles.syncTxtContainer}>
+                            <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.SYNC_LOCAL_SERVER)}
+                                activeOpacity={0.8} style={styles.syncIconContainer}>
+                                <MaterialCommunityIcons name="cloud-sync-outline" size={convertHeight(17)} color={visibleItem ? Colors.lightRed : Colors.primary} />
+                                <Text style={styles.syncTxt}>{t('Dashboard:actions:sync_info')}</Text>
+                            </TouchableOpacity>
                         </Animatable.View>
-                        <View style={styles.iconContainer}>
-                            <MaterialCommunityIcons name="database-sync" size={20} color={visibleItem ? Colors.lightRed : Colors.primary} />
-                        </View>
-                    </TouchableOpacity>
+                    }
                     <View style={styles.topCardSubContainer}>
                         <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: '#ffffff00' }} />
                         <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {state?.userName}!</Text>

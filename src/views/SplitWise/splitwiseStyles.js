@@ -138,5 +138,12 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         position: 'absolute',
         bottom: -20
+    },
+    splitBtnContainer: {
+        alignSelf: 'center', 
+        paddingBottom: convertHeight(5),
+        textTransform: 'uppercase', 
+        fontWeight: '500', 
+        fontSize: convertHeight(9) 
     }
 });

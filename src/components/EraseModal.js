@@ -2,8 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Modal } from 'react-native';
 import { useSelector } from 'react-redux';
 import { convertHeight } from '../common/utils/dimentionUtils';
-import Colors from '../common/Colors';
-import ProgressBar from '../components/ProgressWaveBar';
+import { ProgressWaveBar } from '../components';
 import { darkModeColor } from '../common/utils/arrayObjectUtils';
 
 const EraseModal = ({ visible, onClose }) => {
@@ -32,7 +31,7 @@ const EraseModal = ({ visible, onClose }) => {
         <Modal animationType="fade" transparent={true} visible={visible}>
             <View style={styles.container}>
                 <View style={styles.popupBox}>
-                    <ProgressBar onClose={onClose}/>
+                    <ProgressWaveBar onClose={onClose}/>
                 </View>
             </View>
         </Modal>

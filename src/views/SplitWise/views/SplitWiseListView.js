@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import COLORS from '../../../common/Colors';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { 
-  AppLoader, CustomPopup, EmptyList, MainItemSplitWiseListCard, List, AnimatedText
+  AppLoader, CustomPopup, EmptyList, MainItemSplitWiseListCard, List, AnimatedText, NetworkErrorView
 } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -97,7 +97,9 @@ export default function SplitWiseListView(props) {
   }
 
   if (status === 'failed') {
-    return <Text style={{ color: 'black' }}>{error}</Text>;
+    return (
+      <NetworkErrorView onAction={() => dispatch(fetchSplitwises({ userId: state?.userToken }))} />
+    )
   }
 
   return (

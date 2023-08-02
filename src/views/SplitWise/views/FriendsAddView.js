@@ -115,12 +115,12 @@ export default function FriendsAddView(props) {
       let splitShareArray = [{
         id: uuidv4(),
         foodType: "",
-        creationDate: new Date(),
+        creationDate: new Date().toISOString(),
         data: localSplitWiseItemsArrayData
       }]
       const newSplitWise = {
         id: uuidv4(),
-        creationDate: new Date(),
+        creationDate: new Date().toISOString(),
         splitTitle: splitTitleValue,
         members: localArrayData,
         totalAmount: 0,

@@ -15,7 +15,7 @@ import COLORS from '../../../common/Colors';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { deleteAllChecklist, deleteChecklistById, fetchChecklists } from '../api/ChecklistApi';
 import { selectAllChecklists } from '../checklistSlice';
-import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List } from '../../../components';
+import { AppLoader, CustomPopup, EmptyList, MainItemListCardView, List, NetworkErrorView } from '../../../components';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { Context as AuthContext } from '../../../context/AuthContext';
 
@@ -106,12 +106,7 @@ export default function CheckItemListView(props) {
 
     if (status === 'failed') {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'black' }}>{error}</Text>
-                <TouchableOpacity style={{ paddingVertical: 5 }} onPress={() => dispatch(fetchChecklists({ userId: state?.userToken }))}>
-                    <Text style={{ color: 'black' }}>Please click here to reload</Text>
-                </TouchableOpacity>
-            </View>
+            <NetworkErrorView onAction={() => dispatch(fetchChecklists({ userId: state?.userToken }))} />
         ) 
     }
 

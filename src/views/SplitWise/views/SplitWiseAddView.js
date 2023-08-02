@@ -10,7 +10,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Octicons from 'react-native-vector-icons/Octicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 // Other files
 import { splitWiseDataItem, splitWiseDataItemMal, splitWiseDataItemTamil, splitWiseDataItemHindi } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -21,7 +23,7 @@ import { htmltable, onHandleCreatePdf } from '../../../common/pdfView';
 import { styles } from '../splitwiseStyles';
 import { selectAllSplitwises } from '../splitwiseSlice';
 import {
-    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal, CustomSelect
+    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal
 } from '../../../components';
 import { calculateTotalAmount, darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
@@ -277,12 +279,19 @@ export default function CheckListAddView(props) {
 
                 <View>
                     <View style={styles.paidByYou}>
-                        <Text style={{ color: textColor }}>{t('Splitwise:equally_split')}</Text>
-                        <TouchableOpacity style={[styles.listItemContainer, { width: convertWidth(80), backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.secondary }]}
-                            onPress={() => { setShowEquallySplit(!showEquallySplit); }}>
-                            <Text style={{ color: COLORS.primary }}>{showEquallySplit ? t('Common:yes') : t('Common:no')}</Text>
+                        <TouchableOpacity style={[styles.listItemContainer, { flexDirection: 'row', backgroundColor: showEquallySplit ? COLORS.info : COLORS.tertiary }]}
+                            onPress={() => { setShowEquallySplit(false); }}>
+                                <FontAwesome5 name="user-alt" size={convertHeight(8)} color={backgroundColor} />
+                                <Text style={{ color: backgroundColor, fontSize: convertHeight(8) }}> / </Text>
+                                <FontAwesome5 name="user-alt" size={convertHeight(8)} color={backgroundColor} />
+                        </TouchableOpacity>
+                        <Text style={[styles.splitBtnContainer, { color: textColor, letterSpacing: 0.5 }]}>{showEquallySplit ? t('Splitwise:split_by_amount') : t('Splitwise:split_evently')}</Text>
+                        <TouchableOpacity style={[styles.listItemContainer, { backgroundColor: showEquallySplit ? COLORS.tertiary : COLORS.info }]}
+                            onPress={() => { setShowEquallySplit(true); }}>
+                                <Text style={{ color: backgroundColor, fontSize: convertHeight(11), fontWeight: 'bold', letterSpacing: 1 }}>123</Text>
                         </TouchableOpacity>
                     </View>
+                    
                     <Animatable.View ref={viewAnimation} animation={'fadeInLeft'}>
                         {showView &&
                             localArrayData?.map((item, index) => { return renderItemNotEquallySplit({ item, index }); })

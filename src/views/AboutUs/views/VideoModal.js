@@ -10,6 +10,7 @@ import Colors from '../../../common/Colors';
 
 const VideoModal = (props) => {
     const { navigation } = props;
+    const { videoId } = props.route.params;
     const [clicked, setClicked] = useState(false);
     const [paused, setPaused] = useState(false);
     const [progress, setProgress] = useState(null);
@@ -71,7 +72,7 @@ const VideoModal = (props) => {
             <TouchableOpacity style={styles.video} onPress={() => setClicked(true)}>
                 <Video
                     paused={paused}
-                    source={AssetIconsPack.icons.toursit_video}
+                    source={videoId}
                     ref={ref}
                     onProgress={x => setProgress(x)}
                     onEnd={handleEnd}

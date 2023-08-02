@@ -101,7 +101,6 @@ export default function CostPlanner() {
     const styles = StyleSheet.create({
         container: {
             flex: 1,
-            paddingTop: convertHeight(20),
             backgroundColor: isDarkMode ? Colors.black : '#dddddd'
         },
         input: {
@@ -188,12 +187,6 @@ export default function CostPlanner() {
         <KeyboardAwareScrollView>
             <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
             <View style={styles.container}>
-
-                <View style={{ justifyContent: 'center', alignItems: 'center', paddingBottom: convertHeight(20) }}>
-                    <Text style={[styles.totalTxt, { fontWeight: '500', fontSize: convertHeight(14), color: textBrownColor }]}>{itemsRenderByValue().title}</Text>
-                    <Text style={[styles.totalTxt, { fontWeight: '900', fontSize: convertHeight(28) }]}>{totalCostOfTravel}{itemsRenderByValue().postLetter}</Text>
-                </View>
-
                 <View style={styles.topBarContainer}>
                     <View style={{ justifyContent: 'center', alignItems: 'center' }}>
                         <TouchableOpacity onPress={() => { handleResetPress(); setTopTab(COST); }} activeOpacity={0.5}
@@ -218,7 +211,12 @@ export default function CostPlanner() {
                     </View>
                 </View>
 
-                <View style={[styles.cardView, { padding: convertHeight(25), marginTop: 10 }]}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', paddingVertical: convertHeight(20) }}>
+                    <Text style={[styles.totalTxt, { fontWeight: '500', fontSize: convertHeight(14), color: textBrownColor }]}>{itemsRenderByValue().title}</Text>
+                    <Text style={[styles.totalTxt, { fontWeight: '900', fontSize: convertHeight(28) }]}>{totalCostOfTravel}{itemsRenderByValue().postLetter}</Text>
+                </View>
+
+                <View style={[styles.cardView, { padding: convertHeight(25) }]}>
                     <View>
                         <Text style={styles.label}>{itemsRenderByValue().fuelLabel}</Text>
                         <Input

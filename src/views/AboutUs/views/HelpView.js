@@ -72,7 +72,8 @@ export default function App(props) {
                     title: 'Dashboard:actions:costPlanner',
                     description: 'CostPlanner:cost_help_inof',
                     backdrop: AssetIconsPack.icons.background_help,
-                    backdrop_color: isDarkMode ? '#454545' : '#FFD580'
+                    backdrop_color: isDarkMode ? '#454545' : '#FFD580',
+                    videoId: AssetIconsPack.icons.cost_planner_video
                 },
                 {
                     key: '2',
@@ -82,7 +83,8 @@ export default function App(props) {
                     title: 'Dashboard:actions:tourist_places',
                     description: 'Touristplace:tourist_help_info',
                     backdrop: AssetIconsPack.icons.background_help,
-                    backdrop_color: isDarkMode ? Colors.black : '#D3D3D3'
+                    backdrop_color: isDarkMode ? Colors.black : '#D3D3D3',
+                    videoId: AssetIconsPack.icons.toursit_video
                 },
                 {
                     key: '3',
@@ -92,7 +94,8 @@ export default function App(props) {
                     title: 'Dashboard:actions:money_splitter',
                     description: 'Splitwise:money_help_info',
                     backdrop: AssetIconsPack.icons.background_help,
-                    backdrop_color: isDarkMode ? '#3D3C3A' : '#FFFFE0'
+                    backdrop_color: isDarkMode ? '#3D3C3A' : '#FFFFE0',
+                    videoId: AssetIconsPack.icons.money_splitter_video
                 },
                 {
                     key: '4',
@@ -102,7 +105,8 @@ export default function App(props) {
                     title: 'Dashboard:actions:checklist',
                     description: 'checklist:checklist_help_info',
                     backdrop: AssetIconsPack.icons.background_help,
-                    backdrop_color: isDarkMode ? Colors.black : '#ADD8E6'
+                    backdrop_color: isDarkMode ? Colors.black : '#ADD8E6',
+                    videoId: AssetIconsPack.icons.checklist_video
                 }
             ];
             setMovies([{ key: 'empty-left' }, ...movies, { key: 'empty-right' }]);
@@ -181,7 +185,7 @@ export default function App(props) {
                                 <Text style={{ fontSize: 12, color: textColor, textAlign: 'center', paddingTop: convertHeight(15) }} numberOfLines={3}>
                                     {t(item.description)}
                                 </Text>
-                                <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.VIDEO_VIEW)}
+                                <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.VIDEO_VIEW, { videoId: item.videoId })}
                                     style={{
                                         padding: 7, backgroundColor: item.poster_color, elevation: 1, marginTop: 10,
                                         borderRadius: 5, flexDirection: 'row', justifyContent: 'space-between',

@@ -104,7 +104,7 @@ export default function SettingsView(props) {
         {
             id: 8,
             name: 'Settings:local_data_sync',
-            icon_name: 'database-sync',
+            icon_name: 'cloud-sync',
             onPress: () => props.navigation.navigate(ROUTE_KEYS.SYNC_LOCAL_SERVER)
         },
         {
@@ -147,7 +147,7 @@ export default function SettingsView(props) {
 
     const renderItem = (item) => {
         return (
-            <TouchableOpacity activeOpacity={0.9} onPress={() => onChangeLanguage(item.languageCode)} style={[styles.button, { backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary }]}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => onChangeLanguage(item.languageCode)} style={[styles.button, { backgroundColor: isDarkMode ? '#2c2c2e' : Colors.primary, paddingVertical: convertHeight(16) }]}>
                 <Text style={{ color: textColor, fontWeight: 'bold' }}>{t(`Languages:${item?.language}`)}</Text>
                 {i18n.language === item.languageCode &&
                     <AntDesign name="checkcircle" size={24} color={isDarkMode ? Colors.primary : Colors.lightGreen} />
@@ -227,7 +227,7 @@ export default function SettingsView(props) {
         button: {
             backgroundColor: backgroundColor,
             paddingHorizontal: convertHeight(15),
-            paddingVertical: convertHeight(12),
+            paddingVertical: convertHeight(13),
             justifyContent: 'space-between',
             flexDirection: 'row',
             alignItems: 'center'
@@ -272,6 +272,7 @@ export default function SettingsView(props) {
         <View style={styles.mainContainer}>
             <StatusBar backgroundColor={backgroundColor} barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
 
+            <ScrollView contentContainerStyle={styles.mainContainer}>
             {settingsArray.map((item) => {
                 return (
                     <TouchableOpacity key={item.id} style={styles.button} onPress={item.onPress}>
@@ -306,13 +307,14 @@ export default function SettingsView(props) {
                                 </Animated.View>
                             }
                             {(item.id === 8 && visibleItem) &&
-                                <Ionicons name="sync-circle" size={24} color={Colors.lightRed} />
+                                <MaterialCommunityIcons name="sync-alert" size={24} color={Colors.lightRed} />
                             }
                             <Ionicons name="md-chevron-forward-sharp" size={24} color={textColor} />
                         </View>
                     </TouchableOpacity>
                 );
             })}
+            </ScrollView>
 
             <RBSheet
                 height={convertHeight(223)} ref={refRBSheet}

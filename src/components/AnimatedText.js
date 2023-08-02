@@ -28,7 +28,7 @@ export default FloatingText = (props) => {
             textAlign: 'center',
             fontSize: convertHeight(10),
             paddingBottom: convertHeight(5),
-            fontWeight: 'bold'
+            fontWeight: '500'
         }
     });
 

@@ -128,7 +128,7 @@ export default function WriteUpAboutTripView(props) {
         } else if (showTime == "") {
             setValDateTime(true);
         } else {
-            navigation.navigate(ROUTE_KEYS.CHECK_ITEM_ADD, { textData: value, ReminderTime: time });
+            navigation.navigate(ROUTE_KEYS.CHECK_ITEM_ADD, { textData: value, ReminderTime: time.toISOString() });
         }
     }
 

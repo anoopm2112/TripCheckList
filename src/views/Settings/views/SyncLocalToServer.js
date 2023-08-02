@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, StatusBar, Animated } from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,14 +13,17 @@ import { deleteCheckList, deleteSplitWiseList, queryAllCheckList, queryAllSplitW
 import { addNewChecklists } from '../../CheckList/api/ChecklistApi';
 import { addNewSplitwises } from '../../SplitWise/api/SplitWiseApi';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
+import { selectAllChecklists } from '../../CheckList/checklistSlice';
 
 const SyncLocalToServer = () => {
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const { t } = useTranslation();
+    const syncIconAnimation = useRef(new Animated.Value(0)).current;
 
     const isDarkMode = useSelector(state => state?.settings?.isDarkMode);
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
+    const { status } = useSelector(selectAllChecklists);
 
     const [checklistSyncItem, setChecklistSyncItem] = useState([]);
     const [splitwiseSyncItem, setSplitwiseSyncItem] = useState([]);
@@ -45,13 +48,30 @@ const SyncLocalToServer = () => {
     };
 
     const onSyncHandler = async () => {
+        Animated.loop(
+            Animated.timing(syncIconAnimation, {
+                toValue: 1,
+                duration: 1000,
+                useNativeDriver: true,
+            }),
+            Animated.timing(syncIconAnimation, {
+                toValue: 0,
+                duration: 1000,
+                useNativeDriver: true,
+            }),
+        ).start();
+
         if (checklistSyncItem?.length > 0) {
             for (let i = 0; i < checklistSyncItem?.length; i++) {
                 setSending(true);
                 const responseItem = checklistSyncItem[i];
                 await dispatch(addNewChecklists(responseItem));
-                await deleteCheckList(checklistSyncItem[i].id);
+                if (status === 'succeeded') {
+                    await deleteCheckList(checklistSyncItem[i].id);
+                }
                 setSending(false);
+                Animated.timing(syncIconAnimation).stop();
+                syncIconAnimation.setValue(0);
                 syncOperation();
             }
         }
@@ -61,11 +81,24 @@ const SyncLocalToServer = () => {
                 setSending(true);
                 const responseItem = splitwiseSyncItem[i];
                 await dispatch(addNewSplitwises(responseItem));
-                await deleteSplitWiseList(splitwiseSyncItem[i].id);
+                if (status === 'succeeded') {
+                    await deleteSplitWiseList(splitwiseSyncItem[i].id);
+                }
                 setSending(false);
+                Animated.timing(syncIconAnimation).stop();
+                syncIconAnimation.setValue(0);
                 syncOperation();
             }
         }
+    };
+
+    const rotateSyncIconInterpolation = syncIconAnimation.interpolate({
+        inputRange: [0, 1],
+        outputRange: ['0deg', '360deg'],
+    });
+
+    const iconLangStyle = {
+        transform: [{ rotate: rotateSyncIconInterpolation }],
     };
 
 
@@ -125,13 +158,16 @@ const SyncLocalToServer = () => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.cardTitle}>{t('Dashboard:actions:checklist')}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {checklistSyncItem?.length > 0 ?
-                            <Ionicons name="sync-circle" style={{ paddingRight: 5 }} size={24} color={sending ? Colors.tertiary : Colors.lightRed} /> :
-                            <Ionicons name="checkmark-circle" style={{ paddingRight: 5 }} size={24} color={isDarkMode ? Colors.info : Colors.lightGreen} />
-                        }
                         {checklistSyncItem === undefined ?
-                            <MaterialCommunityIcons name={`numeric-${0}-box-multiple`} size={convertHeight(18)} color={textColor} /> :
-                            <MaterialCommunityIcons name={`numeric-${checklistSyncItem?.length}-box-multiple`} size={convertHeight(18)} color={textColor} />
+                            <MaterialCommunityIcons style={{ paddingRight: 5 }} name={`numeric-${0}-box-multiple`} size={convertHeight(18)} color={textColor} /> :
+                            <MaterialCommunityIcons style={{ paddingRight: 5 }} name={`numeric-${checklistSyncItem?.length}-box-multiple`} size={convertHeight(18)} color={textColor} />
+                        }
+                        {checklistSyncItem?.length > 0 ?
+                            <Animated.View style={[iconLangStyle]}>
+                                <Ionicons name="sync" size={24} color={sending ? Colors.tertiary : Colors.lightRed} />
+                            </Animated.View>
+                            :
+                            <Ionicons name="checkmark-circle" size={24} color={isDarkMode ? Colors.info : Colors.lightGreen} />
                         }
                     </View>
                 </View>
@@ -158,14 +194,17 @@ const SyncLocalToServer = () => {
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Text style={styles.cardTitle}>{t('Dashboard:actions:money_splitter')}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        {splitwiseSyncItem?.length > 0 ?
-                            <Ionicons name="sync-circle" style={{ paddingRight: 5 }} size={24} color={sending ? Colors.tertiary : Colors.lightRed} /> :
-                            <Ionicons name="checkmark-circle" style={{ paddingRight: 5 }} size={24} color={isDarkMode ? Colors.info : Colors.lightGreen} />
-                        }
                         {splitwiseSyncItem === undefined ?
-                            <MaterialCommunityIcons name={`numeric-${0}-box-multiple`} size={convertHeight(18)} color={textColor} />
+                            <MaterialCommunityIcons style={{ paddingRight: 5 }} name={`numeric-${0}-box-multiple`} size={convertHeight(18)} color={textColor} />
                             :
-                            <MaterialCommunityIcons name={`numeric-${splitwiseSyncItem?.length}-box-multiple`} size={convertHeight(18)} color={textColor} />}
+                            <MaterialCommunityIcons style={{ paddingRight: 5 }} name={`numeric-${splitwiseSyncItem?.length}-box-multiple`} size={convertHeight(18)} color={textColor} />}
+                        {splitwiseSyncItem?.length > 0 ?
+                            <Animated.View style={[iconLangStyle, { opacity: 1 }]}>
+                                <Ionicons name="sync" size={24} color={sending ? Colors.tertiary : Colors.lightRed} />
+                            </Animated.View>
+                            :
+                            <Ionicons name="checkmark-circle" size={24} color={isDarkMode ? Colors.info : Colors.lightGreen} />
+                        }
                     </View>
                 </View>
                 <View style={{ borderWidth: 0.2, borderColor: Colors.info, marginVertical: 5 }} />
@@ -188,12 +227,13 @@ const SyncLocalToServer = () => {
                 </View>
             </View>
 
-            <TouchableOpacity onPress={() => onSyncHandler()}
-                style={[styles.button, {
-                    backgroundColor: sending ? Colors.info : Colors.secondary
-                }]}>
-                <Text style={styles.buttonTitle}>{t('Settings:sync_to_server')}</Text>
-            </TouchableOpacity>
+            {(checklistSyncItem?.length > 0 || splitwiseSyncItem?.length > 0) &&
+                <TouchableOpacity onPress={() => onSyncHandler()}
+                    style={[styles.button, {
+                        backgroundColor: sending ? Colors.info : Colors.secondary
+                    }]}>
+                    <Text style={styles.buttonTitle}>{t('Settings:sync_to_server')}</Text>
+                </TouchableOpacity>}
         </View>
     );
 };

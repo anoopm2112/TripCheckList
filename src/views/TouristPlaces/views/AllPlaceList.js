@@ -19,7 +19,7 @@ import LocationAlertModal from '../../../components/LocationAlertModal';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { deletePlaceById, fetchPlaces } from '../api/TouristPlacesApi';
 import { selectAllTouristPlace } from '../placeSlice';
-import { AppLoader, CustomPopup, EmptyList } from '../../../components';
+import { AppLoader, CustomPopup, EmptyList, NetworkErrorView } from '../../../components';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { Context as AuthContext } from '../../../context/AuthContext';
 
@@ -193,12 +193,7 @@ export default function AllPlaceList(props) {
 
     if (status === 'failed') {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: 'black' }}>{error}</Text>
-                <TouchableOpacity style={{ paddingVertical: 5 }} onPress={() => dispatch(fetchPlaces(districtName))}>
-                    <Text style={{ color: 'black' }}>Please click here to reload</Text>
-                </TouchableOpacity>
-            </View>
+            <NetworkErrorView onAction={() => dispatch(fetchPlaces(districtName))} />
         );
     }
 

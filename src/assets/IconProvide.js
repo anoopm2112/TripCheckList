@@ -84,6 +84,9 @@ const AssetIconsPack = {
 
         // Video
         'toursit_video': require('../assets/video/toursit_video.mp4'),
+        'checklist_video': require('../assets/video/checklist_video.mp4'),
+        'money_splitter_video': require('../assets/video/money_splitter_video.mp4'),
+        'cost_planner_video': require('../assets/video/cost_planner_video.mp4'),
     },
 };
 

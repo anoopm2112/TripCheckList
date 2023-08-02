@@ -28,8 +28,16 @@ const checklistsSlice = createSlice({
                 state.error = action.error.message
             })
             // Add New Splitwise list
+            .addCase(addNewChecklists.pending, (state, action) => {
+                state.status = 'loading'
+            })
             .addCase(addNewChecklists.fulfilled, (state, action) => {
+                state.status = 'succeeded'
                 state.checklists.push(action.payload)
+            })
+            .addCase(addNewChecklists.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
             })
             // Update Splitwise List
             .addCase(updateChecklist.fulfilled, (state, action) => {

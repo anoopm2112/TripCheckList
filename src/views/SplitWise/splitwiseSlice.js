@@ -30,8 +30,16 @@ const splitwisesSlice = createSlice({
                 state.error = action.error.message
             })
             // Add New Splitwise list
+            .addCase(addNewSplitwises.pending, (state, action) => {
+                state.status = 'loading'
+            })
             .addCase(addNewSplitwises.fulfilled, (state, action) => {
+                state.status = 'succeeded'
                 state.splitwises.push(action.payload)
+            })
+            .addCase(addNewSplitwises.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
             })
             // Update Splitwise List
             .addCase(updateSplitwise.fulfilled, (state, action) => {

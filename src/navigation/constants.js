@@ -11,7 +11,6 @@ export const ROUTE_KEYS = {
     DASHBOARD_SCREEN: 'DashboardScreen',
     SPLASH_SCREEN: 'SplashScreen',
 
-    FETCH_POST: 'fetchPost',
     SETTINGS: 'SettingScreen',
     TOURIST_PLACE: 'TouristPlaceScreen',
     TOURIST_DISTRICT: 'TouristDistrictScreen',

@@ -17,7 +17,7 @@ import AssetIconsPack from '../../../assets/IconProvide';
 import { darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import { getAllChecklistHistory } from '../api/ChecklistApi';
 import { selectAllChecklists } from '../checklistSlice';
-import { AppLoader } from '../../../components';
+import { AppLoader, NetworkErrorView } from '../../../components';
 
 export default function CheckItemHistoryView(props) {
 
@@ -98,14 +98,7 @@ export default function CheckItemHistoryView(props) {
 
     if (status === 'failed') {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <Lottie source={AssetIconsPack.icons.network_error_lottie} autoPlay loop={false}
-                    style={{ height: convertHeight(170), width: convertHeight(170) }} />
-                <TouchableOpacity style={styles.buttonViewContainer} onPress={() => dispatch(getAllChecklistHistory())}>
-                    <Text style={styles.reloadText}>{t('Common:network_error')}</Text>
-                    <Ionicons name="reload-circle" size={24} color={COLORS.black} />
-                </TouchableOpacity>
-            </View>
+            <NetworkErrorView onAction={() => dispatch(getAllChecklistHistory())} />
         );
     }
 
