@@ -61,13 +61,14 @@ const AssetIconsPack = {
         'settings_icon': require('../assets/lottie_files/69362-green-setting-wheel.json'),
         'cost_planner_icon': require('../assets/lottie_files/92163-food-courier.json'),
         'no_internet_location_icon': require('../assets/lottie_files/107013-loader-for-wi-fi-connection.json'),
-        'tourist_icon': require('../assets/lottie_files/85352-globe.json'),
+        'tourist_icon': require('../assets/lottie_files/animation_lkut7ywd.json'),
         'clean_app_data': require('../assets/lottie_files/61502-clean-up-rubbish.json'),
         'tick_complete': require('../assets/lottie_files/87929-tick.json'),
         'tick_complete_blue': require('../assets/lottie_files/72594-tick-mark.json'),
         'contact_us_mail': require('../assets/lottie_files/74348-new-mail'),
         'location_pin_lottie': require('../assets/lottie_files/115802-realistic-location-pin-pointer-on-global-earth.json'),
         'network_error_lottie': require('../assets/lottie_files/animation_lkc8ug3k.json'),
+        'app_loader': require('../assets/lottie_files/app_loader.json'),
 
         // Icons
         'report_icon': require('../assets/report.png'),

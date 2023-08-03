@@ -145,7 +145,7 @@ export default function DashboardScreen(props) {
     const RenderCardComponent = (props) => {
         return (
             <TouchableOpacity activeOpacity={0.9} style={[styles.button]} onPress={props.onPress}>
-                <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={{ height: convertHeight(70) }} />
+                <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={props.style} />
                 <Text style={[styles.textLabel, { color: isDarkMode ? Colors.primary : Colors.black }]}>{props.cardName}</Text>
             </TouchableOpacity>
         );
@@ -175,21 +175,21 @@ export default function DashboardScreen(props) {
                 </ImageBackground>
             </View>
             <View style={styles.subSection} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_empty_icon}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_empty_icon} style={{ height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:checklist')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST)} />
-                <RenderCardComponent cardIcon={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon}
+                <RenderCardComponent cardIcon={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon} style={{ height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:money_splitter')} onPress={() => navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon} style={{ height: convertHeight(50), marginBottom: convertHeight(12) }}
                     cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon} style={{ height: convertHeight(50), marginBottom: convertHeight(12) }}
                     cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon} style={{height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon} style={{height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:settings')} onPress={() => navigation.navigate(ROUTE_KEYS.SETTINGS)} />
             </View>
         </View>

@@ -84,13 +84,14 @@ export default function SplitWiseListView(props) {
       justifyContent: 'center',
       alignItems: 'center',
       flex: 1,
-      backgroundColor: '#FFFFFF'
+      backgroundColor: isDarkMode ? COLORS.black : '#4F4F4F'
     }
   });
 
   if (status === 'loading') {
     return (
-      <Modal animationType='none' transparent={true} visible={true}>
+      <Modal animationType='fade' transparent={true} visible={true}>
+        <StatusBar backgroundColor={isDarkMode ? COLORS.black : '#4F4F4F'} />
         <View style={styles.loading}><AppLoader /></View>
       </Modal>
     )

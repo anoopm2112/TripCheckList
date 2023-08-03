@@ -67,7 +67,7 @@ const quotes = [
         
         By using our app, you acknowledge that you have read and understood this Privacy Policy and agree to the collection and use of your personal information as described herein.
         
-        Last updated: 12-07-2023`,
+        Last updated: 04-08-2023`,
         author: 'Dashboard:app_name',
         icon: AssetIconsPack.icons.tourist_spot_about
     },
