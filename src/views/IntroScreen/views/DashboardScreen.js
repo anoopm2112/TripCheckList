@@ -119,7 +119,7 @@ export default function DashboardScreen(props) {
             paddingLeft: convertWidth(7),
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: isDarkMode ? Colors.black : Colors.primary,
+            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary,
             borderRadius: 5
         },
         syncTxtContainer: {
