@@ -34,18 +34,27 @@ export default function SplitWiseListView(props) {
 
   useEffect(() => {
     if (isFocused) {
-      dispatch(fetchSplitwises({ userId: state?.userToken }));
+      fetchSplitWiseItem();
     }
+
+    async function fetchSplitWiseItem() {
+      await dispatch(fetchSplitwises({ userId: state?.userToken }));
+    }
+    fetchSplitWiseItem();
   }, [isFocused, dispatch]);
 
   const removeParticularItem = async ({ id, item }) => {
-    dispatch(deleteSplitWiseById({ id: id, splitwiseId: item._id }));
+    await dispatch(deleteSplitWiseById({ id: id, splitwiseId: item._id }));
     dispatch(fetchSplitwises({ userId: state?.userToken }));
   }
 
   const renderItem = ({ item }) => {
     let spliupAmount = item.totalAmount / (item.members.length);
-    const navigationToEdit = () => { navigation.navigate(ROUTE_KEYS.SPLIT_WISE_ADD, { item: item }) }
+    const navigationToEdit = () => {
+      const itemData = _.cloneDeep(item);
+      itemData.splitWiseId = item._id;
+      navigation.navigate(ROUTE_KEYS.SPLIT_WISE_ADD, { item: itemData }) 
+    }
 
     return (
       <>

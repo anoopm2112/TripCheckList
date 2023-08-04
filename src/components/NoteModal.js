@@ -132,7 +132,7 @@ export default function NoteModal(props) {
                         </View>
                         :
                         <View style={{ backgroundColor: backgroundColor, flex: 1 }}>
-                            {notesItem.length > 0 ?
+                            {notesItem?.length > 0 ?
                                 <>
                                     <View style={styles.headerContainer}>
                                         <Text style={{ textAlign: 'center', fontWeight: 'bold', color: textColor }}>{t('Splitwise:notes')}</Text>

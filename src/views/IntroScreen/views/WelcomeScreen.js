@@ -1,11 +1,10 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { View, StyleSheet, ImageBackground, StatusBar, Text, TouchableOpacity, BackHandler, Image } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, StyleSheet, ImageBackground, StatusBar, Text, TouchableOpacity, BackHandler, Image, Modal } from 'react-native';
 import PushNotification from "react-native-push-notification";
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 // Custom Imports
 import COLORS from '../../../common/Colors';
@@ -14,11 +13,14 @@ import EN_IN from '../../../common/languages/en_IN';
 import AssetIconsPack from '../../../assets/IconProvide';
 import { Context as AuthContext } from '../../../context/AuthContext';
 import { registerNewUserIntro } from '../api/IntroScreenAPI';
+import { selectAllIntro } from '../introSlice';
+import { AppLoader } from '../../../components';
 
 const WelcomeScreen = () => {
     const { signin } = useContext(AuthContext);
     const dispatch = useDispatch();
     const netInfo = NetInfo.useNetInfo();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         GoogleSignin.configure({
@@ -42,6 +44,7 @@ const WelcomeScreen = () => {
             await GoogleSignin.hasPlayServices();
             const { idToken } = await GoogleSignin.signIn();
             const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+            setIsLoading(true);
 
             // Sign-in the user with the credential
             const googleResult = await auth().signInWithCredential(googleCredential);
@@ -92,8 +95,23 @@ const WelcomeScreen = () => {
         googleIcon: {
             width: convertHeight(18),
             height: convertHeight(18)
+        },
+        loading: {
+            justifyContent: 'center',
+            alignItems: 'center',
+            flex: 1,
+            backgroundColor: '#4F4F4F'
         }
     });
+
+    if (isLoading) {
+        return (
+            <Modal animationType='fade' transparent={true} visible={true}>
+                <StatusBar backgroundColor={'#4F4F4F'} />
+                <View style={Styles.loading}><AppLoader /></View>
+            </Modal>
+        )
+    }
 
     return (
         <View style={{ flex: 1 }}>

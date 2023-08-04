@@ -261,7 +261,7 @@ export default function MainItemSplitWiseListCard(props) {
                 closeOnDragDown={true}
                 customStyles={{ draggableIcon: { backgroundColor: textColor }, container: { backgroundColor: isDarkMode ? '#2E2E2E' : COLORS.primary } }}>
                 <List style={{ backgroundColor: backgroundColor }} horizontal data={getAddedAmountArray(item?.splitWiseListItems)} renderItem={({ item }) => renderItemSplitMembers({ item, spliupAmount })} />
-                <Button disabled={item?.splitWiseListItems.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>{t('Splitwise:generate_view_nvoice')}</Button>
+                <Button disabled={item?.splitWiseListItems?.length == 1} style={{ margin: convertHeight(10) }} onPress={() => { createPDF() }}>{t('Splitwise:generate_view_nvoice')}</Button>
             </RBSheet>
             <InvoiceModal
                 pdfModalVisible={pdfModalVisible}

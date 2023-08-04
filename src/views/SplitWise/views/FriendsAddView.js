@@ -105,7 +105,7 @@ export default function FriendsAddView(props) {
     forceUpdate();
   }
 
-  const onSubmitAddFriends = () => {
+  const onSubmitAddFriends = async () => {
     if (localArrayData.length <= 0) {
       setValTextInput(true);
     } else if (splitTitleValue === '') {
@@ -128,7 +128,8 @@ export default function FriendsAddView(props) {
         notes: [],
         userId: state?.userToken
       }
-      dispatch(addNewSplitwises(newSplitWise));
+      const reponseData = await dispatch(addNewSplitwises(newSplitWise));
+      newSplitWise.splitWiseId = reponseData?.payload._id
       setLocalArrayData([]);
       navigation.navigate(ROUTE_KEYS.SPLIT_WISE_ADD, { item: newSplitWise });
     }

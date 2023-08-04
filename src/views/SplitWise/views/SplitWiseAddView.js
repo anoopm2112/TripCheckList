@@ -152,7 +152,7 @@ export default function CheckListAddView(props) {
             let amountAdded = amountAdded = parseInt(item.totalAmount) + parseInt(amount);
             const newSplitWise = {
                 id: item.id,
-                splitwiseId: item._id,
+                splitwiseId: item.splitWiseId,
                 creationDate: item.creationDate,
                 type: selectedIndex == 4 ? value : displayValue,
                 totalAmount: amountAdded,
@@ -361,11 +361,11 @@ export default function CheckListAddView(props) {
                         </View>
                     }
 
-                    {item.splitWiseListItems.length > 1 &&
+                    {item.splitWiseListItems?.length > 1 &&
                         <View>
                             <TouchableOpacity activeOpacity={0.8}
                                 onPress={() => {
-                                    if (item.splitWiseListItems.length > 1) {
+                                    if (item.splitWiseListItems?.length > 1) {
                                         createPDF();
                                     }
                                 }} style={[styles.buttonViewContainer, { backgroundColor: '#5cb09f' }]}>

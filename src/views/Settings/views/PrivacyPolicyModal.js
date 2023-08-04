@@ -63,7 +63,7 @@ const quotes = [
     {
         quote: 'Quotes:quote_6',
         data: `Contact Us:
-        If you have any questions, concerns, or requests regarding this Privacy Policy or the handling of your personal information, please contact us at anoopm2112@gmail.com.
+        If you have any questions, concerns, or requests regarding this Privacy Policy or the handling of your personal information, please contact us at tripchecklistapp@gmail.com.
         
         By using our app, you acknowledge that you have read and understood this Privacy Policy and agree to the collection and use of your personal information as described herein.
         

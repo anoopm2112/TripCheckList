@@ -28,7 +28,7 @@ export default function ContactUsView() {
     });
 
     const handleSubmit = async (values, { resetForm }) => {
-        const recipient = 'anoopm2112@gmail.com';
+        const recipient = 'tripchecklistapp@gmail.com';
         const subject = values.subject;
         const body = values.message;
 
