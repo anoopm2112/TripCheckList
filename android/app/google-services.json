@@ -14,11 +14,27 @@
       },
       "oauth_client": [
         {
-          "client_id": "961469081993-npdj8jukaev05te1rrs41bm1ppckgm4g.apps.googleusercontent.com",
+          "client_id": "961469081993-bcv7q3d96vh8q8hc8qjhhtdgr3c2vpds.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.tripchecklist",
-            "certificate_hash": "0ff90fdd0ed33cd2560dbecc627084ad0ba8e7c2"
+            "certificate_hash": "9bb5c8dae336ffe2181f9c4c7298fed7162982c3"
+          }
+        },
+        {
+          "client_id": "961469081993-pkgrkdedr1tjt265cg36hiee05gmlahf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripchecklist",
+            "certificate_hash": "a162a3879ba89665f59a32a712ba77fcac9e382b"
+          }
+        },
+        {
+          "client_id": "961469081993-sc61c6pae6cuchd7c88q4gt3gbmtgf6r.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tripchecklist",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
