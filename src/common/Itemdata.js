@@ -34,11 +34,11 @@ export const dataItemTA = [
 ];
 
 export const splitWiseDataItem = [
-    'Select your food category',
-    'Break Fast',
-    'Lunch',
-    'Dinner',
-    'Other'
+    // 'Select your food category',
+    { id: 1, name: 'B.FAST', icon: 'coffee' },
+    { id: 2, name: 'LUNCH', icon: 'cutlery' },
+    { id: 3, name: 'DINNER', icon: 'spoon' },
+    { id: 4, name: 'OTHER', icon: 'beer' },
 ];
 
 // export const splitWiseDataItem = [

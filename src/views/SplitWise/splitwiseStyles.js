@@ -6,7 +6,7 @@ import Colors from "../../common/Colors";
 export const styles = StyleSheet.create({
     mainContainer: {
         flex: 1,
-        padding: convertHeight(8),
+        paddingHorizontal: convertHeight(10),
     },
     counterContainer: {
         justifyContent: 'space-between',
@@ -75,7 +75,7 @@ export const styles = StyleSheet.create({
     },
     buttonRow: {
         flexDirection: 'row',
-        paddingHorizontal: 10,
+        // paddingHorizontal: 10,
         marginTop: 20,
     },
     button: {
@@ -140,10 +140,33 @@ export const styles = StyleSheet.create({
         bottom: -20
     },
     splitBtnContainer: {
-        alignSelf: 'center', 
+        alignSelf: 'center',
         paddingBottom: convertHeight(5),
-        textTransform: 'uppercase', 
-        fontWeight: '500', 
-        fontSize: convertHeight(9) 
-    }
+        textTransform: 'uppercase',
+        fontWeight: '500',
+        fontSize: convertHeight(9)
+    },
+    selectTypecontainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: convertHeight(10)
+    },
+    flatListContent: {
+        padding: convertWidth(8),
+    },
+    cardViewContainer: {
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    card: {
+        borderRadius: convertHeight(50),
+        height: convertHeight(50),
+        width: convertHeight(50),
+        backgroundColor: Colors.appIntro,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: convertHeight(7),
+        elevation: 5
+    },
 });

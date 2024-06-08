@@ -13,6 +13,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Octicons from 'react-native-vector-icons/Octicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // Other files
 import { splitWiseDataItem, splitWiseDataItemMal, splitWiseDataItemTamil, splitWiseDataItemHindi } from '../../../common/Itemdata';
 import { ROUTE_KEYS } from '../../../navigation/constants';
@@ -254,10 +255,28 @@ export default function CheckListAddView(props) {
         );
     };
 
+    const data = i18n.language === 'en' ? splitWiseDataItem :
+        i18n.language === 'ml' ? splitWiseDataItemMal :
+            i18n.language === 'hi' ? splitWiseDataItemHindi : splitWiseDataItemTamil;
+
+    const renderItem2 = ({ item, index }) => (
+        <View style={styles.cardViewContainer}>
+            <TouchableOpacity style={[styles.card, {
+                backgroundColor: selectedIndex === index ? Colors.appIntro : '#78C0D8'
+            }]} onPress={() => {
+                setSelectedIndex(index);
+                setValSelectFoodType('');
+            }}>
+                <FontAwesome name={item?.icon} size={convertHeight(20)} color={backgroundColor} />
+            </TouchableOpacity>
+            <Text style={{ color: Colors.black, fontWeight: 'bold' }}>{item?.name}</Text>
+        </View>
+    )
+
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: backgroundColor }}>
             <View style={[styles.mainContainer, { backgroundColor: backgroundColor }]}>
-                <Select
+                {/* <Select
                     placeholder='Default'
                     value={displayValue}
                     selectedIndex={selectedIndex}
@@ -271,8 +290,11 @@ export default function CheckListAddView(props) {
                             i18n.language === 'ml' ? splitWiseDataItemMal.map(renderOption) :
                                 i18n.language === 'hi' ? splitWiseDataItemHindi.map(renderOption) : splitWiseDataItemTamil.map(renderOption)
                     }
-                </Select>
-                {selectedIndex == 5 && <View style={{ paddingTop: convertHeight(5) }}>
+                </Select> */}
+                <View style={styles.selectTypecontainer}>
+                    {data?.map((item, index) => renderItem2({ item, index }))}
+                </View>
+                {selectedIndex == 3 && <View style={{ paddingTop: convertHeight(5) }}>
                     <Input placeholder={t('Common:other_item')} value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false); }} />
                 </View>}
                 {valSelectFoodType && <Animatable.Text animation={'fadeInLeft'} style={styles.errortxt}>{t('Splitwise:select_food_category')}</Animatable.Text>}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
-import { TouchableOpacity, Text, StyleSheet, Platform, View, Image, StatusBar, ImageBackground } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Platform, View, Image, StatusBar, ImageBackground, ScrollView } from 'react-native';
 import Lottie from 'lottie-react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useTranslation } from "react-i18next";
@@ -70,8 +70,9 @@ export default function DashboardScreen(props) {
 
     const styles = StyleSheet.create({
         button: {
-            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: 20, height: 160, width: 160,
+            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: 20, height: convertHeight(130), width: convertHeight(135),
             justifyContent: 'center', alignItems: 'center', borderWidth: 0.2, borderColor: Colors.primary,
+            borderRadius: convertHeight(10),
             ...Platform.select({
                 ios: {
                     shadowColor: '#c7c7c7', shadowOffset: { width: 5, height: 5 },
@@ -154,6 +155,7 @@ export default function DashboardScreen(props) {
     return (
         <View style={{ backgroundColor: isDarkMode ? '#565051' : '#e5e5e5', flex: 1 }}>
             <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.appIntro} barStyle='light-content' />
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.topCard}>
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }}
                     source={AssetIconsPack.icons.checklist_clothes_image}>
@@ -186,12 +188,13 @@ export default function DashboardScreen(props) {
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon} style={{ height: convertHeight(50), marginBottom: convertHeight(12) }}
                     cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>
-            <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
+            <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginVertical: convertHeight(20), justifyContent: 'space-between' }} >
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon} style={{height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
                 <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon} style={{height: convertHeight(70) }}
                     cardName={t('Dashboard:actions:settings')} onPress={() => navigation.navigate(ROUTE_KEYS.SETTINGS)} />
             </View>
+            </ScrollView>
         </View>
     );
 }
