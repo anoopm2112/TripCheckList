@@ -9,5 +9,5 @@ export default COLORS = {
     green: 'green',
     lightRed: '#f55f4e',
     lightGreen: '#43a159',
-    appIntro: '#56c499'
+    appIntro: '#315476'
 };

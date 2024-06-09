@@ -70,9 +70,10 @@ export default function DashboardScreen(props) {
 
     const styles = StyleSheet.create({
         button: {
-            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: 20, height: convertHeight(130), width: convertHeight(135),
-            justifyContent: 'center', alignItems: 'center', borderWidth: 0.2, borderColor: Colors.primary,
-            borderRadius: convertHeight(10),
+            backgroundColor: isDarkMode ? '#3D3C3A' : Colors.primary, padding: convertHeight(10), height: convertHeight(120), width: convertHeight(130),
+            // justifyContent: 'center', alignItems: 'center', 
+            borderWidth: 3, borderColor: Colors.primary,
+            borderRadius: convertHeight(5),
             ...Platform.select({
                 ios: {
                     shadowColor: '#c7c7c7', shadowOffset: { width: 5, height: 5 },
@@ -103,14 +104,14 @@ export default function DashboardScreen(props) {
             marginTop: convertHeight(35)
         },
         subSection: {
-            marginTop: convertHeight(180),
+            marginTop: convertHeight(210),
             marginHorizontal: convertWidth(20),
             flexDirection: 'row',
             justifyContent: 'space-between'
         },
         textLabel: {
             fontWeight: 'bold',
-            textAlign: 'center',
+            // textAlign: 'center',
             fontSize: (i18n.language === 'ml' || i18n.language === 'ta') ? convertHeight(10) : convertHeight(11)
         },
         syncIconContainer: {
@@ -145,20 +146,22 @@ export default function DashboardScreen(props) {
 
     const RenderCardComponent = (props) => {
         return (
-            <TouchableOpacity activeOpacity={0.9} style={[styles.button]} onPress={props.onPress}>
-                <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={props.style} />
+            <TouchableOpacity activeOpacity={0.9} style={[styles.button, { backgroundColor: props.bgColor }]} onPress={props.onPress}>
                 <Text style={[styles.textLabel, { color: isDarkMode ? Colors.primary : Colors.black }]}>{props.cardName}</Text>
+                <View style={props.bottomStyle}>
+                    <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={props.style} />
+                </View>
             </TouchableOpacity>
         );
     };
 
     return (
-        <View style={{ backgroundColor: isDarkMode ? '#565051' : '#e5e5e5', flex: 1 }}>
+        <View style={{ backgroundColor: isDarkMode ? '#565051' : '#93B5C6', flex: 1 }}>
             <StatusBar backgroundColor={isDarkMode ? '#2c2c2e' : Colors.appIntro} barStyle='light-content' />
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.topCard}>
                 <ImageBackground imageStyle={{ opacity: 0.1, height: '160%' }}
-                    source={AssetIconsPack.icons.checklist_clothes_image}>
+                    source={AssetIconsPack.icons.checklist_clothes_two}>
                     {showView &&
                         <Animatable.View animation={'fadeInRight'} ref={viewAnimation} style={styles.syncTxtContainer}>
                             <TouchableOpacity onPress={() => navigation.navigate(ROUTE_KEYS.SYNC_LOCAL_SERVER)}
@@ -169,7 +172,7 @@ export default function DashboardScreen(props) {
                         </Animatable.View>
                     }
                     <View style={styles.topCardSubContainer}>
-                        <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(50), width: convertHeight(50), borderRadius: convertHeight(50), marginTop: convertHeight(5), backgroundColor: '#ffffff00' }} />
+                        <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(80), width: convertHeight(80), borderRadius: convertHeight(50), backgroundColor: '#ffffff00' }} />
                         <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(8), fontSize: convertHeight(16) }]}>{t('Dashboard:title')} {state?.userName}!</Text>
                         {/* <Text style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]}>{t('Dashboard:subtitle')}</Text> */}
                         <AnimatedText style={[styles.textLabel, { color: Colors.primary, paddingTop: convertHeight(5), fontStyle: 'italic', width: '90%' }]} label={'Dashboard:subtitle'} />
@@ -177,21 +180,33 @@ export default function DashboardScreen(props) {
                 </ImageBackground>
             </View>
             <View style={styles.subSection} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_empty_icon} style={{ height: convertHeight(70) }}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_empty_icon} style={{ height: convertHeight(50) }}
+                    bottomStyle={{ position: 'absolute', bottom: 5, right: 5 }}
+                    bgColor={'#FCFFE0'}
                     cardName={t('Dashboard:actions:checklist')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_LIST)} />
-                <RenderCardComponent cardIcon={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon} style={{ height: convertHeight(70) }}
+                <RenderCardComponent cardIcon={isDarkMode ? AssetIconsPack.icons.money_hand_dark : AssetIconsPack.icons.splitwise_empty_icon} style={{ height: convertHeight(40) }} 
+                    bottomStyle={{ position: 'absolute', bottom: 5, right: -10 }}
+                    bgColor={'#F6F5F2'}
                     cardName={t('Dashboard:actions:money_splitter')} onPress={() => navigation.navigate(ROUTE_KEYS.SPLIT_WISE_LIST)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginTop: convertHeight(20), justifyContent: 'space-between' }} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon} style={{ height: convertHeight(50), marginBottom: convertHeight(12) }}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.tourist_icon} style={{ height: convertHeight(32), marginBottom: convertHeight(12) }}
+                    bottomStyle={{ position: 'absolute', bottom: 0, right: 15 }}
+                    bgColor={'#E0FBE2'}
                     cardName={t('Dashboard:actions:tourist_places')} onPress={() => navigation.navigate(ROUTE_KEYS.TOURIST_STATES)} />
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon} style={{ height: convertHeight(50), marginBottom: convertHeight(12) }}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.cost_planner_icon} style={{ height: convertHeight(35), marginBottom: convertHeight(12) }}
+                    bottomStyle={{ position: 'absolute', bottom: 0, right: 5 }}
+                    bgColor={'#E1E5EA'}
                     cardName={t('Dashboard:actions:costPlanner')} onPress={() => navigation.navigate(ROUTE_KEYS.COST_PLANNER)} />
             </View>
             <View style={{ marginHorizontal: convertWidth(20), flexDirection: 'row', marginVertical: convertHeight(20), justifyContent: 'space-between' }} >
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon} style={{height: convertHeight(70) }}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.checklist_history_icon} style={{height: convertHeight(45) }}
+                    bottomStyle={{ position: 'absolute', bottom: 5, right: 8 }}
+                    bgColor={'#FFEEEE'}
                     cardName={t('Dashboard:actions:history')} onPress={() => navigation.navigate(ROUTE_KEYS.CHECK_ITEM_HISTORY_LIST)} />
-                <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon} style={{height: convertHeight(70) }}
+                <RenderCardComponent cardIcon={AssetIconsPack.icons.settings_icon} style={{height: convertHeight(50) }}
+                    bottomStyle={{ position: 'absolute', bottom: 0, right: 0 }}
+                    bgColor={'#E3F4F4'}
                     cardName={t('Dashboard:actions:settings')} onPress={() => navigation.navigate(ROUTE_KEYS.SETTINGS)} />
             </View>
             </ScrollView>
