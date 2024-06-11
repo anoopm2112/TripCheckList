@@ -1,4 +1,4 @@
-package com.tripchecklist.newarchitecture;
+package com.traveltriporganiser.newarchitecture;
 
 import android.app.Application;
 import androidx.annotation.NonNull;
@@ -19,9 +19,9 @@ import com.facebook.react.fabric.CoreComponentsRegistry;
 import com.facebook.react.fabric.FabricJSIModuleProvider;
 import com.facebook.react.fabric.ReactNativeConfig;
 import com.facebook.react.uimanager.ViewManagerRegistry;
-import com.tripchecklist.BuildConfig;
-import com.tripchecklist.newarchitecture.components.MainComponentsRegistry;
-import com.tripchecklist.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
+import com.traveltriporganiser.BuildConfig;
+import com.traveltriporganiser.newarchitecture.components.MainComponentsRegistry;
+import com.traveltriporganiser.newarchitecture.modules.MainApplicationTurboModuleManagerDelegate;
 import java.util.ArrayList;
 import java.util.List;
 

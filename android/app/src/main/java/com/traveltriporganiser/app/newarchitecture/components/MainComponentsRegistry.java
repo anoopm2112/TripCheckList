@@ -1,4 +1,4 @@
-package com.tripchecklist.newarchitecture.components;
+package com.traveltriporganiser.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

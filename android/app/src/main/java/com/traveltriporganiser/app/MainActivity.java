@@ -1,4 +1,4 @@
-package com.tripchecklist;
+package com.traveltriporganiser;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
