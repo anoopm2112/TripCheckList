@@ -157,7 +157,9 @@ export const styles = StyleSheet.create({
     },
     cardViewContainer: {
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        paddingVertical: convertHeight(10),
+        marginTop: convertHeight(10)
     },
     card: {
         borderRadius: convertHeight(50),

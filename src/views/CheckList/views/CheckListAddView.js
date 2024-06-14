@@ -1,5 +1,5 @@
-import { View, Text, StyleSheet, PermissionsAndroid, TouchableOpacity } from 'react-native';
-import React, { useState, useCallback, useContext } from 'react';
+import { View, Text, StyleSheet, PermissionsAndroid, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useCallback, useContext, useEffect } from 'react';
 import { launchCamera } from 'react-native-image-picker';
 import PushNotification from "react-native-push-notification";
 import moment from 'moment';
@@ -11,7 +11,7 @@ import { dataItem, dataItemML, dataItemHI, dataItemTA } from '../../../common/It
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import { addNewChecklists, updateChecklist } from '../api/ChecklistApi';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input } from '../../../components';
+import { SubItemListCardView, IndexPath, Select, SelectItem, Button, List, Tooltip, Input, CardWithImage } from '../../../components';
 import { convertHeight, convertWidth } from '../../../common/utils/dimentionUtils';
 import COLORS from '../../../common/Colors';
 import { darkModeColor, getBase64FromImageURI } from '../../../common/utils/arrayObjectUtils';
@@ -29,7 +29,7 @@ export default function CheckListAddView(props) {
     const { backgroundColor, textColor } = darkModeColor(isDarkMode);
 
     // State
-    const [selectedIndex, setSelectedIndex] = useState(new IndexPath(0));
+    const [selectedIndex, setSelectedIndex] = useState(0);
     const [counter, setCounter] = useState(1);
     const [localArrayData, setLocalArrayData] = useState(item ? JSON.parse(JSON.stringify(item.checkListItems)) : []);
     const [itemImage, setItemImage] = useState('');
@@ -38,6 +38,7 @@ export default function CheckListAddView(props) {
     const [toolTipVisible, setToolTipVisible] = useState(false);
     const [value, setValue] = useState('');
     const [valTextInput, setValTextInput] = useState(false);
+    const [displayValueToBe, setDisplayValueToBe] = useState({})
 
     const [, updateState] = useState();
     const forceUpdate = useCallback(() => updateState({}), []);
@@ -45,6 +46,13 @@ export default function CheckListAddView(props) {
     const renderOption = (title) => (
         <SelectItem title={title} />
     );
+
+    useEffect(() => {
+        const dataItemIndex = i18n.language === 'en' ? dataItem[0] :
+        i18n.language === 'ml' ? dataItemML[0] :
+            i18n.language === 'hi' ? dataItemHI[0] : dataItemTA[0]
+        setDisplayValueToBe(dataItemIndex);  
+    }, [])
 
     const displayValue =
         // dataItem[selectedIndex.row];
@@ -55,7 +63,7 @@ export default function CheckListAddView(props) {
     onSubmitCheckList = async () => {
         let checkListObj = {
             id: Math.floor(Date.now() / 1000),
-            item: selectedIndex == 4 ? value : displayValue,
+            item: selectedIndex == 3 ? value : displayValue,
             counter: counter,
             image: netInfo.isConnected ? base64ItemImage : itemImage,
             checked: false
@@ -175,7 +183,7 @@ export default function CheckListAddView(props) {
     const styles = StyleSheet.create({
         mainContainer: {
             flex: 1,
-            margin: convertHeight(8)
+            marginHorizontal: convertHeight(8)
         },
         counterContainer: {
             flexDirection: 'row',
@@ -187,13 +195,37 @@ export default function CheckListAddView(props) {
             backgroundColor: COLORS.lightGreen,
             borderColor: COLORS.lightGreen,
             width: convertWidth(150)
-        }
+        },
+        cardViewContainer: {
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingVertical: convertHeight(10),
+            marginTop: convertHeight(10)
+        },
     });
+
+    const data = i18n.language === 'en' ? dataItem :
+        i18n.language === 'ml' ? dataItemML :
+            i18n.language === 'hi' ? dataItemHI : dataItemTA
+
+    const renderItem2 = ({ item, index }) => {
+
+        const handleClothClick = () => {
+            setSelectedIndex(index);
+            setDisplayValueToBe(item)
+        }
+
+        return (
+            <View style={styles.cardViewContainer}>
+                <CardWithImage bgColor={selectedIndex === index ? COLORS.appIntro : '#78C0D8'} handleFoodClick={handleClothClick} item={item} backgroundColor={backgroundColor} />
+            </View>
+        )
+    }
 
     return (
         <View style={styles.mainContainer}>
-            <View>
-                <Select
+            <View style={{ backgroundColor: backgroundColor }}>
+                {/* <Select
                     style={styles.select}
                     placeholder='Default'
                     value={displayValue}
@@ -204,9 +236,13 @@ export default function CheckListAddView(props) {
                             i18n.language === 'ml' ? dataItemML.map(renderOption) :
                                 i18n.language === 'hi' ? dataItemHI.map(renderOption) : dataItemTA.map(renderOption)
                     }
-                </Select>
+                </Select> */}
 
-                {selectedIndex == 4 && <View>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                    {data?.map((item, index) => renderItem2({ item, index }))}
+                </ScrollView>
+
+                {selectedIndex == 3 && <View>
                     <Input
                         placeholder='Other Item'
                         value={value}
@@ -227,7 +263,8 @@ export default function CheckListAddView(props) {
                         appearance='outline'
                         onPress={() => reduceCounterFun()}>
                     </Button>
-                    <Text style={{ fontWeight: 'bold', color: textColor }}>{counter} {displayValue}</Text>
+                    <Text style={{ fontWeight: 'bold', color: textColor }}>{counter} {displayValueToBe?.name}
+                    </Text>
                     <Button style={{ backgroundColor: backgroundColor, borderColor: COLORS.lightGreen }}
                         accessoryRight={<MaterialIcons name="add-circle" size={convertHeight(16)} color="green" />}
                         appearance='outline'

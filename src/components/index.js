@@ -19,12 +19,13 @@ import EraseModal from './EraseModal';
 import CustomSnackbar from './CustomSnackBar';
 import NetworkErrorView from './NetworkErrorView';
 import ProgressWaveBar from './ProgressWaveBar';
+import CardWithImage from './CardWithImage';
 
 export {
     AppLoader, CustomPopup, EmptyList, Header, InvoiceModal, MainItemListCardView,
     MainItemSplitWiseListCard, NoteModal, SubItemListCardView, SubItemSplitWise,
     AnimatedText, CustomFlipView, PaidByModal, EraseModal, CustomSnackbar, NetworkErrorView,
-    ProgressWaveBar,
+    ProgressWaveBar, CardWithImage,
     // UI KITTEN COMPONENTS
     List, ListItem, Input, Button, IndexPath, Select, SelectItem, CheckBox, Tooltip
 };

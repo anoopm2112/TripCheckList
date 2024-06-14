@@ -1,7 +1,7 @@
 const AssetIconsPack = {
     icons: {
         // Images
-        'on_board_image': require('../assets/onboardImage-01.jpeg'),
+        'on_board_image': require('../assets/onboardImage-01.png'),
         'app_logo_side_image': require('../assets/side_logo_New.png'),
         'checklist_item_no_image': require('../assets/clothes_new.jpg'),
         'checklist_clothes_image': require('../assets/clothes_new.jpg'),
@@ -89,6 +89,16 @@ const AssetIconsPack = {
         'checklist_video': require('../assets/video/checklist_video.mp4'),
         'money_splitter_video': require('../assets/video/money_splitter_video.mp4'),
         'cost_planner_video': require('../assets/video/cost_planner_video.mp4'),
+    
+        // Card icons
+        'breakfast': require('../assets/cardicons/breakfast.png'),
+        'lunch': require('../assets/cardicons/meal.png'),
+        'dinner': require('../assets/cardicons/fried-rice.png'),
+        'other_food': require('../assets/cardicons/fast-food.png'),
+        'shirt': require('../assets/cardicons/polo-shirt.png'),
+        'jeans': require('../assets/cardicons/jeans.png'),
+        'running_shoe': require('../assets/cardicons/running-shoe.png'),
+        'school_bag': require('../assets/cardicons/school-bag.png'),
     },
 };
 

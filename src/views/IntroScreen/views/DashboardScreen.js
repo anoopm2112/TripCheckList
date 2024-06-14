@@ -146,7 +146,7 @@ export default function DashboardScreen(props) {
 
     const RenderCardComponent = (props) => {
         return (
-            <TouchableOpacity activeOpacity={0.9} style={[styles.button, { backgroundColor: props.bgColor }]} onPress={props.onPress}>
+            <TouchableOpacity activeOpacity={0.9} style={[styles.button, { backgroundColor: isDarkMode ? '#3e3b40' : props.bgColor }]} onPress={props.onPress}>
                 <Text style={[styles.textLabel, { color: isDarkMode ? Colors.primary : Colors.black }]}>{props.cardName}</Text>
                 <View style={props.bottomStyle}>
                     <Lottie source={props.cardIcon} loop={lottieAnimation} autoPlay style={props.style} />

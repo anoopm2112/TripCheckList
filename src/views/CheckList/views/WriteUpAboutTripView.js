@@ -118,7 +118,7 @@ export default function WriteUpAboutTripView(props) {
             borderRadius: convertHeight(45), 
             justifyContent: 'center',
             alignItems: 'center', 
-            backgroundColor: COLORS.tertiary
+            backgroundColor: COLORS.lightGreen
         }
     });
 
@@ -172,7 +172,7 @@ export default function WriteUpAboutTripView(props) {
 
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                     <TouchableOpacity onPress={showDatepicker} activeOpacity={0.8}
-                        style={[styles.buttonViewContainer, { backgroundColor: '#69c1ff' }]}>
+                        style={[styles.buttonViewContainer, { backgroundColor: COLORS.green }]}>
                         <Text style={[styles.textBtnSplit, { color: COLORS.primary }]}>{t('checklist:checklist_reminder')}</Text>
                         <View style={styles.reminderIconContainer}>
                             <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.primary} />
@@ -182,7 +182,7 @@ export default function WriteUpAboutTripView(props) {
                     <TouchableOpacity onPress={() => { onWriteUpSubmit() }} activeOpacity={0.8}
                         style={[styles.buttonViewContainer, { backgroundColor: COLORS.secondary }]}>
                         <Text style={[styles.textBtnSplit, { color: COLORS.primary }]}>{t('Common:submit')}</Text>
-                        <View style={[styles.reminderIconContainer, { backgroundColor: '#fa4e28' }]}>
+                        <View style={[styles.reminderIconContainer, { backgroundColor: COLORS.appIntro }]}>
                             <Ionicons name="checkmark-sharp" size={convertHeight(20)} color={COLORS.primary} />
                         </View>
                     </TouchableOpacity>

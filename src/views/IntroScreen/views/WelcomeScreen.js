@@ -114,7 +114,7 @@ const WelcomeScreen = () => {
     }
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, backgroundColor: COLORS.welcomeScr }}>
             <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
             <ImageBackground style={{ flex: 1 }} resizeMode={'cover'} source={AssetIconsPack.icons.on_board_image}>
                 <View style={Styles.details}>
@@ -125,7 +125,7 @@ const WelcomeScreen = () => {
                     <TouchableOpacity disabled={!netInfo.isConnected} style={Styles.btn} activeOpacity={0.8} onPress={() => onhandleWelcome()}>
                         <Image source={AssetIconsPack.icons.google_icon} resizeMode='contain' style={Styles.googleIcon} />
                         <Text style={{
-                            fontWeight: 'bold', color: COLORS.lightGreen,
+                            fontWeight: 'bold', color: COLORS.appIntro,
                             textTransform: 'uppercase', paddingLeft: convertWidth(12)
                         }}>{EN_IN.get_tarted}</Text>
                     </TouchableOpacity>

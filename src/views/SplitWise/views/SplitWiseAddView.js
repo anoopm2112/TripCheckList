@@ -24,11 +24,13 @@ import { htmltable, onHandleCreatePdf } from '../../../common/pdfView';
 import { styles } from '../splitwiseStyles';
 import { selectAllSplitwises } from '../splitwiseSlice';
 import {
-    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal
+    SubItemSplitWise, NoteModal, InvoiceModal, IndexPath, Select, SelectItem, List, Input, PaidByModal,
+    CardWithImage
 } from '../../../components';
 import { calculateTotalAmount, darkModeColor } from '../../../common/utils/arrayObjectUtils';
 import AssetIconsPack from '../../../assets/IconProvide';
 import Colors from '../../../common/Colors';
+import { ScrollView } from 'react-native-gesture-handler';
 
 export default function CheckListAddView(props) {
     const [animation] = useState(new Animated.Value(1));
@@ -259,19 +261,28 @@ export default function CheckListAddView(props) {
         i18n.language === 'ml' ? splitWiseDataItemMal :
             i18n.language === 'hi' ? splitWiseDataItemHindi : splitWiseDataItemTamil;
 
-    const renderItem2 = ({ item, index }) => (
-        <View style={styles.cardViewContainer}>
-            <TouchableOpacity style={[styles.card, {
-                backgroundColor: selectedIndex === index ? Colors.appIntro : '#78C0D8'
-            }]} onPress={() => {
-                setSelectedIndex(index);
-                setValSelectFoodType('');
-            }}>
-                <FontAwesome name={item?.icon} size={convertHeight(20)} color={backgroundColor} />
-            </TouchableOpacity>
-            <Text style={{ color: Colors.black, fontWeight: 'bold' }}>{item?.name}</Text>
-        </View>
-    )
+    const renderItem2 = ({ item, index }) => {
+
+        const handleFoodClick = () => {
+            setSelectedIndex(index);
+            setValSelectFoodType('');
+        }
+
+        return (
+            <View style={styles.cardViewContainer}>
+                <CardWithImage bgColor={selectedIndex === index ? Colors.appIntro : '#78C0D8'} handleFoodClick={handleFoodClick} item={item} backgroundColor={backgroundColor} />
+                {/* <TouchableOpacity style={[styles.card, {
+                    backgroundColor: selectedIndex === index ? Colors.appIntro : '#78C0D8'
+                }]} onPress={() => {
+                    setSelectedIndex(index);
+                    setValSelectFoodType('');
+                }}>
+                    <FontAwesome name={item?.icon} size={convertHeight(20)} color={backgroundColor} />
+                </TouchableOpacity>
+                <Text style={{ color: Colors.black, fontWeight: 'bold' }}>{item?.name}</Text> */}
+            </View>
+        )
+    }
 
     return (
         <KeyboardAwareScrollView style={{ backgroundColor: backgroundColor }}>
@@ -291,9 +302,9 @@ export default function CheckListAddView(props) {
                                 i18n.language === 'hi' ? splitWiseDataItemHindi.map(renderOption) : splitWiseDataItemTamil.map(renderOption)
                     }
                 </Select> */}
-                <View style={styles.selectTypecontainer}>
+                <ScrollView horizontal showsHorizontalScrollIndicator={false}>
                     {data?.map((item, index) => renderItem2({ item, index }))}
-                </View>
+                </ScrollView>
                 {selectedIndex == 3 && <View style={{ paddingTop: convertHeight(5) }}>
                     <Input placeholder={t('Common:other_item')} value={value} onChangeText={nextValue => { setValue(nextValue), setValTextInput(false); }} />
                 </View>}

@@ -28,12 +28,12 @@ export const addNewChecklists = createAsyncThunk(ADD_NEW_CHECKLIST_LIST, async (
     // const isConnected = await checkNetworkConnectivity();
 
     // if (!isConnected) {
-    //     const response = await insertNewChecList(newChecklist);
-    //     return JSON.parse(JSON.stringify(response));
+        const response = await insertNewChecList(newChecklist);
+        return JSON.parse(JSON.stringify(response));
     // } else {
-        const apiResponse = await axios.post(`${apiUrl}${'/checklists'}`, newChecklist);
-        await deleteCheckList(newChecklist.id);
-        return apiResponse.data;
+        // const apiResponse = await axios.post(`${apiUrl}${'/checklists'}`, newChecklist);
+        // await deleteCheckList(newChecklist.id);
+        // return apiResponse.data;
     // }
 });
 

@@ -122,7 +122,7 @@ export default function CheckItemListView(props) {
             </View>
 
             <FloatingAction
-                color='#ff7e61'
+                color={COLORS.appIntro}
                 actions={[
                     {
                         text: t("Common:add_checklist"),
