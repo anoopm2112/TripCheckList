@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get('window');
 const LOGO_WIDTH = 220;
 const LOGO_HEIGHT = 40;
 const DOT_SIZE = 40;
-const TICKER_HEIGHT = 30;
+const TICKER_HEIGHT = convertHeight(25);
 const CIRCLE_SIZE = width * 0.6;
 
 const Circle = ({ scrollX }) => {
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
         fontWeight: '800',
     },
     tickerText_ta_ml: {
-        fontSize: 25,
+        fontSize: convertHeight(20),
         lineHeight: TICKER_HEIGHT,
         textTransform: 'uppercase',
         fontWeight: '800',

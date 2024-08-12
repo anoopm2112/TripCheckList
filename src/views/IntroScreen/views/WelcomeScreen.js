@@ -117,6 +117,9 @@ const WelcomeScreen = () => {
         <View style={{ flex: 1, backgroundColor: COLORS.welcomeScr }}>
             <StatusBar translucent backgroundColor="rgba(0,0,0,0)" />
             <ImageBackground style={{ flex: 1 }} resizeMode={'cover'} source={AssetIconsPack.icons.on_board_image}>
+                <View style={{ justifyContent: 'center', alignItems: 'center', paddingTop: convertHeight(120) }}>
+                    <Image source={AssetIconsPack.icons.app_logo_side_image} style={{ height: convertHeight(180), width: convertHeight(180), borderRadius: convertHeight(50), backgroundColor: '#ffffff00' }} />
+                </View>
                 <View style={Styles.details}>
                     <Text style={Styles.txtStyle}>{EN_IN.trip}</Text>
                     <Text style={Styles.txtStyle}>{EN_IN.checkList}</Text>

@@ -1,2 +1,2 @@
-# TripCheckList
+# TripOrganizer
 My playstore App

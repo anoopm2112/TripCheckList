@@ -43,7 +43,7 @@ export default function MainItemListCardView(props) {
             marginVertical: convertHeight(5),
             elevation: 5,
             backgroundColor: backgroundColor,
-            borderRadius: 3,
+            borderRadius: 5,
             borderWidth: 0.5,
             borderColor: COLORS.primary
         },
@@ -68,14 +68,16 @@ export default function MainItemListCardView(props) {
         titleTxt: {
             color: textColor,
             fontWeight: 'bold',
-            width: convertWidth(290),
-            paddingLeft: convertWidth(7)
+            fontSize: convertHeight(14)
+            // width: convertWidth(290),
+            // paddingVertical: convertHeight(10)
         },
         itemsContainer: {
-            width: convertWidth(40),
-            justifyContent: 'center',
-            alignItems: 'center',
-            padding: 3,
+            // width: convertWidth(60),
+            // justifyContent: 'center',
+            // alignItems: 'center',
+            paddingHorizontal: convertHeight(12),
+            paddingBottom: convertHeight(7)
         }
     });
 
@@ -86,16 +88,34 @@ export default function MainItemListCardView(props) {
     return (
         <>
         <TouchableOpacity style={Styles.mainContainer} onPress={() => navigationToNext()}>
-            <ImageBackground imageStyle={{ opacity: 0.2 }} source={renderImage()}>
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Text style={Styles.titleTxt}>{item.title}</Text>
+            <ImageBackground imageStyle={{ opacity: 0.3, borderRadius: 5 }} source={renderImage()}>
+                <View style={{ flexDirection:'row', justifyContent: 'space-between' }}>
                     <View style={Styles.itemsContainer}>
-                        <Text style={{ color: textColor, fontSize: convertHeight(8) }}>{t('Common:items')}</Text>
-                        <Text style={{ color: textColor, fontWeight: 'bold', fontSize: convertHeight(20) }}>{item.checkListItems.length}</Text>
+                        {/*  */}
+                        <View style={{ flexDirection: 'row'}}>
+                            <Text style={{ color: textColor, fontWeight: 'bold', fontSize: convertHeight(35) }}>{item.checkListItems.length}</Text>
+                            <Text style={{ color: textColor, fontSize: convertHeight(8), paddingTop: convertHeight(27), paddingLeft: 3  }}>{t('Common:items')}</Text>
+                        </View>
+                        <Text style={Styles.titleTxt}>{item.title}</Text>
+                        <View style={{ alignItems: 'center', flexDirection: 'row', paddingTop: convertHeight(7) }}>
+                            <Text style={{ color: textColor, fontSize: convertHeight(10), fontWeight: 'bold' }}>
+                                {localTimeConvertion(item.ReminderTime)}
+                            </Text>
+                        </View>
                     </View>
+                    {!history &&
+                    <View style={{ justifyContent: 'space-between' }}>
+                        <TouchableOpacity style={Styles.deleteBtnContainer} onPress={() => deleteItem(item)}>
+                            <MaterialIcons name="delete" size={convertHeight(20)} color="white" />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={Styles.editBtnContainer} onPress={() => navigationToEdit(item)}>
+                            <AntDesign name="edit" size={convertHeight(20)} color="white" />
+                        </TouchableOpacity>
+                    </View>
+                }
                 </View>
 
-                {!history &&
+                {/* {!history &&
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <TouchableOpacity style={Styles.deleteBtnContainer} onPress={() => deleteItem(item)}>
                             <MaterialIcons name="delete" size={convertHeight(20)} color="white" />
@@ -110,7 +130,7 @@ export default function MainItemListCardView(props) {
                             <AntDesign name="edit" size={convertHeight(20)} color="white" />
                         </TouchableOpacity>
                     </View>
-                }
+                } */}
             </ImageBackground>
         </TouchableOpacity>
             <CustomPopup

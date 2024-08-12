@@ -3,9 +3,9 @@ const AssetIconsPack = {
         // Images
         'on_board_image': require('../assets/onboardImage-01.png'),
         'app_logo_side_image': require('../assets/side_logo_New.png'),
-        'checklist_item_no_image': require('../assets/clothes_new.jpg'),
-        'checklist_clothes_image': require('../assets/clothes_new.jpg'),
-        'checklist_clothes_two_image': require('../assets/clothes_new.jpg'),
+        'checklist_item_no_image': require('../assets/clothes_new.png'),
+        'checklist_clothes_image': require('../assets/checklist_clothes_image.png'),
+        'checklist_clothes_two_image': require('../assets/clothes_new.png'),
         'checklist_clothes_two': require('../assets/clothes_twos.png'),
         'google_icon': require('../assets/google.png'),
 

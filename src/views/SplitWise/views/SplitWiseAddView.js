@@ -136,7 +136,7 @@ export default function CheckListAddView(props) {
                     }
                     localArrayData[i].expense = parseInt(splitAmount);
                     localArrayData[i].id = uuidv4() + i;
-                    localArrayData[i].type = selectedIndex == 4 ? value : displayValue;
+                    localArrayData[i].type = selectedIndex == 3 ? value : data?.find((item, index) => index === selectedIndex).name;
                 }
                 newArr1 = localArrayData;
             } else {
@@ -145,7 +145,7 @@ export default function CheckListAddView(props) {
 
             let splitShareArray = [{
                 id: uuidv4(),
-                foodType: selectedIndex == 4 ? value : displayValue,
+                foodType: selectedIndex == 3 ? value : data?.find((item, index) => index === selectedIndex).name,
                 creationDate: new Date(),
                 data: newArr1
             }];
@@ -157,7 +157,7 @@ export default function CheckListAddView(props) {
                 id: item.id,
                 splitwiseId: item.splitWiseId,
                 creationDate: item.creationDate,
-                type: selectedIndex == 4 ? value : displayValue,
+                type: selectedIndex == 3 ? value : data?.find((item, index) => index === selectedIndex).name,
                 totalAmount: amountAdded,
                 members: item.members,
                 splitWiseListItems: localSplitWiseAddArrayData.concat(splitShareArray),
@@ -194,7 +194,7 @@ export default function CheckListAddView(props) {
                     let newArray = [...localArrayData];
                     newArray[index].id = uuidv4();
                     newArray[index].expense = parseInt(val);
-                    newArray[index].type = selectedIndex == 4 ? value : displayValue;
+                    newArray[index].type = selectedIndex == 3 ? value : data?.find((item, index) => index === selectedIndex).name;
                     setLocalArrayData(newArray);
                     sum_values();
                     setValAmount(false);

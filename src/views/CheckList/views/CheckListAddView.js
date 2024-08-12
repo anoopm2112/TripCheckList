@@ -63,7 +63,7 @@ export default function CheckListAddView(props) {
     onSubmitCheckList = async () => {
         let checkListObj = {
             id: Math.floor(Date.now() / 1000),
-            item: selectedIndex == 3 ? value : displayValue,
+            item: selectedIndex == 3 ? value : data?.find((item, index) => index === selectedIndex).name,
             counter: counter,
             image: netInfo.isConnected ? base64ItemImage : itemImage,
             checked: false

@@ -8,6 +8,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import { useTranslation } from "react-i18next";
 import { useSelector } from 'react-redux';
 import * as Animatable from 'react-native-animatable';
+import moment from 'moment';
 // Custom Imports
 import { ROUTE_KEYS } from '../../../navigation/constants';
 import COLORS from '../../../common/Colors';
@@ -52,6 +53,7 @@ export default function WriteUpAboutTripView(props) {
             setShow(Platform.OS !== 'ios');
         } else {
             const selectedTime = selectedValue || new Date();
+            console.log('selectedTime', selectedTime);
             setTime(selectedTime);
             setShow(Platform.OS === 'ios');
             setMode('date');
@@ -97,28 +99,28 @@ export default function WriteUpAboutTripView(props) {
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'flex-end',
-            borderRadius: 50,
-            width: '48%',
+            borderRadius: 5,
+            // width: '100%',
             borderWidth: 0.5,
             borderColor: COLORS.info,
-            marginTop: 25,
+            marginTop: 20,
             elevation: 3
         },
         textBtnSplit: {
             flex: 1,
             textAlign: 'center',
-            fontWeight: '500',
+            fontWeight: 'bold',
             textTransform: 'uppercase',
-            fontSize: convertHeight(9),
+            fontSize: convertHeight(11),
             paddingHorizontal: 1
         },
         reminderIconContainer: {
-            height: convertHeight(35), 
-            width: convertHeight(35), 
-            borderRadius: convertHeight(45), 
+            height: convertHeight(38), 
+            width: convertHeight(38), 
+            borderRadius: convertHeight(3), 
             justifyContent: 'center',
             alignItems: 'center', 
-            backgroundColor: COLORS.lightGreen
+            backgroundColor: '#cddaf4'
         }
     });
 
@@ -170,12 +172,12 @@ export default function WriteUpAboutTripView(props) {
                 />
                 {valTextInput && <Text style={styles.errortxt}>{t('checklist:input_val')}</Text>}
 
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                <View style={{ marginTop: 10 }}>
                     <TouchableOpacity onPress={showDatepicker} activeOpacity={0.8}
-                        style={[styles.buttonViewContainer, { backgroundColor: COLORS.green }]}>
-                        <Text style={[styles.textBtnSplit, { color: COLORS.primary }]}>{t('checklist:checklist_reminder')}</Text>
+                        style={[styles.buttonViewContainer, { backgroundColor: '#edf2fc' }]}>
+                        <Text style={[styles.textBtnSplit, { color: COLORS.secondary }]}>{t('checklist:checklist_reminder')}</Text>
                         <View style={styles.reminderIconContainer}>
-                            <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.primary} />
+                            <Ionicons name="alarm" size={convertHeight(20)} color={COLORS.secondary} />
                         </View>
                     </TouchableOpacity>
 
